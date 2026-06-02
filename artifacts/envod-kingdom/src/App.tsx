@@ -1,10 +1,12 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { LanguageProvider } from "@/lib/language-context";
 import { MainLayout } from "@/components/layout/MainLayout";
+import { initScrollEngine, destroyScrollEngine } from "@/lib/scroll-engine";
 
 import Home from "@/pages/home";
 import Track from "@/pages/track";
@@ -66,6 +68,13 @@ function Router() {
 }
 
 function App() {
+  useEffect(() => {
+    const lenis = initScrollEngine();
+    return () => {
+      destroyScrollEngine();
+    };
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
