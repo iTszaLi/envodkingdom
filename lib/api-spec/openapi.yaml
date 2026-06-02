@@ -1,22 +1,43 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: ENVOD KINGDOM SHIPPING SERVICES LLC API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: tracking
+    description: Shipment tracking
+  - name: services
+    description: Logistics services
+  - name: testimonials
+    description: Client testimonials
+  - name: faqs
+    description: Frequently asked questions
+  - name: team
+    description: Team members
+  - name: articles
+    description: Blog articles
+  - name: clients
+    description: Client logos
+  - name: inquiries
+    description: Contact & quote inquiries
+  - name: settings
+    description: CMS settings
+  - name: stats
+    description: Company statistics
+  - name: auth
+    description: Admin authentication
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,13 +45,1616 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  # ── AUTH ──────────────────────────────────────────────────────────────────
+  /auth/login:
+    post:
+      operationId: adminLogin
+      tags: [auth]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+
+  /auth/logout:
+    post:
+      operationId: adminLogout
+      tags: [auth]
+      summary: Admin logout
+      responses:
+        "200":
+          description: Logged out
+
+  /auth/me:
+    get:
+      operationId: getAdminMe
+      tags: [auth]
+      summary: Get current admin session
+      responses:
+        "200":
+          description: Current admin
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AdminUser"
+        "401":
+          description: Not authenticated
+
+  # ── STATS (wow endpoint) ───────────────────────────────────────────────────
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get company statistics
+      responses:
+        "200":
+          description: Company statistics
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyStats"
+
+  # ── SHIPMENT TRACKING ─────────────────────────────────────────────────────
+  /shipments:
+    get:
+      operationId: listShipments
+      tags: [tracking]
+      summary: List all shipments (admin)
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: search
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+      responses:
+        "200":
+          description: List of shipments
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipmentList"
+    post:
+      operationId: createShipment
+      tags: [tracking]
+      summary: Create a shipment (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+
+  /shipments/track/{trackingNumber}:
+    get:
+      operationId: trackShipment
+      tags: [tracking]
+      summary: Track a shipment by tracking number (public)
+      parameters:
+        - in: path
+          name: trackingNumber
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Shipment details with timeline
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ShipmentTracking"
+        "404":
+          description: Not found
+
+  /shipments/{id}:
+    get:
+      operationId: getShipment
+      tags: [tracking]
+      summary: Get shipment by ID (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Shipment
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+        "404":
+          description: Not found
+    put:
+      operationId: updateShipment
+      tags: [tracking]
+      summary: Update a shipment (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShipmentUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Shipment"
+    delete:
+      operationId: deleteShipment
+      tags: [tracking]
+      summary: Delete a shipment (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /shipments/{id}/status:
+    post:
+      operationId: addShipmentStatus
+      tags: [tracking]
+      summary: Add status update to shipment (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StatusUpdateInput"
+      responses:
+        "201":
+          description: Status added
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StatusUpdate"
+
+  # ── SERVICES ──────────────────────────────────────────────────────────────
+  /services:
+    get:
+      operationId: listServices
+      tags: [services]
+      summary: List all services
+      responses:
+        "200":
+          description: List of services
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Service"
+    post:
+      operationId: createService
+      tags: [services]
+      summary: Create service (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+
+  /services/{id}:
+    put:
+      operationId: updateService
+      tags: [services]
+      summary: Update service (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServiceUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Service"
+    delete:
+      operationId: deleteService
+      tags: [services]
+      summary: Delete service (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── TESTIMONIALS ──────────────────────────────────────────────────────────
+  /testimonials:
+    get:
+      operationId: listTestimonials
+      tags: [testimonials]
+      summary: List testimonials
+      responses:
+        "200":
+          description: List of testimonials
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Testimonial"
+    post:
+      operationId: createTestimonial
+      tags: [testimonials]
+      summary: Create testimonial (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+
+  /testimonials/{id}:
+    put:
+      operationId: updateTestimonial
+      tags: [testimonials]
+      summary: Update testimonial (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TestimonialUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Testimonial"
+    delete:
+      operationId: deleteTestimonial
+      tags: [testimonials]
+      summary: Delete testimonial (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── FAQS ──────────────────────────────────────────────────────────────────
+  /faqs:
+    get:
+      operationId: listFaqs
+      tags: [faqs]
+      summary: List FAQs
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+      responses:
+        "200":
+          description: List of FAQs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Faq"
+    post:
+      operationId: createFaq
+      tags: [faqs]
+      summary: Create FAQ (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FaqInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Faq"
+
+  /faqs/{id}:
+    put:
+      operationId: updateFaq
+      tags: [faqs]
+      summary: Update FAQ (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/FaqUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Faq"
+    delete:
+      operationId: deleteFaq
+      tags: [faqs]
+      summary: Delete FAQ (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── TEAM ──────────────────────────────────────────────────────────────────
+  /team:
+    get:
+      operationId: listTeam
+      tags: [team]
+      summary: List team members
+      responses:
+        "200":
+          description: List of team members
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamMember"
+    post:
+      operationId: createTeamMember
+      tags: [team]
+      summary: Create team member (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+
+  /team/{id}:
+    put:
+      operationId: updateTeamMember
+      tags: [team]
+      summary: Update team member (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamMemberUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamMember"
+    delete:
+      operationId: deleteTeamMember
+      tags: [team]
+      summary: Delete team member (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── ARTICLES (BLOG) ───────────────────────────────────────────────────────
+  /articles:
+    get:
+      operationId: listArticles
+      tags: [articles]
+      summary: List articles
+      parameters:
+        - in: query
+          name: category
+          schema:
+            type: string
+        - in: query
+          name: published
+          schema:
+            type: boolean
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 12
+      responses:
+        "200":
+          description: Paginated articles
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ArticleList"
+    post:
+      operationId: createArticle
+      tags: [articles]
+      summary: Create article (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+
+  /articles/{slug}:
+    get:
+      operationId: getArticle
+      tags: [articles]
+      summary: Get article by slug
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+        "404":
+          description: Not found
+
+  /articles/{id}/publish:
+    patch:
+      operationId: publishArticle
+      tags: [articles]
+      summary: Publish or unpublish article (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticlePublish"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+
+  /articles/{id}:
+    put:
+      operationId: updateArticle
+      tags: [articles]
+      summary: Update article (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ArticleUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Article"
+    delete:
+      operationId: deleteArticle
+      tags: [articles]
+      summary: Delete article (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── CLIENTS ───────────────────────────────────────────────────────────────
+  /clients:
+    get:
+      operationId: listClients
+      tags: [clients]
+      summary: List client logos
+      responses:
+        "200":
+          description: List of clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Client"
+    post:
+      operationId: createClient
+      tags: [clients]
+      summary: Create client (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+
+  /clients/{id}:
+    put:
+      operationId: updateClient
+      tags: [clients]
+      summary: Update client (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ClientUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Client"
+    delete:
+      operationId: deleteClient
+      tags: [clients]
+      summary: Delete client (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── INQUIRIES ─────────────────────────────────────────────────────────────
+  /inquiries:
+    get:
+      operationId: listInquiries
+      tags: [inquiries]
+      summary: List inquiries (admin)
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+        - in: query
+          name: page
+          schema:
+            type: integer
+            default: 1
+      responses:
+        "200":
+          description: Paginated inquiries
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InquiryList"
+    post:
+      operationId: submitInquiry
+      tags: [inquiries]
+      summary: Submit contact / quote request (public)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryInput"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+
+  /inquiries/{id}:
+    put:
+      operationId: updateInquiry
+      tags: [inquiries]
+      summary: Update inquiry status (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InquiryUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Inquiry"
+    delete:
+      operationId: deleteInquiry
+      tags: [inquiries]
+      summary: Delete inquiry (admin)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── SETTINGS ──────────────────────────────────────────────────────────────
+  /settings:
+    get:
+      operationId: getSettings
+      tags: [settings]
+      summary: Get CMS settings
+      responses:
+        "200":
+          description: Settings
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Settings"
+    put:
+      operationId: updateSettings
+      tags: [settings]
+      summary: Update CMS settings (admin)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SettingsUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Settings"
+
 components:
   schemas:
     HealthStatus:
       type: object
+      required: [status]
       properties:
         status:
           type: string
-      required:
-        - status
 
+    # ── AUTH ──────────────────────────────────────────────────────────────
+    LoginInput:
+      type: object
+      required: [username, password]
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+
+    AuthResponse:
+      type: object
+      required: [admin]
+      properties:
+        admin:
+          $ref: "#/components/schemas/AdminUser"
+
+    AdminUser:
+      type: object
+      required: [id, username, role]
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        role:
+          type: string
+
+    # ── STATS ─────────────────────────────────────────────────────────────
+    CompanyStats:
+      type: object
+      required: [yearsExperience, shipmentsDelivered, corporateClients, globalPartners, onTimeDeliveryRate, customsClearanceHours]
+      properties:
+        yearsExperience:
+          type: integer
+        shipmentsDelivered:
+          type: integer
+        corporateClients:
+          type: integer
+        globalPartners:
+          type: integer
+        onTimeDeliveryRate:
+          type: number
+        customsClearanceHours:
+          type: integer
+        activeShipments:
+          type: integer
+        pendingInquiries:
+          type: integer
+
+    # ── SHIPMENT TRACKING ─────────────────────────────────────────────────
+    Shipment:
+      type: object
+      required: [id, trackingNumber, status, origin, destination, createdAt]
+      properties:
+        id:
+          type: integer
+        trackingNumber:
+          type: string
+        referenceNumber:
+          type: ["string", "null"]
+        invoiceNumber:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [booking_confirmed, cargo_received, documentation_complete, customs_clearance, port_processing, in_transit, warehouse_arrival, out_for_delivery, delivered]
+        origin:
+          type: string
+        destination:
+          type: string
+        serviceType:
+          type: ["string", "null"]
+        description:
+          type: ["string", "null"]
+        weight:
+          type: ["number", "null"]
+        pieces:
+          type: ["integer", "null"]
+        estimatedDelivery:
+          type: ["string", "null"]
+        actualDelivery:
+          type: ["string", "null"]
+        shipperName:
+          type: ["string", "null"]
+        consigneeName:
+          type: ["string", "null"]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+        updatedAt:
+          type: string
+
+    ShipmentList:
+      type: object
+      required: [shipments, total, page, limit]
+      properties:
+        shipments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Shipment"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    ShipmentTracking:
+      type: object
+      required: [shipment, timeline, progressPercent]
+      properties:
+        shipment:
+          $ref: "#/components/schemas/Shipment"
+        timeline:
+          type: array
+          items:
+            $ref: "#/components/schemas/StatusUpdate"
+        progressPercent:
+          type: integer
+
+    ShipmentInput:
+      type: object
+      required: [trackingNumber, origin, destination]
+      properties:
+        trackingNumber:
+          type: string
+        referenceNumber:
+          type: string
+        invoiceNumber:
+          type: string
+        origin:
+          type: string
+        destination:
+          type: string
+        serviceType:
+          type: string
+        description:
+          type: string
+        weight:
+          type: number
+        pieces:
+          type: integer
+        estimatedDelivery:
+          type: string
+        shipperName:
+          type: string
+        consigneeName:
+          type: string
+        notes:
+          type: string
+
+    ShipmentUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        referenceNumber:
+          type: string
+        invoiceNumber:
+          type: string
+        origin:
+          type: string
+        destination:
+          type: string
+        serviceType:
+          type: string
+        description:
+          type: string
+        weight:
+          type: number
+        pieces:
+          type: integer
+        estimatedDelivery:
+          type: string
+        actualDelivery:
+          type: string
+        shipperName:
+          type: string
+        consigneeName:
+          type: string
+        notes:
+          type: string
+
+    StatusUpdate:
+      type: object
+      required: [id, shipmentId, status, location, timestamp]
+      properties:
+        id:
+          type: integer
+        shipmentId:
+          type: integer
+        status:
+          type: string
+        location:
+          type: string
+        description:
+          type: ["string", "null"]
+        timestamp:
+          type: string
+
+    StatusUpdateInput:
+      type: object
+      required: [status, location]
+      properties:
+        status:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        timestamp:
+          type: string
+
+    # ── SERVICES ──────────────────────────────────────────────────────────
+    Service:
+      type: object
+      required: [id, name, nameAr, description, descriptionAr, icon, category, sortOrder]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        nameAr:
+          type: string
+        description:
+          type: string
+        descriptionAr:
+          type: string
+        icon:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    ServiceInput:
+      type: object
+      required: [name, nameAr, description, descriptionAr, icon, category]
+      properties:
+        name:
+          type: string
+        nameAr:
+          type: string
+        description:
+          type: string
+        descriptionAr:
+          type: string
+        icon:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+
+    ServiceUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        nameAr:
+          type: string
+        description:
+          type: string
+        descriptionAr:
+          type: string
+        icon:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    # ── TESTIMONIALS ──────────────────────────────────────────────────────
+    Testimonial:
+      type: object
+      required: [id, clientName, company, content, rating, isActive]
+      properties:
+        id:
+          type: integer
+        clientName:
+          type: string
+        company:
+          type: string
+        role:
+          type: ["string", "null"]
+        content:
+          type: string
+        contentAr:
+          type: ["string", "null"]
+        rating:
+          type: integer
+        logoUrl:
+          type: ["string", "null"]
+        isActive:
+          type: boolean
+
+    TestimonialInput:
+      type: object
+      required: [clientName, company, content, rating]
+      properties:
+        clientName:
+          type: string
+        company:
+          type: string
+        role:
+          type: string
+        content:
+          type: string
+        contentAr:
+          type: string
+        rating:
+          type: integer
+        logoUrl:
+          type: string
+
+    TestimonialUpdate:
+      type: object
+      properties:
+        clientName:
+          type: string
+        company:
+          type: string
+        role:
+          type: string
+        content:
+          type: string
+        contentAr:
+          type: string
+        rating:
+          type: integer
+        logoUrl:
+          type: string
+        isActive:
+          type: boolean
+
+    # ── FAQS ──────────────────────────────────────────────────────────────
+    Faq:
+      type: object
+      required: [id, question, answer, category, sortOrder]
+      properties:
+        id:
+          type: integer
+        question:
+          type: string
+        questionAr:
+          type: ["string", "null"]
+        answer:
+          type: string
+        answerAr:
+          type: ["string", "null"]
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    FaqInput:
+      type: object
+      required: [question, answer, category]
+      properties:
+        question:
+          type: string
+        questionAr:
+          type: string
+        answer:
+          type: string
+        answerAr:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+
+    FaqUpdate:
+      type: object
+      properties:
+        question:
+          type: string
+        questionAr:
+          type: string
+        answer:
+          type: string
+        answerAr:
+          type: string
+        category:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    # ── TEAM ──────────────────────────────────────────────────────────────
+    TeamMember:
+      type: object
+      required: [id, name, role, department, sortOrder]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        nameAr:
+          type: ["string", "null"]
+        role:
+          type: string
+        roleAr:
+          type: ["string", "null"]
+        department:
+          type: string
+        bio:
+          type: ["string", "null"]
+        bioAr:
+          type: ["string", "null"]
+        photoUrl:
+          type: ["string", "null"]
+        linkedinUrl:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    TeamMemberInput:
+      type: object
+      required: [name, role, department]
+      properties:
+        name:
+          type: string
+        nameAr:
+          type: string
+        role:
+          type: string
+        roleAr:
+          type: string
+        department:
+          type: string
+        bio:
+          type: string
+        bioAr:
+          type: string
+        photoUrl:
+          type: string
+        linkedinUrl:
+          type: string
+        sortOrder:
+          type: integer
+
+    TeamMemberUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        nameAr:
+          type: string
+        role:
+          type: string
+        roleAr:
+          type: string
+        department:
+          type: string
+        bio:
+          type: string
+        bioAr:
+          type: string
+        photoUrl:
+          type: string
+        linkedinUrl:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    # ── ARTICLES ──────────────────────────────────────────────────────────
+    Article:
+      type: object
+      required: [id, title, slug, category, isPublished, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        titleAr:
+          type: ["string", "null"]
+        slug:
+          type: string
+        excerpt:
+          type: ["string", "null"]
+        excerptAr:
+          type: ["string", "null"]
+        content:
+          type: ["string", "null"]
+        contentAr:
+          type: ["string", "null"]
+        category:
+          type: string
+        tags:
+          type: ["string", "null"]
+        featuredImageUrl:
+          type: ["string", "null"]
+        authorName:
+          type: string
+        isPublished:
+          type: boolean
+        publishedAt:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    ArticleList:
+      type: object
+      required: [articles, total, page, limit]
+      properties:
+        articles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Article"
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+
+    ArticleInput:
+      type: object
+      required: [title, slug, category, authorName]
+      properties:
+        title:
+          type: string
+        titleAr:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        excerptAr:
+          type: string
+        content:
+          type: string
+        contentAr:
+          type: string
+        category:
+          type: string
+        tags:
+          type: string
+        featuredImageUrl:
+          type: string
+        authorName:
+          type: string
+
+    ArticleUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        titleAr:
+          type: string
+        slug:
+          type: string
+        excerpt:
+          type: string
+        excerptAr:
+          type: string
+        content:
+          type: string
+        contentAr:
+          type: string
+        category:
+          type: string
+        tags:
+          type: string
+        featuredImageUrl:
+          type: string
+        authorName:
+          type: string
+
+    ArticlePublish:
+      type: object
+      required: [isPublished]
+      properties:
+        isPublished:
+          type: boolean
+
+    # ── CLIENTS ───────────────────────────────────────────────────────────
+    Client:
+      type: object
+      required: [id, name, industry, sortOrder, isActive]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        industry:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        website:
+          type: ["string", "null"]
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    ClientInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        industry:
+          type: string
+        logoUrl:
+          type: string
+        website:
+          type: string
+        sortOrder:
+          type: integer
+
+    ClientUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        industry:
+          type: string
+        logoUrl:
+          type: string
+        website:
+          type: string
+        sortOrder:
+          type: integer
+        isActive:
+          type: boolean
+
+    # ── INQUIRIES ─────────────────────────────────────────────────────────
+    Inquiry:
+      type: object
+      required: [id, name, email, serviceType, status, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        company:
+          type: ["string", "null"]
+        email:
+          type: string
+        phone:
+          type: ["string", "null"]
+        serviceType:
+          type: string
+        message:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [new, contacted, quoted, closed]
+        notes:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    InquiryList:
+      type: object
+      required: [inquiries, total, page]
+      properties:
+        inquiries:
+          type: array
+          items:
+            $ref: "#/components/schemas/Inquiry"
+        total:
+          type: integer
+        page:
+          type: integer
+
+    InquiryInput:
+      type: object
+      required: [name, email, serviceType]
+      properties:
+        name:
+          type: string
+        company:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        serviceType:
+          type: string
+        message:
+          type: string
+
+    InquiryUpdate:
+      type: object
+      properties:
+        status:
+          type: string
+        notes:
+          type: string
+
+    # ── SETTINGS ──────────────────────────────────────────────────────────
+    Settings:
+      type: object
+      required: [id]
+      properties:
+        id:
+          type: integer
+        companyNameEn:
+          type: string
+        companyNameAr:
+          type: string
+        taglineEn:
+          type: ["string", "null"]
+        taglineAr:
+          type: ["string", "null"]
+        phone:
+          type: ["string", "null"]
+        whatsapp:
+          type: ["string", "null"]
+        email:
+          type: ["string", "null"]
+        address:
+          type: ["string", "null"]
+        addressAr:
+          type: ["string", "null"]
+        city:
+          type: ["string", "null"]
+        country:
+          type: ["string", "null"]
+        postalCode:
+          type: ["string", "null"]
+        logoUrl:
+          type: ["string", "null"]
+        facebookUrl:
+          type: ["string", "null"]
+        twitterUrl:
+          type: ["string", "null"]
+        linkedinUrl:
+          type: ["string", "null"]
+        instagramUrl:
+          type: ["string", "null"]
+        updatedAt:
+          type: ["string", "null"]
+
+    SettingsUpdate:
+      type: object
+      properties:
+        companyNameEn:
+          type: string
+        companyNameAr:
+          type: string
+        taglineEn:
+          type: string
+        taglineAr:
+          type: string
+        phone:
+          type: string
+        whatsapp:
+          type: string
+        email:
+          type: string
+        address:
+          type: string
+        addressAr:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string
+        logoUrl:
+          type: string
+        facebookUrl:
+          type: string
+        twitterUrl:
+          type: string
+        linkedinUrl:
+          type: string
+        instagramUrl:
+          type: string
