@@ -11,6 +11,7 @@ import articlesRouter from "./articles";
 import clientsRouter from "./clients";
 import inquiriesRouter from "./inquiries";
 import settingsRouter from "./settings";
+import notificationsRouter from "./notifications";
 
 const router: IRouter = Router();
 
@@ -26,5 +27,6 @@ router.use("/articles", articlesRouter);
 router.use("/clients", clientsRouter);
 router.use("/inquiries", inquiriesRouter);
 router.use("/settings", settingsRouter);
+router.use("/notifications", notificationsRouter);
 
 export default router;

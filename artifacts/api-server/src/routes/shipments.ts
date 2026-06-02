@@ -1,8 +1,9 @@
 import { Router } from "express";
 import { db } from "@workspace/db";
-import { shipmentsTable, statusUpdatesTable } from "@workspace/db";
+import { shipmentsTable, statusUpdatesTable, notificationsTable } from "@workspace/db";
 import { eq, like, desc, count, or } from "drizzle-orm";
 import { CreateShipmentBody, UpdateShipmentBody, AddShipmentStatusBody } from "@workspace/api-zod";
+import { sendWhatsAppNotification, buildWhatsAppMessage } from "../lib/whatsapp";
 
 const router = Router();
 
@@ -35,7 +36,7 @@ router.get("/", async (req, res): Promise<void> => {
           like(shipmentsTable.trackingNumber, `%${search}%`),
           like(shipmentsTable.consigneeName, `%${search}%`),
           like(shipmentsTable.shipperName, `%${search}%`),
-        )
+        ),
       ) as any;
     }
 
@@ -150,9 +151,49 @@ router.post("/:id/status", async (req, res): Promise<void> => {
       timestamp: parsed.data.timestamp ? new Date(parsed.data.timestamp) : new Date(),
     }).returning();
 
-    await db.update(shipmentsTable)
+    const [shipment] = await db.update(shipmentsTable)
       .set({ status: parsed.data.status, updatedAt: new Date() })
-      .where(eq(shipmentsTable.id, id));
+      .where(eq(shipmentsTable.id, id))
+      .returning();
+
+    // Fire WhatsApp notification asynchronously if consignee phone is set
+    if (shipment?.consigneePhone && shipment.notificationsEnabled !== "false") {
+      const notifPayload = {
+        trackingNumber: shipment.trackingNumber,
+        consigneeName: shipment.consigneeName,
+        consigneePhone: shipment.consigneePhone,
+        newStatus: parsed.data.status,
+        location: parsed.data.location,
+        description: parsed.data.description,
+      };
+
+      const message = buildWhatsAppMessage(notifPayload);
+
+      // Insert pending record first
+      const [notifRecord] = await db.insert(notificationsTable).values({
+        shipmentId: id,
+        trackingNumber: shipment.trackingNumber,
+        recipientPhone: shipment.consigneePhone,
+        recipientName: shipment.consigneeName,
+        channel: "whatsapp",
+        status: "pending",
+        message,
+        shipmentStatus: parsed.data.status,
+      }).returning();
+
+      // Send async — don't block the response
+      sendWhatsAppNotification(notifPayload).then(async (result) => {
+        await db.update(notificationsTable)
+          .set({
+            status: result.success ? "sent" : "failed",
+            errorMessage: result.error ?? null,
+            sentAt: result.success ? new Date() : null,
+          })
+          .where(eq(notificationsTable.id, notifRecord!.id));
+      }).catch((err) => {
+        req.log.error({ err }, "WhatsApp notification async error");
+      });
+    }
 
     res.status(201).json(statusUpdate);
   } catch (err) {

@@ -18,7 +18,10 @@ export const shipmentsTable = pgTable("shipments", {
   actualDelivery: text("actual_delivery"),
   shipperName: text("shipper_name"),
   consigneeName: text("consignee_name"),
+  consigneePhone: text("consignee_phone"),
+  consigneeEmail: text("consignee_email"),
   notes: text("notes"),
+  notificationsEnabled: text("notifications_enabled").default("true"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });

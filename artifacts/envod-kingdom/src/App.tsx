@@ -16,6 +16,7 @@ import BlogPost from "@/pages/blog/[slug]";
 
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
+import AdminNotifications from "@/pages/admin/notifications";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/admin/clients" component={AdminDashboard} />
       <Route path="/admin/inquiries" component={AdminDashboard} />
       <Route path="/admin/settings" component={AdminDashboard} />
+      <Route path="/admin/notifications" component={AdminNotifications} />
       
       <Route path="/">
         <MainLayout><Home /></MainLayout>
