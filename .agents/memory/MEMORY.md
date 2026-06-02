@@ -1,0 +1,1 @@
+- [ENVOD KINGDOM setup](envod-kingdom-setup.md) — key architectural decisions, auth approach, and sharp edges for this project
