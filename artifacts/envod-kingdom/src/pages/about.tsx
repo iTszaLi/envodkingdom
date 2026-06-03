@@ -2,7 +2,6 @@ import React from "react";
 import { useLanguage } from "@/lib/language-context";
 import { motion } from "framer-motion";
 import { useListTeam } from "@workspace/api-client-react";
-import aboutBg from "@/assets/about-bg.png";
 import { Award, Globe, Shield, Clock } from "lucide-react";
 
 export default function About() {
@@ -13,7 +12,7 @@ export default function About() {
     <div className="pt-24 pb-20 min-h-screen bg-background">
       <div className="relative h-[60vh] flex items-center justify-center mb-20 overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img src={aboutBg} alt="Command Center" className="w-full h-full object-cover opacity-50" />
+          <div className="w-full h-full bg-gradient-to-br from-primary via-primary/80 to-secondary/40" />
           <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
         </div>
         <div className="container relative z-10 text-center px-4">
