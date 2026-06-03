@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Ship, Plane, Truck, Globe2, Clock, ShieldCheck, Award } from "lucide-react";
 import { ScrollAnimSection, type AnimChapter } from "@/components/ScrollAnimSection";
+import { StatsCounter } from "@/components/StatsCounter";
 
 const craneChapters: AnimChapter[] = [
   {
@@ -100,6 +101,9 @@ export default function Home() {
         isRtl={isRtl}
         scrollHeight="320vh"
       />
+
+      {/* ── Stats Counter ── */}
+      <StatsCounter />
 
       {/* ── Track Shipment CTA ── */}
       <section className="relative z-20 py-0">
