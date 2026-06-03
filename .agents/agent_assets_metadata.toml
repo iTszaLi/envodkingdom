@@ -2,18 +2,6 @@ uploads = []
 outputs = []
 
 [[generated]]
-id = "sSKzlStjuPjaPF58o2zhM"
-uri = "file://artifacts/envod-kingdom/src/assets/hero-bg.png"
-type = "image"
-title = "cargo ship at dusk"
-
-[[generated]]
-id = "8zcO56UjdLZcENgnRCJ6P"
-uri = "file://artifacts/envod-kingdom/src/assets/about-bg.png"
-type = "image"
-title = "modern logistics command center"
-
-[[generated]]
 id = "WcEEUR_TAiVJKisajGSnO"
 uri = "file://artifacts/envod-kingdom/src/assets/blog-1.png"
 type = "image"
