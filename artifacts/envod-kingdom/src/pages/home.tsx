@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search, Ship, Plane, Truck, Globe2, Clock, ShieldCheck, Award } from "lucide-react";
 import { ScrollAnimSection, type AnimChapter } from "@/components/ScrollAnimSection";
 import { StatsCounter } from "@/components/StatsCounter";
+import { ClientMarquee } from "@/components/ClientMarquee";
 
 const craneChapters: AnimChapter[] = [
   {
@@ -141,6 +142,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Client Logo Marquee ── */}
+      <ClientMarquee />
 
       {/* ── Why ENVOD ── */}
       <section className="py-24 bg-background">

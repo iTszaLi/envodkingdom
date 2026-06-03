@@ -1,0 +1,84 @@
+The current video implementation should NOT depend on scroll position.
+
+Required Behavior
+Videos should autoplay smoothly when the section becomes visible.
+Videos should continue playing naturally.
+Videos must not be frame-by-frame controlled by scrolling.
+Do not scrub the video based on scroll position.
+Do not pause the video every time the user scrolls.
+Do not use scroll-linked video playback.
+Desired Experience
+
+The experience should feel similar to:
+
+Apple
+Emirates
+Tesla
+Qatar Airways
+DHL
+
+Where:
+
+User scrolls normally.
+Video fades in elegantly.
+Video starts playing automatically.
+Video loops smoothly.
+Content overlays animate independently.
+Video remains cinematic and fluid.
+Animation Requirements
+
+Use GSAP and Framer Motion only for:
+
+Fade-in reveal
+Content transitions
+Text animations
+Overlay animations
+Parallax layers
+Section entrance effects
+
+NOT for controlling video playback.
+
+Video Performance
+
+Implement:
+
+Lazy loading
+Optimized compression
+Mobile responsive playback
+Muted autoplay
+Seamless looping
+Hardware acceleration
+Hero Video
+
+If a hero background video exists:
+
+Play automatically
+Loop continuously
+Maintain playback while scrolling
+Add dark cinematic overlay
+Keep headline readable
+Premium Effect
+
+Create a cinematic feel using:
+
+Video playback
+Glassmorphism overlays
+Smooth fade transitions
+Floating logistics elements
+Route line animations
+Aircraft path animations
+Container motion graphics
+
+instead of scroll-scrubbing the video.
+
+Important
+
+The website should feel like a premium corporate film playing in the background, not a video controlled by the mouse wheel.
+
+Use scroll only to reveal sections and trigger animations.
+
+Never use scroll to control the video's timeline.
+
+I would also tell Replit one more thing:
+
+"Reduce the number of generic logistics stock photos and replace them with high-quality cinematic footage of container ships, ports, customs operations, exhibition logistics, cargo aircraft, warehouses, and GCC transportation routes. The site should immediately communicate that ENVOD specializes in exhibition logistics, ATA Carnet services, customs clearance under 24 hours, project cargo, and GCC transportation with 25+ years of experience.

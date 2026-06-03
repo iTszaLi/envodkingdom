@@ -1,1 +1,3 @@
-- [ENVOD KINGDOM setup](envod-kingdom-setup.md) — key architectural decisions, auth approach, and sharp edges for this project
+- [Scroll animation frame extraction](scroll-frames.md) — animated WebPs extracted via Python Pillow to JPEG sequences in public/frames/{crane,air,warehouse}/
+- [API client import path](api-client-imports.md) — use `@workspace/api-client-react` not `@api-client-react/generated/api`; same for types
+- [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
