@@ -55,18 +55,41 @@ export function Navbar() {
 
       {/* ── Main nav bar ── */}
       <div className="container mx-auto px-4 flex items-center justify-between py-3">
-        {/* Logo — blended, no white box */}
+        {/* Logo — circular, blended, Arabic branding */}
         <Link href="/" className="flex items-center gap-3 group">
-          <img
-            src={logoIcon}
-            alt="ENVOD KINGDOM"
-            className="h-10 w-10 object-contain rounded-full transition-opacity group-hover:opacity-90"
-            style={{ filter: "drop-shadow(0 0 6px rgba(214,40,40,0.4))" }}
-          />
-          <span className="hidden sm:block text-white font-bold text-sm leading-tight tracking-wide uppercase">
-            ENVOD KINGDOM<br />
-            <span className="text-white/60 font-normal text-[10px] tracking-widest">SHIPPING SERVICES LLC</span>
-          </span>
+          {/* Perfect circle container */}
+          <div
+            className="relative flex-shrink-0 w-11 h-11 rounded-full overflow-hidden ring-1 ring-white/10 group-hover:ring-secondary/50 transition-all duration-300"
+            style={{
+              background: "radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%)",
+              boxShadow: "0 0 12px rgba(214,40,40,0.25), inset 0 0 8px rgba(0,0,0,0.2)",
+            }}
+          >
+            <img
+              src={logoIcon}
+              alt="إنفود كينغدوم"
+              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+            {/* Subtle inner vignette for blending */}
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{ background: "radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.25) 100%)" }}
+            />
+          </div>
+
+          {/* Arabic company name */}
+          <div
+            className="hidden sm:flex flex-col items-end leading-tight"
+            dir="rtl"
+            style={{ fontFamily: "'Cairo', sans-serif" }}
+          >
+            <span className="text-white font-bold text-[15px] tracking-wide" style={{ fontWeight: 700 }}>
+              إنفود كينغدوم
+            </span>
+            <span className="text-white/55 font-normal text-[11px] tracking-wide mt-px">
+              خدمات الشحن ذ.م.م
+            </span>
+          </div>
         </Link>
 
         {/* Desktop Nav */}
