@@ -109,7 +109,7 @@ export default function Home() {
       {/* ── Scroll-Driven Animation Sections (Autoplay) ── */}
       <ScrollAnimSection
         frameFolder="crane"
-        frameCount={100}
+        frameCount={120}
         chapters={craneChapters}
         isRtl={isRtl}
       />
@@ -123,7 +123,7 @@ export default function Home() {
 
       <ScrollAnimSection
         frameFolder="warehouse"
-        frameCount={110}
+        frameCount={120}
         chapters={warehouseChapters}
         isRtl={isRtl}
       />
