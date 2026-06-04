@@ -84,28 +84,6 @@ export default function Home() {
   return (
     <div className="w-full">
 
-      {/* ── Trust Banner ── */}
-      <div className="bg-secondary/10 border-b border-secondary/20 py-2.5 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className={`flex items-center justify-center gap-6 text-xs font-semibold flex-wrap ${isRtl ? "flex-row-reverse" : ""}`}>
-            <span className={`flex items-center gap-1.5 text-secondary ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Clock className="w-3.5 h-3.5" />
-              {t("CUSTOMS CLEARANCE UNDER 24 HOURS", "التخليص الجمركي خلال 24 ساعة")}
-            </span>
-            <span className="text-white/20 hidden sm:block">|</span>
-            <span className={`flex items-center gap-1.5 text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Globe2 className="w-3.5 h-3.5" />
-              {t("Serving Saudi Arabia, GCC & Global Markets — 25+ Years", "نخدم المملكة والخليج والأسواق العالمية — 25+ عام")}
-            </span>
-            <span className="text-white/20 hidden md:block">|</span>
-            <span className={`items-center gap-1.5 text-white/60 hidden md:flex ${isRtl ? "flex-row-reverse" : ""}`}>
-              <Shield className="w-3.5 h-3.5" />
-              {t("ATA Carnet · Exhibition · Project Cargo Specialists", "كارنيه ATA · معارض · بضائع مشاريع")}
-            </span>
-          </div>
-        </div>
-      </div>
-
       {/* ── Scroll-Driven Animation Sections (Autoplay) ── */}
       <ScrollAnimSection
         frameFolder="crane"
