@@ -18,7 +18,7 @@ interface Props {
 }
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const FPS = 20;
+const FPS = 10;
 const INTERVAL_MS = 1000 / FPS;
 
 function pad(n: number) {
