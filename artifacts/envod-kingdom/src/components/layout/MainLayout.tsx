@@ -77,17 +77,17 @@ export function Navbar() {
             />
           </div>
 
-          {/* Arabic company name */}
+          {/* Company name — English by default, Arabic when AR is active */}
           <div
-            className="hidden sm:flex flex-col items-end leading-tight"
-            dir="rtl"
-            style={{ fontFamily: "'Cairo', sans-serif" }}
+            className={`hidden sm:flex flex-col leading-tight ${isRtl ? "items-end" : "items-start"}`}
+            dir={isRtl ? "rtl" : "ltr"}
+            style={{ fontFamily: isRtl ? "'Cairo', sans-serif" : "inherit" }}
           >
-            <span className="text-white font-bold text-[15px] tracking-wide" style={{ fontWeight: 700 }}>
-              إنفود كينغدوم
+            <span className="text-white font-bold text-[15px] tracking-wide">
+              {t("ENVOD KINGDOM", "إنفود كينغدوم")}
             </span>
             <span className="text-white/55 font-normal text-[11px] tracking-wide mt-px">
-              خدمات الشحن ذ.م.م
+              {t("SHIPPING SERVICES LLC", "خدمات الشحن ذ.م.م")}
             </span>
           </div>
         </Link>
