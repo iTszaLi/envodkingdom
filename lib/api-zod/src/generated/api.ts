@@ -845,6 +845,35 @@ export const DeleteInquiryParams = zod.object({
 
 
 /**
+ * @summary Get hero video section status (admin)
+ */
+export const ListHeroVideosResponseItem = zod.object({
+  "key": zod.string(),
+  "label": zod.string(),
+  "frameCount": zod.number(),
+  "thumbnailUrl": zod.string(),
+  "updatedAt": zod.string()
+})
+export const ListHeroVideosResponse = zod.array(ListHeroVideosResponseItem)
+
+
+/**
+ * @summary Upload a new animated WebP for a hero section (admin)
+ */
+export const UploadHeroVideoParams = zod.object({
+  "section": zod.enum(['crane', 'air', 'warehouse'])
+})
+
+export const UploadHeroVideoResponse = zod.object({
+  "key": zod.string(),
+  "label": zod.string(),
+  "frameCount": zod.number(),
+  "thumbnailUrl": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
  * @summary Get CMS settings
  */
 export const GetSettingsResponse = zod.object({

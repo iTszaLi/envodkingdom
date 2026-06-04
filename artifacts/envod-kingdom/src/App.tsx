@@ -19,6 +19,7 @@ import BlogPost from "@/pages/blog/[slug]";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminNotifications from "@/pages/admin/notifications";
+import AdminHeroVideos from "@/pages/admin/hero-videos";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ function Router() {
       <Route path="/admin/inquiries" component={AdminDashboard} />
       <Route path="/admin/settings" component={AdminDashboard} />
       <Route path="/admin/notifications" component={AdminNotifications} />
+      <Route path="/admin/hero-videos" component={AdminHeroVideos} />
       
       <Route path="/">
         <MainLayout><Home /></MainLayout>

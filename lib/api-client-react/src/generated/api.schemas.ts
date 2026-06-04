@@ -494,6 +494,14 @@ export interface SettingsUpdate {
   instagramUrl?: string;
 }
 
+export interface HeroVideoSection {
+  key: string;
+  label: string;
+  frameCount: number;
+  thumbnailUrl: string;
+  updatedAt: string;
+}
+
 export type ListShipmentsParams = {
 status?: string;
 search?: string;

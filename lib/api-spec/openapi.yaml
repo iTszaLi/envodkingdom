@@ -31,6 +31,8 @@ tags:
     description: Company statistics
   - name: auth
     description: Admin authentication
+  - name: hero-videos
+    description: Hero video section management
 
 paths:
   /healthz:
@@ -831,6 +833,46 @@ paths:
       responses:
         "204":
           description: Deleted
+
+  # ── HERO VIDEOS ───────────────────────────────────────────────────────────
+  /hero-videos:
+    get:
+      operationId: listHeroVideos
+      tags: [hero-videos]
+      summary: Get hero video section status (admin)
+      responses:
+        "200":
+          description: Hero video sections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/HeroVideoSection"
+
+  /hero-videos/{section}:
+    post:
+      operationId: uploadHeroVideo
+      tags: [hero-videos]
+      summary: Upload a new animated WebP for a hero section (admin)
+      parameters:
+        - in: path
+          name: section
+          required: true
+          schema:
+            type: string
+            enum: [crane, air, warehouse]
+      responses:
+        "200":
+          description: Updated section info
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HeroVideoSection"
+        "400":
+          description: Invalid section or missing file
+        "500":
+          description: Frame extraction failed
 
   # ── SETTINGS ──────────────────────────────────────────────────────────────
   /settings:
@@ -1657,4 +1699,20 @@ components:
         linkedinUrl:
           type: string
         instagramUrl:
+          type: string
+
+    # ── HERO VIDEOS ──────────────────────────────────────────────────────────
+    HeroVideoSection:
+      type: object
+      required: [key, label, frameCount, thumbnailUrl, updatedAt]
+      properties:
+        key:
+          type: string
+        label:
+          type: string
+        frameCount:
+          type: integer
+        thumbnailUrl:
+          type: string
+        updatedAt:
           type: string

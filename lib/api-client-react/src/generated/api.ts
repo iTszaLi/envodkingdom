@@ -35,6 +35,7 @@ import type {
   FaqInput,
   FaqUpdate,
   HealthStatus,
+  HeroVideoSection,
   Inquiry,
   InquiryInput,
   InquiryList,
@@ -3169,6 +3170,153 @@ export const useDeleteInquiry = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getDeleteInquiryMutationOptions(options));
+    }
+
+export const getListHeroVideosUrl = () => {
+
+
+
+
+  return `/api/hero-videos`
+}
+
+/**
+ * @summary Get hero video section status (admin)
+ */
+export const listHeroVideos = async ( options?: RequestInit): Promise<HeroVideoSection[]> => {
+
+  return customFetch<HeroVideoSection[]>(getListHeroVideosUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListHeroVideosQueryKey = () => {
+    return [
+    `/api/hero-videos`
+    ] as const;
+    }
+
+
+export const getListHeroVideosQueryOptions = <TData = Awaited<ReturnType<typeof listHeroVideos>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listHeroVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListHeroVideosQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listHeroVideos>>> = ({ signal }) => listHeroVideos({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listHeroVideos>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListHeroVideosQueryResult = NonNullable<Awaited<ReturnType<typeof listHeroVideos>>>
+export type ListHeroVideosQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Get hero video section status (admin)
+ */
+
+export function useListHeroVideos<TData = Awaited<ReturnType<typeof listHeroVideos>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listHeroVideos>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListHeroVideosQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getUploadHeroVideoUrl = (section: 'crane' | 'air' | 'warehouse',) => {
+
+
+
+
+  return `/api/hero-videos/${section}`
+}
+
+/**
+ * @summary Upload a new animated WebP for a hero section (admin)
+ */
+export const uploadHeroVideo = async (section: 'crane' | 'air' | 'warehouse', options?: RequestInit): Promise<HeroVideoSection> => {
+
+  return customFetch<HeroVideoSection>(getUploadHeroVideoUrl(section),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+);}
+
+
+
+
+export const getUploadHeroVideoMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadHeroVideo>>, TError,{section: 'crane' | 'air' | 'warehouse'}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploadHeroVideo>>, TError,{section: 'crane' | 'air' | 'warehouse'}, TContext> => {
+
+const mutationKey = ['uploadHeroVideo'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadHeroVideo>>, {section: 'crane' | 'air' | 'warehouse'}> = (props) => {
+          const {section} = props ?? {};
+
+          return  uploadHeroVideo(section,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadHeroVideoMutationResult = NonNullable<Awaited<ReturnType<typeof uploadHeroVideo>>>
+
+    export type UploadHeroVideoMutationError = ErrorType<void>
+
+    /**
+ * @summary Upload a new animated WebP for a hero section (admin)
+ */
+export const useUploadHeroVideo = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadHeroVideo>>, TError,{section: 'crane' | 'air' | 'warehouse'}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof uploadHeroVideo>>,
+        TError,
+        {section: 'crane' | 'air' | 'warehouse'},
+        TContext
+      > => {
+      return useMutation(getUploadHeroVideoMutationOptions(options));
     }
 
 export const getGetSettingsUrl = () => {

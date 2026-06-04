@@ -12,6 +12,7 @@ import clientsRouter from "./clients";
 import inquiriesRouter from "./inquiries";
 import settingsRouter from "./settings";
 import notificationsRouter from "./notifications";
+import heroVideosRouter from "./hero-videos";
 
 const router: IRouter = Router();
 
@@ -28,5 +29,6 @@ router.use("/clients", clientsRouter);
 router.use("/inquiries", inquiriesRouter);
 router.use("/settings", settingsRouter);
 router.use("/notifications", notificationsRouter);
+router.use("/hero-videos", heroVideosRouter);
 
 export default router;

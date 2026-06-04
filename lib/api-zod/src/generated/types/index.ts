@@ -21,6 +21,7 @@ export * from './faq';
 export * from './faqInput';
 export * from './faqUpdate';
 export * from './healthStatus';
+export * from './heroVideoSection';
 export * from './inquiry';
 export * from './inquiryInput';
 export * from './inquiryList';
