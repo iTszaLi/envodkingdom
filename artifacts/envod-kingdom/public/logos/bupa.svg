@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white"/>
+  <rect x="15" y="10" width="170" height="58" rx="10" fill="#003087"/>
+  <text x="30" y="52" font-family="Arial Black,Arial,sans-serif" font-size="34" font-weight="900" fill="white" letter-spacing="-1">bupa</text>
+  <text x="113" y="52" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#DA291C">Arabia</text>
+</svg>

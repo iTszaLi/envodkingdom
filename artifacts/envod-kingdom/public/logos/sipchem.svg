@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white"/>
+  <circle cx="35" cy="40" r="22" fill="#0066B3"/>
+  <text x="30" y="46" font-family="Arial Black,Arial,sans-serif" font-size="16" font-weight="900" fill="white">Si</text>
+  <text x="64" y="38" font-family="Arial Black,Arial,sans-serif" font-size="20" font-weight="900" fill="#0066B3">SIPCHEM</text>
+  <text x="64" y="56" font-family="Arial,sans-serif" font-size="8.5" fill="#0066B3" letter-spacing="0.3">PETROCHEMICAL CO.</text>
+</svg>

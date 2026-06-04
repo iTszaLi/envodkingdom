@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white"/>
+  <polygon points="20,65 45,15 70,65" fill="#003087"/>
+  <polygon points="35,65 60,15 85,65" fill="#C6973F" opacity="0.8"/>
+  <text x="92" y="38" font-family="Arial Black,Arial,sans-serif" font-size="20" font-weight="900" fill="#003087">Ma'aden</text>
+  <text x="92" y="58" font-family="Arial,sans-serif" font-size="10" fill="#666" letter-spacing="0.5">MINING COMPANY</text>
+</svg>

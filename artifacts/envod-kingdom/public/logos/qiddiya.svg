@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white"/>
+  <rect x="15" y="10" width="170" height="58" rx="10" fill="#1A0533"/>
+  <text x="28" y="52" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" fill="white" letter-spacing="1">QIDDIYA</text>
+  <circle cx="170" cy="25" r="8" fill="#E63946"/>
+</svg>

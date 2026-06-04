@@ -47,7 +47,7 @@ export function Navbar() {
             <span className="text-white/20 hidden md:block">|</span>
             <span className={`hidden md:flex items-center gap-1.5 text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}>
               <Shield className="w-3.5 h-3.5 flex-shrink-0" />
-              {t("ATA Carnet · Exhibition · Project Cargo Specialists", "كارنيه ATA · معارض · بضائع مشاريع")}
+              {t("Customs Clearance · Exhibition · Project Cargo Specialists", "التخليص الجمركي · معارض · بضائع مشاريع")}
             </span>
           </div>
         </div>

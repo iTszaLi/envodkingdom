@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white"/>
+  <text x="15" y="52" font-family="Arial Black,Arial,sans-serif" font-size="32" font-weight="900" fill="#1B3F7A" letter-spacing="-0.5">Almarai</text>
+  <rect x="15" y="58" width="120" height="3" rx="1.5" fill="#E8A020"/>
+</svg>
