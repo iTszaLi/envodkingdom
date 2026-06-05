@@ -13,6 +13,7 @@ import { ClientMarquee } from "@/components/ClientMarquee";
 import { ServicesSection } from "@/components/ServicesSection";
 import { ExhibitionSection } from "@/components/ExhibitionSection";
 import { CustomsClearanceSection } from "@/components/CustomsClearanceSection";
+import { IndustriesSection } from "@/components/IndustriesSection";
 
 const craneChapters: AnimChapter[] = [
   {
@@ -218,6 +219,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Industries We Serve ── */}
+      <IndustriesSection />
 
       {/* ── Final CTA ── */}
       <section className="py-28 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #020d1c 0%, #030f22 100%)" }}>
