@@ -348,9 +348,6 @@ export function Footer() {
 
   return (
     <>
-      <StatsStrip />
-      <CTAStrip />
-
       <footer className="bg-primary text-white/70" dir={isRtl ? "rtl" : "ltr"}>
 
         {/* ── Main footer grid ── */}
