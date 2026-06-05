@@ -1,6 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
-  <rect width="200" height="80" fill="white"/>
-  <text x="20" y="30" font-family="Arial,sans-serif" font-size="11" font-weight="bold" fill="#1B7340" letter-spacing="1">SAUDI</text>
-  <text x="20" y="55" font-family="Arial,sans-serif" font-size="26" font-weight="900" fill="#1B3A5C" letter-spacing="-0.5">aramco</text>
-  <rect x="20" y="62" width="60" height="3" rx="1.5" fill="#1B7340"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 130" fill="none">
+  <rect width="300" height="130" fill="white"/>
+  <path d="M30 98C30 98 14 75 14 60C14 42 26 28 42 28C58 28 70 42 70 60C70 75 54 98 42 98Z" fill="#003087"/>
+  <path d="M42 86C42 86 32 68 32 58C32 48 36 42 42 42C48 42 52 48 52 58C52 68 42 86 42 86Z" fill="white"/>
+  <text x="82" y="54" font-family="Arial Narrow,Arial,sans-serif" font-size="14" font-weight="700" fill="#003087" letter-spacing="3">SAUDI</text>
+  <text x="82" y="86" font-family="Arial,sans-serif" font-size="32" font-weight="900" fill="#003087" letter-spacing="0">aramco</text>
 </svg>

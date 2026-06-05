@@ -170,9 +170,15 @@ export function Footer() {
     <footer className="bg-primary pt-16 pb-8 border-t border-white/10 text-white/80">
       <div className="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
         <div>
-          <div className="bg-white/90 p-1 inline-block rounded-sm mb-4">
-            <img src={logoFull} alt="ENVOD KINGDOM" className="h-10 object-contain" />
-          </div>
+          <Link
+            href="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+            className="inline-block mb-4 group"
+          >
+            <div className="bg-white/90 p-1 rounded-sm group-hover:bg-white transition-colors">
+              <img src={logoFull} alt="ENVOD KINGDOM" className="h-10 object-contain" />
+            </div>
+          </Link>
           <p className="mb-4 max-w-sm">
             {t(
               "GLOBAL SHIPPING. LOCAL EXPERTISE. Premium logistics services for the Middle East and beyond.",

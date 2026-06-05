@@ -3,9 +3,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import {
-  Star, FileCheck, Repeat2, Package, Route, Map,
-  Layers, Home, Car, Anchor, Ship, Plane, Truck,
-  CheckCircle2, ChevronDown,
+  Star, FileCheck, ShieldCheck, Package, Layers, Container,
+  GitMerge, Settings2, Ship, Plane, Map, CheckCircle2, ChevronDown,
 } from "lucide-react";
 
 interface Service {
@@ -17,6 +16,8 @@ interface Service {
   features: string[];
   featuresAr: string[];
   accent?: boolean;
+  tag?: string;
+  tagAr?: string;
 }
 
 const SERVICES: Service[] = [
@@ -24,111 +25,115 @@ const SERVICES: Service[] = [
     icon: Star,
     title: "Exhibition & Event Logistics",
     titleAr: "لوجستيات المعارض والفعاليات",
-    desc: "Specialized transportation for exhibitions, trade shows, conferences, sporting events and major international events.",
-    descAr: "نقل متخصص للمعارض والمؤتمرات والفعاليات الرياضية والأحداث الدولية الكبرى.",
-    features: ["Exhibition cargo handling", "Temporary imports", "Event logistics planning", "Venue delivery coordination", "Time-critical shipments"],
-    featuresAr: ["مناولة بضائع المعارض", "الاستيراد المؤقت", "تخطيط لوجستيات الفعاليات", "التسليم إلى المكان المناسب", "الشحنات الحساسة للوقت"],
+    desc: "Saudi Arabia's leading specialist for exhibitions, trade shows, conferences and major international events — end-to-end with ATA Carnet, temporary import and re-export handling.",
+    descAr: "الخبير الأول في المملكة لمعارض التجارة والمؤتمرات والفعاليات الدولية — من التخليص الجمركي إلى التسليم داخل المعرض.",
+    features: ["ATA Carnet", "Temporary Imports", "Temporary Exports", "Re-Exports", "Exhibition Cargo", "Event Equipment", "Trade Show Logistics", "Customs Clearance"],
+    featuresAr: ["كارنيه ATA", "الاستيراد المؤقت", "التصدير المؤقت", "إعادة التصدير", "بضائع المعارض", "معدات الفعاليات", "لوجستيات المعارض التجارية", "التخليص الجمركي"],
     accent: true,
+    tag: "ENVOD Specialist",
+    tagAr: "متخصص انفود",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Customs Clearance",
+    titleAr: "التخليص الجمركي",
+    desc: "Expert Saudi customs clearance under 24 hours — SFDA, SABER, CITC-approved. Full compliance for all commodity types including food, electronics, medical and hazardous goods.",
+    descAr: "تخليص جمركي سعودي خلال 24 ساعة — معتمد SFDA وسابر وهيئة الاتصالات. امتثال كامل لجميع أنواع البضائع.",
+    features: ["24-hour clearance guarantee", "SABER & SFDA compliance", "CITC approvals", "Food & pharma clearance", "Hazardous goods", "Import & export documentation"],
+    featuresAr: ["ضمان التخليص خلال 24 ساعة", "امتثال سابر وهيئة الغذاء والدواء", "موافقات هيئة الاتصالات", "تخليص الغذاء والأدوية", "البضائع الخطرة", "وثائق الاستيراد والتصدير"],
+    tag: "24hr Guarantee",
+    tagAr: "ضمان 24 ساعة",
   },
   {
     icon: FileCheck,
     title: "ATA Carnet Services",
     titleAr: "خدمات كارنيه ATA",
-    desc: "Professional ATA Carnet processing for temporary imports and exports across international borders.",
-    descAr: "معالجة احترافية لكارنيه ATA للاستيراد والتصدير المؤقت عبر الحدود الدولية.",
-    features: ["Customs documentation", "Temporary admission", "Exhibition shipments", "Event cargo movement", "International compliance"],
-    featuresAr: ["الوثائق الجمركية", "القبول المؤقت", "شحنات المعارض", "تحريك بضائع الفعاليات", "الامتثال الدولي"],
+    desc: "Professional ATA Carnet processing for temporary imports and exports across 87 countries — the fastest carnet service in Saudi Arabia for exhibitions, professional equipment and commercial samples.",
+    descAr: "معالجة احترافية لكارنيه ATA في 87 دولة — أسرع خدمة كارنيه في المملكة للمعارض والمعدات المهنية والعينات التجارية.",
+    features: ["87+ countries coverage", "Exhibition shipments", "Professional equipment", "Commercial samples", "Temporary admission", "International compliance"],
+    featuresAr: ["تغطية 87+ دولة", "شحنات المعارض", "المعدات المهنية", "العينات التجارية", "القبول المؤقت", "الامتثال الدولي"],
     accent: true,
-  },
-  {
-    icon: Repeat2,
-    title: "Temporary Import & Re-Export",
-    titleAr: "الاستيراد المؤقت وإعادة التصدير",
-    desc: "Fast customs processing for temporary shipments with full re-export documentation support.",
-    descAr: "معالجة جمركية سريعة للشحنات المؤقتة مع دعم كامل لوثائق إعادة التصدير.",
-    features: ["Temporary clearance", "Re-export documentation", "Exhibition cargo", "Event equipment", "Expert customs management"],
-    featuresAr: ["التخليص المؤقت", "وثائق إعادة التصدير", "بضائع المعارض", "معدات الفعاليات", "إدارة جمركية خبيرة"],
   },
   {
     icon: Package,
     title: "Project Cargo Logistics",
     titleAr: "لوجستيات بضائع المشاريع",
-    desc: "Handling oversized and complex cargo movements for oil & gas, industrial and infrastructure projects.",
-    descAr: "مناولة الشحنات الضخمة والمعقدة لمشاريع النفط والغاز والصناعة والبنية التحتية.",
-    features: ["Heavy equipment", "Industrial machinery", "Oil & gas projects", "Infrastructure projects", "Route planning"],
-    featuresAr: ["المعدات الثقيلة", "الآلات الصناعية", "مشاريع النفط والغاز", "مشاريع البنية التحتية", "تخطيط المسار"],
-  },
-  {
-    icon: Route,
-    title: "Transit Shipments",
-    titleAr: "الشحنات العابرة",
-    desc: "Efficient transit cargo movement through Saudi Arabia and GCC with full customs management.",
-    descAr: "تنقل فعّال للبضائع العابرة عبر المملكة العربية السعودية ودول الخليج مع إدارة جمركية كاملة.",
-    features: ["Cross-border processing", "Customs transit management", "Fast documentation", "Secure cargo handling", "GCC routes"],
-    featuresAr: ["المعالجة عبر الحدود", "إدارة العبور الجمركي", "توثيق سريع", "مناولة آمنة للبضائع", "مسارات الخليج"],
-  },
-  {
-    icon: Map,
-    title: "GCC Transportation",
-    titleAr: "النقل في منطقة الخليج",
-    desc: "Road freight across all GCC countries with FTL, LTL and dedicated fleet solutions.",
-    descAr: "شحن بري عبر جميع دول الخليج بحمولات كاملة وجزئية وأساطيل مخصصة.",
-    features: ["Saudi Arabia · UAE", "Kuwait · Bahrain", "Qatar · Oman", "Full Truck Load", "Less Than Truck Load"],
-    featuresAr: ["المملكة العربية السعودية · الإمارات", "الكويت · البحرين", "قطر · عُمان", "شاحنة كاملة", "شحن جزئي"],
+    desc: "Heavy-lift and oversized cargo movement for Saudi Vision 2030 mega-projects, NEOM, oil & gas and infrastructure — including route surveys, crane operations and multi-modal execution.",
+    descAr: "نقل الشحنات الثقيلة والضخمة لمشاريع رؤية 2030 العملاقة ونيوم والنفط والغاز — تشمل دراسات المسار والرافعات والتنفيذ متعدد الوسائط.",
+    features: ["Heavy lift & oversized cargo", "Oil & gas equipment", "Route & feasibility study", "Crane & rigging services", "Multi-modal execution", "NEOM project experience"],
+    featuresAr: ["الشحنات الثقيلة والضخمة", "معدات النفط والغاز", "دراسة المسار والجدوى", "خدمات الرافعات", "تنفيذ متعدد الوسائط", "خبرة مشاريع نيوم"],
   },
   {
     icon: Layers,
-    title: "Bulk Container Logistics",
-    titleAr: "لوجستيات الحاويات بالجملة",
-    desc: "Professional FCL and LCL container movement with port coordination and consolidation.",
-    descAr: "تنقل احترافي للحاويات FCL وLCL مع تنسيق الميناء والتوحيد.",
-    features: ["FCL & LCL", "Bulk cargo", "Container consolidation", "Port coordination", "Global reach"],
-    featuresAr: ["حاويات كاملة وجزئية", "البضائع السائبة", "توحيد الحاويات", "تنسيق الميناء", "وصول عالمي"],
+    title: "LCL Consolidation Services",
+    titleAr: "خدمات تجميع الشحنات LCL",
+    desc: "Less-than-container-load consolidation from all major global origins directly into Saudi Arabia and GCC ports — cost-effective, fast and fully tracked.",
+    descAr: "تجميع الشحنات الجزئية من جميع مصادر الشحن العالمية الرئيسية إلى موانئ المملكة ودول الخليج — اقتصادية وسريعة وقابلة للتتبع.",
+    features: ["Global LCL consolidation", "Jeddah & Dammam ports", "Weekly sailings", "Full customs support", "Cargo tracking", "Competitive rates"],
+    featuresAr: ["تجميع LCL عالمي", "موانئ جدة والدمام", "إبحار أسبوعي", "دعم جمركي كامل", "تتبع الشحن", "أسعار تنافسية"],
   },
   {
     icon: Ship,
-    title: "Ocean Freight",
-    titleAr: "الشحن البحري",
-    desc: "FCL and LCL sea freight solutions connecting Saudi Arabia to all major global ports.",
-    descAr: "حلول الشحن البحري FCL وLCL تربط المملكة العربية السعودية بجميع الموانئ العالمية الرئيسية.",
-    features: ["Full Container Load", "Less Container Load", "Ro-Ro shipping", "Break bulk cargo", "Port-to-door delivery"],
-    featuresAr: ["حاوية كاملة", "حاوية جزئية", "شحن رورو", "بضائع سائبة", "من الميناء إلى الباب"],
+    title: "Full Container Load Solutions",
+    titleAr: "حلول الحاوية الكاملة FCL",
+    desc: "FCL ocean freight from all major global ports to Saudi Arabia and GCC — 20ft, 40ft, 40ft HC, open-top, flat-rack and refrigerated containers with competitive transit times.",
+    descAr: "شحن بحري FCL من جميع الموانئ العالمية إلى المملكة ودول الخليج — حاويات 20 و40 قدم ومبردة وسقف مفتوح بأوقات عبور تنافسية.",
+    features: ["20ft, 40ft, 40HC containers", "Reefer & open-top", "Flat-rack for OOG cargo", "Global port coverage", "Port-to-door delivery", "Online cargo tracking"],
+    featuresAr: ["حاويات 20 و40 قدم", "مبردة وسقف مفتوح", "فلات راك للشحنات الضخمة", "تغطية موانئ عالمية", "توصيل من الميناء للباب", "تتبع إلكتروني"],
+  },
+  {
+    icon: GitMerge,
+    title: "Multimodal Freight Solutions",
+    titleAr: "حلول الشحن متعدد الوسائط",
+    desc: "Seamlessly combining sea, air, road and rail freight to deliver optimal speed, cost and reliability — ideal for complex supply chains into and out of Saudi Arabia.",
+    descAr: "الجمع السلس بين الشحن البحري والجوي والبري والسككي لتحقيق السرعة والتكلفة المثلى — مثالي لسلاسل التوريد المعقدة.",
+    features: ["Sea + Air combinations", "Road + Rail options", "GCC cross-border", "Single point of contact", "Optimised cost & time", "Full cargo insurance"],
+    featuresAr: ["مزج بحري + جوي", "خيارات برية + سككية", "عبور خليجي", "نقطة اتصال واحدة", "تكلفة ووقت مثلى", "تأمين شامل للشحن"],
+  },
+  {
+    icon: Settings2,
+    title: "Specialized Cargo Handling",
+    titleAr: "مناولة البضائع المتخصصة",
+    desc: "Expert handling for cargo requiring special care — dangerous goods (IATA/IMDG), perishables, pharmaceuticals, fine art, antiques, high-value and temperature-sensitive shipments.",
+    descAr: "مناولة متخصصة للبضائع التي تتطلب عناية خاصة — بضائع خطرة وقابلة للتلف وأدوية وفنون جميلة وشحنات عالية القيمة وحساسة للحرارة.",
+    features: ["Dangerous goods IATA/IMDG", "Temperature-sensitive cargo", "Pharmaceutical cold chain", "Fine art & antiques", "High-value cargo", "Perishable goods"],
+    featuresAr: ["بضائع خطرة IATA/IMDG", "شحنات حساسة للحرارة", "سلسلة باردة صيدلانية", "الفنون والتحف", "البضائع عالية القيمة", "البضائع القابلة للتلف"],
+  },
+  {
+    icon: Map,
+    title: "GCC Road Transport",
+    titleAr: "النقل البري الخليجي",
+    desc: "Full and part-load road freight across all 6 GCC countries with dedicated fleet, cross-border customs handling and real-time tracking.",
+    descAr: "شحن بري بحمولات كاملة وجزئية عبر جميع دول الخليج الست مع أسطول مخصص وتخليص جمركي.",
+    features: ["Saudi Arabia · UAE · Kuwait", "Bahrain · Qatar · Oman", "Full Truck Load (FTL)", "Less-than-Truck Load (LTL)", "Cross-border customs", "Refrigerated transport"],
+    featuresAr: ["المملكة · الإمارات · الكويت", "البحرين · قطر · عُمان", "شاحنة كاملة", "شحن جزئي", "تخليص جمركي عبر الحدود", "نقل مبرد"],
   },
   {
     icon: Plane,
     title: "Air Freight",
     titleAr: "الشحن الجوي",
-    desc: "Expedited air cargo services connecting Saudi Arabia to 50+ countries with guaranteed transit times.",
-    descAr: "خدمات شحن جوي سريع تربط المملكة بأكثر من 50 دولة بأوقات عبور مضمونة.",
-    features: ["Express air cargo", "50+ country network", "Charter flights", "Perishable goods", "Dangerous goods"],
-    featuresAr: ["شحن جوي سريع", "شبكة 50+ دولة", "رحلات الشحن", "البضائع القابلة للتلف", "البضائع الخطرة"],
+    desc: "Expedited air cargo services connecting Saudi Arabia to 50+ countries with guaranteed transit times, charter options and perishable & pharma compliance.",
+    descAr: "خدمات شحن جوي سريع تربط المملكة بأكثر من 50 دولة بأوقات عبور مضمونة وخيارات الشحن المستأجر.",
+    features: ["50+ country network", "Express & charter flights", "Perishable goods", "Pharmaceutical cargo", "Dangerous goods (IATA)", "Door-to-airport service"],
+    featuresAr: ["شبكة 50+ دولة", "رحلات سريعة ومستأجرة", "البضائع القابلة للتلف", "شحنات الأدوية", "بضائع خطرة IATA", "خدمة من الباب للمطار"],
   },
   {
-    icon: Home,
-    title: "House Moving & Relocation",
-    titleAr: "نقل المنازل والانتقال",
-    desc: "Residential and corporate relocation services with full packing, customs and door-to-door delivery.",
-    descAr: "خدمات النقل السكني والمؤسسي مع التغليف الكامل والتخليص الجمركي والتسليم من باب لباب.",
-    features: ["Professional packing", "International relocation", "Customs support", "Door-to-door delivery", "Insurance coverage"],
-    featuresAr: ["تغليف احترافي", "نقل دولي", "دعم جمركي", "توصيل من باب لباب", "تغطية تأمينية"],
+    icon: Container,
+    title: "Bulk & Break-Bulk Cargo",
+    titleAr: "الشحن السائب والمفكك",
+    desc: "Handling bulk commodities and break-bulk cargo for Saudi ports — grain, chemicals, steel, machinery and over-dimensional cargo with port coordination.",
+    descAr: "مناولة البضائع السائبة والمفككة في موانئ المملكة — حبوب وكيماويات وصلب وآلات وبضائع ضخمة مع تنسيق الميناء.",
+    features: ["Grain & agricultural bulk", "Chemicals & liquids", "Steel & construction materials", "Industrial machinery", "Port coordination", "Stevedoring support"],
+    featuresAr: ["الحبوب والبضائع الزراعية", "الكيماويات والسوائل", "الصلب ومواد البناء", "الآلات الصناعية", "تنسيق الميناء", "دعم الشحن والتفريغ"],
   },
   {
-    icon: Car,
-    title: "Vehicle Shipping",
-    titleAr: "شحن السيارات",
-    desc: "Professional vehicle transportation including luxury cars and GCC and international vehicle export.",
-    descAr: "نقل السيارات الاحترافي بما في ذلك السيارات الفاخرة والتصدير داخل الخليج ودولياً.",
-    features: ["Car shipping", "Luxury vehicle transport", "GCC vehicle movement", "International export", "Enclosed transport"],
-    featuresAr: ["شحن السيارات", "نقل السيارات الفاخرة", "تنقل المركبات خليجياً", "التصدير الدولي", "نقل مغلق"],
-  },
-  {
-    icon: Anchor,
-    title: "Boats & Marine Shipping",
-    titleAr: "شحن القوارب والبحريات",
-    desc: "Specialized marine transportation for yachts, boats and marine cargo with customs coordination.",
-    descAr: "نقل بحري متخصص لليخوت والقوارب والبضائع البحرية مع التنسيق الجمركي.",
-    features: ["Yacht transportation", "Marine cargo handling", "International yacht shipping", "Customs coordination", "Port logistics"],
-    featuresAr: ["نقل اليخوت", "مناولة البضائع البحرية", "شحن اليخوت دولياً", "التنسيق الجمركي", "لوجستيات الميناء"],
+    icon: FileCheck,
+    title: "Freight Forwarding & 3PL",
+    titleAr: "الشحن المتكامل والخدمات اللوجستية",
+    desc: "Comprehensive freight forwarding and third-party logistics — warehousing, pick & pack, customs, last-mile delivery and supply chain management under one roof.",
+    descAr: "شحن متكامل ولوجستيات من طرف ثالث — تخزين وتجميع وتغليف وتخليص جمركي وتوصيل أخير وإدارة سلسلة توريد.",
+    features: ["Bonded warehousing", "Pick & pack services", "Customs clearance", "Last-mile delivery", "Supply chain consulting", "ERP/WMS integration"],
+    featuresAr: ["مستودعات جمركية", "تجميع وتغليف", "تخليص جمركي", "توصيل المرحلة الأخيرة", "استشارات سلسلة التوريد", "تكامل ERP/WMS"],
   },
 ];
 
@@ -146,11 +151,11 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ delay: (index % 3) * 0.1, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ delay: (index % 3) * 0.08, duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
       className="group relative"
     >
       <motion.div
-        whileHover={{ y: -6 }}
+        whileHover={{ y: -5 }}
         transition={{ type: "spring", stiffness: 300, damping: 22 }}
         onClick={() => setOpen((o) => !o)}
         className={`
@@ -162,18 +167,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
           }
         `}
       >
-        {/* Hover glow */}
-        <div
-          className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl ${
-            service.accent ? "bg-secondary/5" : "bg-white/[0.02]"
-          }`}
-        />
+        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl ${service.accent ? "bg-secondary/5" : "bg-white/[0.02]"}`} />
 
-        {/* Accent badge */}
-        {service.accent && (
+        {/* Tag badge */}
+        {service.tag && (
           <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4">
             <span className="text-[9px] font-bold tracking-widest uppercase bg-secondary/20 text-secondary px-2 py-0.5 rounded-full border border-secondary/30">
-              Specialist
+              {isRtl ? service.tagAr : service.tag}
             </span>
           </div>
         )}
@@ -182,21 +182,13 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         <motion.div
           whileHover={{ rotate: 8, scale: 1.1 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${
-            service.accent ? "bg-secondary/15" : "bg-white/5"
-          } group-hover:bg-secondary/10 transition-colors`}
+          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${service.accent ? "bg-secondary/15" : "bg-white/5"} group-hover:bg-secondary/10 transition-colors`}
         >
-          <Icon
-            className={`w-6 h-6 ${service.accent ? "text-secondary" : "text-white/60 group-hover:text-secondary"} transition-colors`}
-          />
+          <Icon className={`w-6 h-6 ${service.accent ? "text-secondary" : "text-white/60 group-hover:text-secondary"} transition-colors`} />
         </motion.div>
 
-        <h3 className={`font-bold text-white mb-2 text-base leading-tight ${isRtl ? "text-right" : "text-left"}`}>
-          {title}
-        </h3>
-        <p className={`text-sm text-white/50 leading-relaxed mb-4 ${isRtl ? "text-right" : "text-left"}`}>
-          {desc}
-        </p>
+        <h3 className={`font-bold text-white mb-2 text-base leading-tight ${isRtl ? "text-right" : "text-left"}`}>{title}</h3>
+        <p className={`text-sm text-white/50 leading-relaxed mb-4 ${isRtl ? "text-right" : "text-left"}`}>{desc}</p>
 
         {/* Expand toggle */}
         <div className={`flex items-center gap-1.5 text-xs font-semibold ${service.accent ? "text-secondary" : "text-white/40 group-hover:text-secondary"} transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
@@ -214,15 +206,15 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden mt-4 space-y-1.5"
+              className="overflow-hidden mt-4 grid grid-cols-2 gap-x-3 gap-y-2"
             >
               {features.map((f, i) => (
                 <motion.li
                   key={i}
                   initial={{ opacity: 0, x: isRtl ? 8 : -8 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`flex items-center gap-2 text-xs text-white/60 ${isRtl ? "flex-row-reverse text-right" : ""}`}
+                  transition={{ delay: i * 0.04 }}
+                  className={`flex items-center gap-1.5 text-xs text-white/60 ${isRtl ? "flex-row-reverse text-right" : ""}`}
                 >
                   <CheckCircle2 className="w-3 h-3 text-secondary shrink-0" />
                   {f}
@@ -241,22 +233,16 @@ export function ServicesSection() {
 
   return (
     <section className="py-28 bg-background relative overflow-hidden">
-      {/* Background grid */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none"
         style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
-      {/* Ambient glow */}
       <div
         className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse, rgba(214,40,40,0.04) 0%, transparent 70%)",
-        }}
+        style={{ background: "radial-gradient(ellipse, rgba(214,40,40,0.04) 0%, transparent 70%)" }}
       />
 
       <div className="container mx-auto px-4 relative z-10">
@@ -287,8 +273,8 @@ export function ServicesSection() {
             className="text-muted-foreground max-w-2xl mx-auto text-sm leading-relaxed"
           >
             {t(
-              "From ATA Carnet and exhibition logistics to project cargo and GCC transportation — 12 specialized services backed by 25+ years of Saudi expertise.",
-              "من كارنيه ATA ولوجستيات المعارض إلى بضائع المشاريع والنقل الخليجي — 12 خدمة متخصصة مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
+              "From Exhibition & Event Logistics to Customs Clearance, ATA Carnet and Project Cargo — 12 specialised services backed by 25+ years of Saudi expertise.",
+              "من لوجستيات المعارض والتخليص الجمركي وكارنيه ATA إلى بضائع المشاريع — 12 خدمة متخصصة مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
             )}
           </motion.p>
         </div>

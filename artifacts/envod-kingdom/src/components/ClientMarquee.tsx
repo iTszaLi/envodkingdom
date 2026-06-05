@@ -29,14 +29,11 @@ interface TrackProps {
 function MarqueeTrack({ clients, reverse = false, speed = 40 }: TrackProps) {
   const doubled = [...clients, ...clients, ...clients];
   const duration = clients.length * speed;
-
   return (
-    <div className="flex overflow-hidden py-2 mask-marquee">
+    <div className="flex overflow-hidden mask-marquee">
       <div
-        className="flex gap-4 shrink-0 will-change-transform"
-        style={{
-          animation: `marquee-scroll ${duration}s linear infinite ${reverse ? "reverse" : ""}`,
-        }}
+        className="flex gap-5 shrink-0 will-change-transform"
+        style={{ animation: `marquee-scroll ${duration}s linear infinite ${reverse ? "reverse" : ""}` }}
       >
         {doubled.map((client, i) => (
           <ClientCard key={`${client.id}-${i}`} client={client} />
@@ -49,42 +46,46 @@ function MarqueeTrack({ clients, reverse = false, speed = 40 }: TrackProps) {
 function ClientCard({ client }: { client: Client }) {
   return (
     <div
-      className="flex-none flex flex-col justify-between rounded-xl px-5 py-4 border border-white/8 bg-white/[0.03] hover:border-secondary/30 hover:bg-white/[0.06] transition-all duration-300 cursor-default group"
-      style={{ minWidth: 210, maxWidth: 250 }}
+      className="flex-none flex flex-col rounded-2xl overflow-hidden border border-white/8 bg-white/[0.03] hover:border-secondary/30 transition-all duration-300 cursor-default group"
+      style={{ width: 220 }}
     >
-      <div className="flex items-center gap-3 mb-3">
+      {/* Logo area — white bg, large display */}
+      <div className="w-full bg-white flex items-center justify-center p-4" style={{ height: 110 }}>
         {client.logoUrl ? (
-          <div className="w-12 h-10 rounded-lg bg-white flex items-center justify-center shrink-0 overflow-hidden p-1">
+          <>
             <img
               src={client.logoUrl}
               alt={client.name}
-              className="w-full h-full object-contain"
+              className="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
+              style={{ width: "100%", height: "100%", objectFit: "contain" }}
               onError={(e) => {
                 const img = e.currentTarget;
                 img.style.display = "none";
-                const fb = img.parentElement?.querySelector(".logo-fallback") as HTMLElement | null;
+                const fb = img.parentElement?.querySelector(".logo-fb") as HTMLElement | null;
                 if (fb) fb.style.display = "flex";
               }}
             />
             <span
-              className="logo-fallback text-secondary font-black text-sm w-full h-full items-center justify-center"
+              className="logo-fb text-4xl font-black text-secondary/70 w-full h-full items-center justify-center"
               style={{ display: "none" }}
             >
               {client.name.charAt(0)}
             </span>
-          </div>
+          </>
         ) : (
-          <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/20 transition-colors">
-            <span className="text-secondary font-black text-sm">{client.name.charAt(0)}</span>
-          </div>
+          <span className="text-4xl font-black text-secondary/60">{client.name.charAt(0)}</span>
         )}
-        <span className="font-bold text-white text-sm leading-tight line-clamp-2">{client.name}</span>
       </div>
-      {client.industry && (
-        <span className="text-[10px] font-semibold text-white/35 uppercase tracking-widest">
-          {client.industry}
-        </span>
-      )}
+
+      {/* Name + industry */}
+      <div className="px-4 py-3 group-hover:bg-white/[0.04] transition-colors">
+        <p className="font-bold text-white text-sm leading-tight">{client.name}</p>
+        {client.industry && (
+          <p className="text-[10px] font-semibold text-white/35 uppercase tracking-widest mt-0.5">
+            {client.industry}
+          </p>
+        )}
+      </div>
     </div>
   );
 }
@@ -146,9 +147,9 @@ export function ClientMarquee() {
         </motion.p>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <MarqueeTrack clients={row1} speed={38} />
-        <MarqueeTrack clients={row2.length > 0 ? row2 : row1} reverse speed={42} />
+      <div className="flex flex-col gap-5 py-2">
+        <MarqueeTrack clients={row1} speed={42} />
+        <MarqueeTrack clients={row2.length > 0 ? row2 : row1} reverse speed={46} />
       </div>
 
       <style>{`

@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
-  <rect width="200" height="80" fill="white"/>
-  <rect x="15" y="10" width="55" height="55" rx="12" fill="#5E2089"/>
-  <text x="22" y="53" font-family="Arial Black,Arial,sans-serif" font-size="30" font-weight="900" fill="white" letter-spacing="-1">stc</text>
-  <text x="82" y="50" font-family="Arial,sans-serif" font-size="10" fill="#5E2089" font-weight="600" letter-spacing="0.5">SAUDI TELECOM</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 130" fill="none">
+  <rect width="300" height="130" fill="white"/>
+  <rect x="20" y="30" width="70" height="70" rx="12" fill="#6D2E96"/>
+  <text x="28" y="82" font-family="Arial,sans-serif" font-size="36" font-weight="900" fill="white">stc</text>
+  <text x="104" y="84" font-family="Arial,sans-serif" font-size="52" font-weight="900" fill="#6D2E96">stc</text>
 </svg>

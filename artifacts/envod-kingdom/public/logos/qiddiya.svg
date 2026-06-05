@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
-  <rect width="200" height="80" fill="white"/>
-  <rect x="15" y="10" width="170" height="58" rx="10" fill="#1A0533"/>
-  <text x="28" y="52" font-family="Arial Black,Arial,sans-serif" font-size="24" font-weight="900" fill="white" letter-spacing="1">QIDDIYA</text>
-  <circle cx="170" cy="25" r="8" fill="#E63946"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 130" fill="none">
+  <rect width="300" height="130" fill="white"/>
+  <path d="M22 65C22 65 42 20 55 20C68 20 88 65 88 65C88 65 68 110 55 110C42 110 22 65 22 65Z" fill="#E8003D"/>
+  <text x="100" y="76" font-family="Arial,sans-serif" font-size="30" font-weight="900" fill="#1A1A1A" letter-spacing="1">QIDDIYA</text>
+  <text x="100" y="98" font-family="Arial,sans-serif" font-size="11" font-weight="600" fill="#E8003D" letter-spacing="2">ENTERTAINMENT CITY</text>
 </svg>
