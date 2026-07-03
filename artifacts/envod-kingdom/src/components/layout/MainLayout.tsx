@@ -520,7 +520,7 @@ export function Footer() {
             </ul>
 
             <a
-              href="https://maps.google.com/?q=Prince+Mansour+Bin+Abdulaziz+Street,Al+Malaz,Riyadh+12831,Saudi+Arabia"
+              href="https://www.google.com/maps/search/?api=1&query=Envod+Kingdom+Shipping+Services+LLC%2C+Al+Malaz%2C+Riyadh"
               target="_blank" rel="noopener noreferrer"
               className="mt-5 inline-flex items-center gap-2 text-[12px] text-secondary hover:text-secondary/70 font-semibold transition-colors"
             >
