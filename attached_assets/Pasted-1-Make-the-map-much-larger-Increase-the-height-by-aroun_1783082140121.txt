@@ -1,0 +1,343 @@
+1. Make the map much larger
+
+Increase the height by around 25-35%.
+
+The map should become the centerpiece of this section.
+
+Give it a premium glass card with:
+
+soft borders
+subtle shadows
+larger border radius
+depth
+slight glow around the container
+
+It should feel expensive.
+
+2. The map itself looks too empty
+
+Currently there are huge empty dark areas.
+
+Add:
+
+• ocean gradient
+
+• subtle latitude/longitude grid
+
+• slight animated particles
+
+• very soft moving background glow
+
+The map should feel alive.
+
+3. Branch markers need redesign
+
+Current markers are just white dots.
+
+Replace every office with premium markers.
+
+Each marker should have:
+
+• outer pulse animation
+
+• glowing ring
+
+• center icon
+
+• company red glow
+
+• floating effect
+
+The Riyadh HQ should be significantly larger than every other office.
+
+4. Draw premium animated logistics routes
+
+Current curved lines are too thin.
+
+Replace them with animated logistics routes.
+
+Each route should:
+
+animate continuously
+
+have moving light particles travelling along the path
+
+fade in/out smoothly
+
+use company red
+
+vary slightly in thickness
+
+look like cargo movement.
+
+5. Expand the network
+
+Instead of only showing Saudi Arabia and nearby countries, zoom the map out slightly.
+
+Show a wider GCC and international logistics network.
+
+Include routes extending toward:
+
+• UAE
+
+• Bahrain
+
+• Qatar
+
+• Kuwait
+
+• Oman
+
+• India
+
+• China
+
+• Europe
+
+• Africa
+
+This better represents our international operations.
+
+6. Add hover interaction
+
+When hovering a branch:
+
+show a premium popup containing:
+
+Office Name
+
+Country
+
+Services Available
+
+Phone
+
+Email
+
+Years Operating
+
+Status (Online)
+
+Small office image
+
+The popup should have a frosted glass effect.
+
+7. Branch cards below the map need a redesign
+
+Currently they look like simple boxes.
+
+Transform them into premium location cards.
+
+Each card should include:
+
+Office icon
+
+Country flag
+
+City
+
+Country
+
+Office type
+
+(Head Office / Branch Office)
+
+Small status indicator
+
+Click to view details
+
+Hover glow animation
+
+Smooth lift animation
+
+Glassmorphism styling
+
+8. Clicking a branch card
+
+When clicking a branch card:
+
+the map should automatically:
+
+zoom
+
+center
+
+highlight that office
+
+animate the marker
+
+animate its logistics routes
+
+open the information popup
+
+9. HQ should stand out
+
+Riyadh should feel like the command center.
+
+Use:
+
+larger glowing marker
+
+double pulse animation
+
+larger route hub
+
+head office badge
+
+"Global Operations HQ"
+
+It should immediately attract attention.
+
+10. Improve typography
+
+The heading is too generic.
+
+Make it larger.
+
+Increase spacing.
+
+Use stronger typography hierarchy.
+
+The subtitle should have improved readability.
+
+11. Add key statistics above the map
+
+Display premium animated counters such as:
+
+25+ Years Experience
+
+6 Strategic Offices
+
+100+ Global Partners
+
+24/7 Operations
+
+Saudi Arabia + GCC + Worldwide Coverage
+
+These should animate into view.
+
+12. Add logistics transport icons
+
+Place small animated transport icons travelling along routes:
+
+✈ Air Freight
+
+🚢 Sea Freight
+
+🚛 Road Freight
+
+📦 Cargo
+
+These should move slowly across the network lines.
+
+13. Add subtle background animation
+
+Include:
+
+moving light beams
+
+slow radial glow
+
+tiny particles
+
+ambient lighting
+
+The section should never feel static.
+
+14. Improve responsiveness
+
+Ensure the map works perfectly on:
+
+Desktop
+
+Laptop
+
+Tablet
+
+Mobile
+
+Branch cards should become a responsive horizontal slider on mobile.
+
+15. Improve spacing
+
+Increase whitespace between:
+
+heading
+
+subtitle
+
+map
+
+office cards
+
+The layout currently feels compressed.
+
+16. Better colors
+
+The background is too flat.
+
+Create a layered premium background using:
+
+dark navy gradients
+
+soft blue overlays
+
+subtle red accent glow
+
+glass effects
+
+The section should feel modern and luxurious.
+
+17. Add "Our Global Reach" overlay
+
+Place a small floating badge on the map displaying:
+
+🌍 Global Reach
+
+Saudi Arabia
+
+GCC
+
+Asia
+
+Europe
+
+Africa
+
+Connected Worldwide
+
+18. Smooth animations
+
+Every element should animate using GSAP or Framer Motion.
+
+Include:
+
+fade-in
+
+slide-up
+
+marker pulse
+
+counter animation
+
+card hover lift
+
+route drawing animation
+
+map zoom transitions
+
+No abrupt animations.
+
+19. Performance
+
+Use SVG paths and CSS/GSAP animations instead of heavy JavaScript where possible.
+
+Lazy-load assets.
+
+Maintain excellent Lighthouse scores.
+
+20. Final Goal
+
+The finished section should immediately communicate that ENVOD Kingdom Shipping Services is a premium international logistics company.
+
+Visitors should instantly feel confidence, trust, operational scale, and global reach. The design should be polished enough to sit alongside the websites of Maersk, DP World, DHL, DSV, Kuehne+Nagel, and FedEx, with enterprise-grade visuals, smooth interactions, and a premium user experience.
