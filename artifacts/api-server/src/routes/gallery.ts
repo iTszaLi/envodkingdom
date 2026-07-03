@@ -76,9 +76,10 @@ router.get("/", async (req, res): Promise<void> => {
   try {
     const category = req.query.category as string | undefined;
     const published = req.query.published;
+    const isAdmin = !!(req.session as { adminId?: number } | undefined)?.adminId;
 
     const conditions = [];
-    if (published === "true") conditions.push(eq(galleryItemsTable.isPublished, true));
+    if (!isAdmin || published === "true") conditions.push(eq(galleryItemsTable.isPublished, true));
     if (category && category !== "all") conditions.push(eq(galleryItemsTable.category, category));
 
     const rows = await db
@@ -222,7 +223,8 @@ router.get("/:id", async (req, res): Promise<void> => {
       return;
     }
     const [row] = await db.select().from(galleryItemsTable).where(eq(galleryItemsTable.id, id));
-    if (!row) {
+    const isAdmin = !!(req.session as { adminId?: number } | undefined)?.adminId;
+    if (!row || (!row.isPublished && !isAdmin)) {
       res.status(404).json({ error: "Not found" });
       return;
     }

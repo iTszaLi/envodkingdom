@@ -732,6 +732,27 @@ paths:
                 items:
                   $ref: "#/components/schemas/GalleryItem"
 
+  /gallery/upload:
+    post:
+      operationId: uploadGallery
+      tags: [gallery]
+      summary: Upload gallery images (admin, multipart form-data)
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: "#/components/schemas/GalleryUploadInput"
+      responses:
+        "201":
+          description: Uploaded and processed images
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryUploadResult"
+        "400":
+          description: No valid images were processed
+
   /gallery/{id}:
     get:
       operationId: getGalleryItem
@@ -788,6 +809,19 @@ paths:
       responses:
         "204":
           description: Deleted
+
+  /sitemap-images.xml:
+    get:
+      operationId: getImageSitemap
+      tags: [gallery]
+      summary: Google image sitemap for published gallery media
+      responses:
+        "200":
+          description: Image sitemap XML
+          content:
+            application/xml:
+              schema:
+                type: string
 
   # ── CLIENTS ───────────────────────────────────────────────────────────────
   /clients:
@@ -1680,6 +1714,31 @@ components:
           type: array
           items:
             type: integer
+
+    GalleryUploadInput:
+      type: object
+      required: [files]
+      properties:
+        files:
+          type: array
+          items:
+            type: string
+            format: binary
+        category:
+          type: string
+
+    GalleryUploadResult:
+      type: object
+      required: [created, skipped]
+      properties:
+        created:
+          type: array
+          items:
+            $ref: "#/components/schemas/GalleryItem"
+        skipped:
+          type: array
+          items:
+            type: string
 
     # ── CLIENTS ───────────────────────────────────────────────────────────
     Client:

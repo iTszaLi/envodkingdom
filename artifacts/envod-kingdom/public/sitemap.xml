@@ -39,9 +39,9 @@
   </url>
 
   <url>
-    <loc>https://www.envodkingdom.com/blog</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://www.envodkingdom.com/blog" />
-    <xhtml:link rel="alternate" hreflang="ar" href="https://www.envodkingdom.com/blog?lang=ar" />
+    <loc>https://www.envodkingdom.com/gallery</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.envodkingdom.com/gallery" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.envodkingdom.com/gallery?lang=ar" />
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
     <lastmod>2026-07-03</lastmod>

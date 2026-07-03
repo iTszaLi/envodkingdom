@@ -37,6 +37,8 @@ import type {
   GalleryItem,
   GalleryReorder,
   GalleryUpdate,
+  GalleryUploadInput,
+  GalleryUploadResult,
   HealthStatus,
   HeroVideoSection,
   Inquiry,
@@ -2744,6 +2746,82 @@ export const useReorderGallery = <TError = ErrorType<unknown>,
       return useMutation(getReorderGalleryMutationOptions(options));
     }
 
+export const getUploadGalleryUrl = () => {
+
+
+
+
+  return `/api/gallery/upload`
+}
+
+/**
+ * @summary Upload gallery images (admin, multipart form-data)
+ */
+export const uploadGallery = async (galleryUploadInput: GalleryUploadInput, options?: RequestInit): Promise<GalleryUploadResult> => {
+    const formData = new FormData();
+galleryUploadInput.files.forEach(value => formData.append(`files`, value));
+if(galleryUploadInput.category !== undefined) {
+ formData.append(`category`, galleryUploadInput.category);
+ }
+
+  return customFetch<GalleryUploadResult>(getUploadGalleryUrl(),
+  {
+    ...options,
+    method: 'POST'
+    ,
+    body:
+      formData,
+  }
+);}
+
+
+
+
+export const getUploadGalleryMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadGallery>>, TError,{data: BodyType<GalleryUploadInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploadGallery>>, TError,{data: BodyType<GalleryUploadInput>}, TContext> => {
+
+const mutationKey = ['uploadGallery'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadGallery>>, {data: BodyType<GalleryUploadInput>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  uploadGallery(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadGalleryMutationResult = NonNullable<Awaited<ReturnType<typeof uploadGallery>>>
+    export type UploadGalleryMutationBody = BodyType<GalleryUploadInput>
+    export type UploadGalleryMutationError = ErrorType<void>
+
+    /**
+ * @summary Upload gallery images (admin, multipart form-data)
+ */
+export const useUploadGallery = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadGallery>>, TError,{data: BodyType<GalleryUploadInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof uploadGallery>>,
+        TError,
+        {data: BodyType<GalleryUploadInput>},
+        TContext
+      > => {
+      return useMutation(getUploadGalleryMutationOptions(options));
+    }
+
 export const getGetGalleryItemUrl = (id: number,) => {
 
 
@@ -2962,6 +3040,83 @@ export const useDeleteGalleryItem = <TError = ErrorType<unknown>,
       > => {
       return useMutation(getDeleteGalleryItemMutationOptions(options));
     }
+
+export const getGetImageSitemapUrl = () => {
+
+
+
+
+  return `/api/sitemap-images.xml`
+}
+
+/**
+ * @summary Google image sitemap for published gallery media
+ */
+export const getImageSitemap = async ( options?: RequestInit): Promise<string> => {
+
+  return customFetch<string>(getGetImageSitemapUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetImageSitemapQueryKey = () => {
+    return [
+    `/api/sitemap-images.xml`
+    ] as const;
+    }
+
+
+export const getGetImageSitemapQueryOptions = <TData = Awaited<ReturnType<typeof getImageSitemap>>, TError = ErrorType<unknown>>( options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImageSitemap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetImageSitemapQueryKey();
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getImageSitemap>>> = ({ signal }) => getImageSitemap({ signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getImageSitemap>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetImageSitemapQueryResult = NonNullable<Awaited<ReturnType<typeof getImageSitemap>>>
+export type GetImageSitemapQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary Google image sitemap for published gallery media
+ */
+
+export function useGetImageSitemap<TData = Awaited<ReturnType<typeof getImageSitemap>>, TError = ErrorType<unknown>>(
+  options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getImageSitemap>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetImageSitemapQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
 
 export const getListClientsUrl = () => {
 

@@ -401,6 +401,16 @@ export interface GalleryReorder {
   ids: number[];
 }
 
+export interface GalleryUploadInput {
+  files: Blob[];
+  category?: string;
+}
+
+export interface GalleryUploadResult {
+  created: GalleryItem[];
+  skipped: string[];
+}
+
 export interface Client {
   id: number;
   name: string;

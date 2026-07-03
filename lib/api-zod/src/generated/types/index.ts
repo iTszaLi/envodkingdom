@@ -23,6 +23,8 @@ export * from './faqUpdate';
 export * from './galleryItem';
 export * from './galleryReorder';
 export * from './galleryUpdate';
+export * from './galleryUploadInput';
+export * from './galleryUploadResult';
 export * from './healthStatus';
 export * from './heroVideoSection';
 export * from './inquiry';

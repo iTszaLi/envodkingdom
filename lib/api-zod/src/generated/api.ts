@@ -769,6 +769,15 @@ export const ReorderGalleryResponse = zod.array(ReorderGalleryResponseItem)
 
 
 /**
+ * @summary Upload gallery images (admin, multipart form-data)
+ */
+export const UploadGalleryBody = zod.object({
+  "files": zod.array(zod.instanceof(File)),
+  "category": zod.string().optional()
+})
+
+
+/**
  * @summary Get a gallery item
  */
 export const GetGalleryItemParams = zod.object({
