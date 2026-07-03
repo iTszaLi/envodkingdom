@@ -4,10 +4,11 @@ import fs from "fs";
 import path from "path";
 import { execSync } from "child_process";
 import { fileURLToPath } from "url";
+import { requireAdmin } from "../lib/requireAdmin";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const FRAMES_DIR = path.resolve(
+const MEDIA_DIR = path.resolve(
   __dirname,
   "..",
   "..",
@@ -15,7 +16,7 @@ const FRAMES_DIR = path.resolve(
   "artifacts",
   "envod-kingdom",
   "public",
-  "frames",
+  "media",
 );
 
 const SECTIONS: Record<string, { key: string; label: string }> = {
@@ -24,22 +25,35 @@ const SECTIONS: Record<string, { key: string; label: string }> = {
   warehouse: { key: "warehouse", label: "Sea Terminal / Port Operations" },
 };
 
-const BASE_URL = "/frames";
+const BASE_URL = "/media";
+
+/** Fixed loop length (seconds) so all hero videos share the site's established pacing. */
+const LOOP_SECONDS = 8;
+
+function ensureMediaDir() {
+  fs.mkdirSync(MEDIA_DIR, { recursive: true });
+}
+
+function probeFrameCount(mp4Path: string): number {
+  try {
+    const out = execSync(
+      `ffprobe -v error -select_streams v:0 -show_entries stream=nb_frames -of default=nw=1:nk=1 '${mp4Path}'`,
+      { encoding: "utf-8", timeout: 10_000 },
+    ).trim();
+    return parseInt(out, 10) || 0;
+  } catch {
+    return 0;
+  }
+}
 
 function getSectionInfo(key: string) {
-  const dir = path.join(FRAMES_DIR, key);
+  const mp4Path = path.join(MEDIA_DIR, `${key}.mp4`);
   let frameCount = 0;
   let updatedAt = new Date().toISOString();
   try {
-    const files = fs
-      .readdirSync(dir)
-      .filter((f) => f.endsWith(".jpg"))
-      .sort();
-    frameCount = files.length;
-    if (files.length > 0) {
-      const stat = fs.statSync(path.join(dir, files[files.length - 1]));
-      updatedAt = stat.mtime.toISOString();
-    }
+    const stat = fs.statSync(mp4Path);
+    updatedAt = stat.mtime.toISOString();
+    frameCount = probeFrameCount(mp4Path);
   } catch {
     frameCount = 0;
   }
@@ -47,7 +61,7 @@ function getSectionInfo(key: string) {
     key,
     label: SECTIONS[key].label,
     frameCount,
-    thumbnailUrl: `${BASE_URL}/${key}/0000.jpg`,
+    thumbnailUrl: `${BASE_URL}/${key}.jpg`,
     updatedAt,
   };
 }
@@ -66,7 +80,7 @@ router.get("/", async (req, res): Promise<void> => {
   }
 });
 
-router.post("/:section", upload.single("file"), async (req, res): Promise<void> => {
+router.post("/:section", requireAdmin, upload.single("file"), async (req, res): Promise<void> => {
   const section = String(req.params.section);
   if (!SECTIONS[section]) {
     res.status(400).json({ error: `Unknown section '${section}'. Must be: crane, air, warehouse.` });
@@ -77,19 +91,22 @@ router.post("/:section", upload.single("file"), async (req, res): Promise<void> 
     return;
   }
 
-  const tmpPath = path.join("/tmp", `hero-upload-${Date.now()}.webp`);
-  const destDir = path.join(FRAMES_DIR, section);
+  const stamp = Date.now();
+  const tmpPath = path.join("/tmp", `hero-upload-${stamp}.webp`);
+  const framesTmp = path.join("/tmp", `hero-frames-${stamp}`);
 
   try {
+    ensureMediaDir();
+    fs.mkdirSync(framesTmp, { recursive: true });
     fs.writeFileSync(tmpPath, req.file.buffer);
 
+    // 1) Extract every pristine frame from the animated WebP to PNG (lossless intermediate).
     const pyScript = `
-import sys, os, math
+import sys, os
 from PIL import Image
 
 src = sys.argv[1]
 dst = sys.argv[2]
-TARGET = 120
 
 img = Image.open(src)
 total = 0
@@ -100,42 +117,63 @@ try:
 except EOFError:
     pass
 
-# Clear existing frames
-for f in os.listdir(dst):
-    if f.endswith('.jpg'):
-        os.remove(os.path.join(dst, f))
-
-step = max(1, math.ceil(total / TARGET))
-written = 0
-for i in range(0, total, step):
+for i in range(total):
     img.seek(i)
-    frame = img.convert('RGB')
-    frame.save(os.path.join(dst, f'{written:04d}.jpg'), 'JPEG', quality=80, optimize=True)
-    written += 1
+    img.convert('RGB').save(os.path.join(dst, f'{i:04d}.png'))
 
-print(written)
+print(total)
 `;
 
-    const result = execSync(`python3 -c '${pyScript.replace(/'/g, "'\\''")}' '${tmpPath}' '${destDir}'`, {
-      timeout: 120_000,
-      encoding: "utf-8",
-    });
+    const result = execSync(
+      `python3 -c '${pyScript.replace(/'/g, "'\\''")}' '${tmpPath}' '${framesTmp}'`,
+      { timeout: 120_000, encoding: "utf-8" },
+    );
 
     const frameCount = parseInt(result.trim(), 10);
-    req.log.info({ section, frameCount }, "Hero video frames updated");
+    if (!frameCount || frameCount < 2) {
+      throw new Error("WebP contained too few frames — expected an animated WebP.");
+    }
+
+    // 2) Framerate chosen so the loop is always LOOP_SECONDS long regardless of source frame count.
+    const fps = (frameCount / LOOP_SECONDS).toFixed(6);
+    const mp4Path = path.join(MEDIA_DIR, `${section}.mp4`);
+    const webmPath = path.join(MEDIA_DIR, `${section}.webm`);
+    const posterPath = path.join(MEDIA_DIR, `${section}.jpg`);
+    const input = `${framesTmp}/%04d.png`;
+
+    // 3) H.264 MP4 (universal) — yuv420p + faststart for instant playback.
+    execSync(
+      `ffmpeg -y -loglevel error -framerate ${fps} -i '${input}' -c:v libx264 -crf 22 -preset medium -pix_fmt yuv420p -movflags +faststart -an '${mp4Path}'`,
+      { timeout: 120_000 },
+    );
+
+    // 4) VP9 WebM (smaller, modern browsers).
+    execSync(
+      `ffmpeg -y -loglevel error -framerate ${fps} -i '${input}' -c:v libvpx-vp9 -crf 34 -b:v 0 -deadline good -cpu-used 4 -row-mt 1 -pix_fmt yuv420p -an '${webmPath}'`,
+      { timeout: 120_000 },
+    );
+
+    // 5) Poster = first frame (matches the video's opening frame, so no flicker on start).
+    execSync(
+      `ffmpeg -y -loglevel error -i '${framesTmp}/0000.png' -q:v 3 '${posterPath}'`,
+      { timeout: 30_000 },
+    );
+
+    req.log.info({ section, frameCount, fps }, "Hero video encoded");
 
     res.json({
       key: section,
       label: SECTIONS[section].label,
       frameCount,
-      thumbnailUrl: `${BASE_URL}/${section}/0000.jpg`,
+      thumbnailUrl: `${BASE_URL}/${section}.jpg`,
       updatedAt: new Date().toISOString(),
     });
   } catch (err) {
-    req.log.error(err, "Frame extraction failed");
-    res.status(500).json({ error: "Frame extraction failed. Ensure the file is a valid animated WebP." });
+    req.log.error(err, "Hero video encoding failed");
+    res.status(500).json({ error: "Hero video encoding failed. Ensure the file is a valid animated WebP." });
   } finally {
     try { fs.unlinkSync(tmpPath); } catch { /* ignore */ }
+    try { fs.rmSync(framesTmp, { recursive: true, force: true }); } catch { /* ignore */ }
   }
 });
 

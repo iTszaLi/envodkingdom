@@ -83,7 +83,7 @@ export default function About() {
                 <div key={member.id} className="bg-card border border-white/5 rounded-xl overflow-hidden group">
                   <div className="h-64 bg-primary/20 relative overflow-hidden">
                     {member.photoUrl ? (
-                      <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                      <img src={member.photoUrl} alt={member.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-4xl text-white/20 font-bold bg-primary">
                         {member.name.charAt(0)}

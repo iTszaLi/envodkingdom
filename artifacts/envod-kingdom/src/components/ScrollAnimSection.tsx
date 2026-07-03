@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 import logoIcon from "@assets/image_1780532431289.png";
@@ -16,37 +16,13 @@ export interface AnimChapter {
 
 interface Props {
   frameFolder: string;
-  frameCount: number;
+  /** Retained for API compatibility; playback now uses an encoded video. */
+  frameCount?: number;
   chapters: AnimChapter[];
   isRtl?: boolean;
 }
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const FPS = 15;
-const INTERVAL_MS = 1000 / FPS;
-
-function pad(n: number) {
-  return n.toString().padStart(4, "0");
-}
-
-function renderFrameToCanvas(
-  idx: number,
-  images: HTMLImageElement[],
-  canvas: HTMLCanvasElement,
-) {
-  const img = images[idx];
-  if (!img?.complete || img.naturalWidth === 0) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-  const cw = canvas.width;
-  const ch = canvas.height;
-  const iw = img.naturalWidth;
-  const ih = img.naturalHeight;
-  const scale = Math.max(cw / iw, ch / ih);
-  const dw = iw * scale;
-  const dh = ih * scale;
-  ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
-}
 
 /* ── Floating particles ── */
 const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
@@ -61,42 +37,18 @@ const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
 
 export function ScrollAnimSection({
   frameFolder,
-  frameCount,
   chapters,
   isRtl = false,
 }: Props) {
-  const sectionRef  = useRef<HTMLDivElement>(null);
-  const canvasRef   = useRef<HTMLCanvasElement>(null);
-  const imagesRef   = useRef<HTMLImageElement[]>([]);
-  const frameRef    = useRef(0);
-  const lastTimeRef = useRef(0);
-  const rafRef      = useRef<number>(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const videoRef   = useRef<HTMLVideoElement>(null);
 
-  const [loadedCount,    setLoadedCount]    = useState(0);
-  const [chapterIdx,     setChapterIdx]     = useState(0);
-  const [isVisible,      setIsVisible]      = useState(false);
-  const [startedLoading, setStartedLoading] = useState(false);
-  const [mouse,          setMouse]          = useState({ x: 0, y: 0 });
-
-  // Canvas DPR sizing
-  const syncCanvasSize = useCallback(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width  = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
-    canvas.style.width  = window.innerWidth + "px";
-    canvas.style.height = window.innerHeight + "px";
-    if (imagesRef.current.length > 0) {
-      renderFrameToCanvas(frameRef.current, imagesRef.current, canvas);
-    }
-  }, []);
-
-  useEffect(() => {
-    syncCanvasSize();
-    window.addEventListener("resize", syncCanvasSize);
-    return () => window.removeEventListener("resize", syncCanvasSize);
-  }, [syncCanvasSize]);
+  const [chapterIdx, setChapterIdx] = useState(0);
+  const [isVisible,  setIsVisible]  = useState(false);
+  const [started,    setStarted]    = useState(false); // src attached after first intersect
+  const [isReady,    setIsReady]    = useState(false); // first frame decoded
+  const [loadPercent, setLoadPercent] = useState(0);
+  const [mouse,      setMouse]      = useState({ x: 0, y: 0 });
 
   // Mouse parallax
   useEffect(() => {
@@ -113,90 +65,83 @@ export function ScrollAnimSection({
     return () => el.removeEventListener("mousemove", handleMove);
   }, []);
 
-  // IntersectionObserver — triggers load + play/pause
+  // IntersectionObserver — attach source on first entry, play/pause thereafter
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries[0].isIntersecting;
         setIsVisible(visible);
-        if (visible && !startedLoading) setStartedLoading(true);
+        if (visible) setStarted(true);
       },
       { threshold: 0.15 },
     );
     const el = sectionRef.current;
     if (el) observer.observe(el);
     return () => observer.disconnect();
-  }, [startedLoading]);
+  }, []);
 
-  // Load frames
+  // Lazy-load the video the first time the section is seen
   useEffect(() => {
-    if (!startedLoading) return;
-    const images: HTMLImageElement[] = [];
-    let cancelled = false;
-    let loaded = 0;
+    if (!started) return;
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.load();
+  }, [started]);
 
-    for (let i = 0; i < frameCount; i++) {
-      const img = new window.Image();
-      const fi = i;
-      img.onload = () => {
-        if (cancelled) return;
-        loaded++;
-        setLoadedCount(loaded);
-        if (fi === 0 && canvasRef.current) {
-          renderFrameToCanvas(0, images, canvasRef.current);
-        }
-      };
-      img.src = `${BASE}/frames/${frameFolder}/${pad(i)}.jpg`;
-      images.push(img);
-    }
-    imagesRef.current = images;
-    return () => { cancelled = true; };
-  }, [startedLoading, frameFolder, frameCount]);
-
-  // Autoplay loop — rAF-based, only runs when section is visible
+  // Play only while visible; never clear src (avoids re-download on each pass)
   useEffect(() => {
-    const minFrames = Math.min(30, frameCount);
-    if (!isVisible || loadedCount < minFrames) {
-      cancelAnimationFrame(rafRef.current);
-      return;
+    const v = videoRef.current;
+    if (!v || !started) return;
+    if (isVisible) {
+      v.muted = true;
+      const p = v.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } else {
+      v.pause();
     }
+  }, [isVisible, started]);
 
-    function loop(time: number) {
-      if (time - lastTimeRef.current >= INTERVAL_MS) {
-        lastTimeRef.current = time;
+  // Chapter switching + readiness + buffered progress — all driven by the video
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
 
-        const next = (frameRef.current + 1) % frameCount;
-        frameRef.current = next;
-
-        // Chapter based on playback progress
-        const progress = next / Math.max(frameCount - 1, 1);
-        let ci = 0;
-        for (let i = chapters.length - 1; i >= 0; i--) {
-          if (progress >= chapters[i].startProgress) {
-            ci = i;
-            break;
-          }
-        }
-        setChapterIdx(ci);
-
-        const canvas = canvasRef.current;
-        const imgs   = imagesRef.current;
-        if (canvas && imgs[next]?.complete) {
-          renderFrameToCanvas(next, imgs, canvas);
-        }
+    const onTime = () => {
+      const dur = v.duration || 1;
+      const progress = v.currentTime / dur;
+      let ci = 0;
+      for (let i = chapters.length - 1; i >= 0; i--) {
+        if (progress >= chapters[i].startProgress) { ci = i; break; }
       }
-      rafRef.current = requestAnimationFrame(loop);
-    }
+      setChapterIdx(ci);
+    };
+    const onLoaded = () => setIsReady(true);
+    const onProgress = () => {
+      try {
+        if (v.buffered.length && v.duration) {
+          const pct = Math.min(100, Math.round((v.buffered.end(v.buffered.length - 1) / v.duration) * 100));
+          setLoadPercent(pct);
+        }
+      } catch { /* buffered can throw before metadata */ }
+    };
+    const onCanPlayThrough = () => setLoadPercent(100);
 
-    rafRef.current = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [isVisible, loadedCount, frameCount, chapters]);
+    v.addEventListener("timeupdate", onTime);
+    v.addEventListener("loadeddata", onLoaded);
+    v.addEventListener("progress", onProgress);
+    v.addEventListener("canplaythrough", onCanPlayThrough);
+    return () => {
+      v.removeEventListener("timeupdate", onTime);
+      v.removeEventListener("loadeddata", onLoaded);
+      v.removeEventListener("progress", onProgress);
+      v.removeEventListener("canplaythrough", onCanPlayThrough);
+    };
+  }, [chapters]);
 
-  const chapter    = chapters[chapterIdx];
-  const loadPercent = frameCount > 0 ? Math.round((loadedCount / frameCount) * 100) : 0;
-  const isReady    = loadedCount >= Math.min(10, frameCount);
-  const titleParts = chapter?.title.split(". ").filter(Boolean) ?? [];
-  const features   = isRtl ? chapter?.featuresAr : chapter?.features;
+  const chapter     = chapters[chapterIdx];
+  const titleParts  = chapter?.title.split(". ").filter(Boolean) ?? [];
+  const features    = isRtl ? chapter?.featuresAr : chapter?.features;
 
   return (
     <motion.section
@@ -207,16 +152,29 @@ export function ScrollAnimSection({
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 1, ease: "easeOut" }}
     >
-      {/* Canvas — with subtle mouse parallax */}
-      <canvas
-        ref={canvasRef}
-        className="absolute inset-0"
+      {/* Video — with subtle mouse parallax (GPU-composited, decoded on the GPU) */}
+      <video
+        ref={videoRef}
+        className="absolute inset-0 w-full h-full object-cover"
         style={{
           opacity: isReady ? 1 : 0,
           transition: "opacity 0.6s ease, transform 0.8s ease",
           transform: `translate(${mouse.x * 0.4}px, ${mouse.y * 0.4}px) scale(1.04)`,
         }}
-      />
+        muted
+        loop
+        playsInline
+        preload="none"
+        poster={`${BASE}/media/${frameFolder}.jpg`}
+        aria-hidden="true"
+      >
+        {started && (
+          <>
+            <source src={`${BASE}/media/${frameFolder}.webm`} type="video/webm" />
+            <source src={`${BASE}/media/${frameFolder}.mp4`} type="video/mp4" />
+          </>
+        )}
+      </video>
 
       {/* ── Stronger cinematic overlay matching spec ── */}
       <div

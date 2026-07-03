@@ -1,5 +1,5 @@
-- [Scroll animation frame extraction](scroll-frames.md) — animated WebPs extracted via Python Pillow to JPEG sequences in public/frames/{crane,air,warehouse}/
-- [ScrollAnimSection hero](scroll-anim-hero.md) — the sparkle/star is baked into the JPEG frames (not DOM); z-layering + object-fit-cover gotchas for overlays
+- [Hero video pipeline](scroll-frames.md) — scroll sections are `<video>` (public/media/*.mp4/webm), not JPEG frames; admin CMS encodes uploaded WebP via ffmpeg; runtime writes to public/ don't persist in prod
+- [ScrollAnimSection hero](scroll-anim-hero.md) — sparkle/star is baked into the video footage (not DOM); z-layering + object-fit-cover gotchas for overlays
 - [API client import path](api-client-imports.md) — use `@workspace/api-client-react` not `@api-client-react/generated/api`; same for types
 - [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
 - [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain

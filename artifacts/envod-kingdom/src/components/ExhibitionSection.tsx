@@ -182,7 +182,7 @@ export function ExhibitionSection() {
               <div
                 className="absolute inset-0"
                 style={{
-                  backgroundImage: `url(${import.meta.env.BASE_URL}E1_exhibition.png)`,
+                  backgroundImage: `url(${import.meta.env.BASE_URL}E1_exhibition.webp)`,
                   backgroundSize: "cover",
                   backgroundPosition: "center top",
                 }}

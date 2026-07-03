@@ -34,7 +34,7 @@ export default function AdminHeroVideos() {
       return;
     }
 
-    setUploadState(section, { state: "uploading", message: "Extracting frames…" });
+    setUploadState(section, { state: "uploading", message: "Encoding video…" });
 
     const formData = new FormData();
     formData.append("file", file);
@@ -55,7 +55,7 @@ export default function AdminHeroVideos() {
       const updated = await res.json();
       setUploadState(section, {
         state: "success",
-        message: `Done — ${updated.frameCount} frames extracted.`,
+        message: `Done — video updated (${updated.frameCount} frames).`,
       });
 
       queryClient.invalidateQueries({ queryKey: getListHeroVideosQueryKey() });
@@ -199,8 +199,8 @@ export default function AdminHeroVideos() {
         <h2 className="text-sm font-semibold text-white mb-3">How it works</h2>
         <ol className="space-y-2 text-sm text-muted-foreground list-decimal list-inside">
           <li>Click <strong className="text-white">Replace Video</strong> on any section and choose an animated WebP file.</li>
-          <li>The server extracts ~120 JPEG frames from the WebP and replaces the existing ones on disk.</li>
-          <li>The homepage automatically picks up the new frames on next page load — no restart needed.</li>
+          <li>The server encodes the WebP into optimized MP4 &amp; WebM videos (with a poster image) and replaces the existing ones on disk.</li>
+          <li>The homepage automatically picks up the new video on next page load — no restart needed.</li>
           <li>Thumbnail previews on this page refresh after each upload to confirm the change.</li>
         </ol>
       </div>
