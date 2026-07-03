@@ -182,9 +182,9 @@ export function ExhibitionSection() {
               <div
                 className="absolute inset-0"
                 style={{
-                  backgroundImage: `url(${import.meta.env.BASE_URL}frames/crane/0001.jpg)`,
+                  backgroundImage: `url(${import.meta.env.BASE_URL}E1_exhibition.png)`,
                   backgroundSize: "cover",
-                  backgroundPosition: "center",
+                  backgroundPosition: "center top",
                 }}
               />
               {/* Strong overlay */}
