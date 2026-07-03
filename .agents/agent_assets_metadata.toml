@@ -1,5 +1,4 @@
 uploads = []
-outputs = []
 
 [[generated]]
 id = "WcEEUR_TAiVJKisajGSnO"
@@ -12,3 +11,135 @@ id = "x1kCUsDB54dw_sXxHJBpP"
 uri = "file://artifacts/envod-kingdom/src/assets/blog-2.png"
 type = "image"
 title = "logistics truck convoy night"
+
+[[outputs]]
+id = "IXbb7xlRB48mk8-4P8nOo"
+uri = "file://attached_assets/stock_images/envod_operations_1.jpg"
+type = "image"
+title = "container port terminal crane loading cargo ship logistics operations at sunset"
+
+[[outputs]]
+id = "4h7jJ_YhxaUNfvtZdkqea"
+uri = "file://attached_assets/stock_images/envod_operations_2.jpg"
+type = "image"
+title = "container port terminal crane loading cargo ship logistics operations at sunset"
+
+[[outputs]]
+id = "nbmv4WTKy3Zxe645m_M4V"
+uri = "file://attached_assets/stock_images/envod_operations_3.jpg"
+type = "image"
+title = "container port terminal crane loading cargo ship logistics operations at sunset"
+
+[[outputs]]
+id = "kjSIHZ9ZGhyibfhbLLMyb"
+uri = "file://attached_assets/stock_images/envod_operations_4.jpg"
+type = "image"
+title = "container port terminal crane loading cargo ship logistics operations at sunset"
+
+[[outputs]]
+id = "UgcW152PZoI97rSaXCwlL"
+uri = "file://attached_assets/stock_images/envod_customs_1.jpg"
+type = "image"
+title = "customs clearance inspection warehouse officer checking cargo documents shipping containers"
+
+[[outputs]]
+id = "eiiJJ0b-EG0GGKQZr5g-p"
+uri = "file://attached_assets/stock_images/envod_customs_2.jpg"
+type = "image"
+title = "customs clearance inspection warehouse officer checking cargo documents shipping containers"
+
+[[outputs]]
+id = "IzONEHp_YcQJhQ6zy6Bwq"
+uri = "file://attached_assets/stock_images/envod_customs_3.jpg"
+type = "image"
+title = "customs clearance inspection warehouse officer checking cargo documents shipping containers"
+
+[[outputs]]
+id = "_3zBJfaUIu8fjVo74GIi9"
+uri = "file://attached_assets/stock_images/envod_exhibitions_1.jpg"
+type = "image"
+title = "trade show exhibition hall booth setup logistics event cargo handling"
+
+[[outputs]]
+id = "ahlUlZ3DZhPsLURXdVeMC"
+uri = "file://attached_assets/stock_images/envod_exhibitions_2.jpg"
+type = "image"
+title = "trade show exhibition hall booth setup logistics event cargo handling"
+
+[[outputs]]
+id = "JglJrocO9OTmXVqrPKLUM"
+uri = "file://attached_assets/stock_images/envod_exhibitions_3.jpg"
+type = "image"
+title = "trade show exhibition hall booth setup logistics event cargo handling"
+
+[[outputs]]
+id = "pcV2UJJI0-0mqNNgfCVfz"
+uri = "file://attached_assets/stock_images/envod_project-cargo_1.jpg"
+type = "image"
+title = "heavy project cargo oversized industrial equipment transport flatbed truck crane lifting"
+
+[[outputs]]
+id = "3bGpru4zmzvGs93-wagYS"
+uri = "file://attached_assets/stock_images/envod_project-cargo_2.jpg"
+type = "image"
+title = "heavy project cargo oversized industrial equipment transport flatbed truck crane lifting"
+
+[[outputs]]
+id = "ZCmE-dRf7ep2D12I4u0sz"
+uri = "file://attached_assets/stock_images/envod_project-cargo_3.jpg"
+type = "image"
+title = "heavy project cargo oversized industrial equipment transport flatbed truck crane lifting"
+
+[[outputs]]
+id = "NfcdmYIMv6-ARsutlkYls"
+uri = "file://attached_assets/stock_images/envod_project-cargo_4.jpg"
+type = "image"
+title = "heavy project cargo oversized industrial equipment transport flatbed truck crane lifting"
+
+[[outputs]]
+id = "U87kXjK6cSaiMsw8dAIBp"
+uri = "file://attached_assets/stock_images/envod_warehousing_1.jpg"
+type = "image"
+title = "modern logistics warehouse interior forklift shelving pallets distribution center"
+
+[[outputs]]
+id = "8T2OGi5y3Z5SwaKgInM83"
+uri = "file://attached_assets/stock_images/envod_warehousing_2.jpg"
+type = "image"
+title = "modern logistics warehouse interior forklift shelving pallets distribution center"
+
+[[outputs]]
+id = "HKTaWuQxuhIWqyaa-hHDZ"
+uri = "file://attached_assets/stock_images/envod_warehousing_3.jpg"
+type = "image"
+title = "modern logistics warehouse interior forklift shelving pallets distribution center"
+
+[[outputs]]
+id = "2fSsM1idrHkQsPZRLox0C"
+uri = "file://attached_assets/stock_images/envod_warehousing_4.jpg"
+type = "image"
+title = "modern logistics warehouse interior forklift shelving pallets distribution center"
+
+[[outputs]]
+id = "QQMX0B8KIvUtVSRNoZS0C"
+uri = "file://attached_assets/stock_images/envod_freight_1.jpg"
+type = "image"
+title = "freight forwarding cargo airplane truck fleet highway international shipping"
+
+[[outputs]]
+id = "bsleuwnwFGIVlObceH3O4"
+uri = "file://attached_assets/stock_images/envod_freight_2.jpg"
+type = "image"
+title = "freight forwarding cargo airplane truck fleet highway international shipping"
+
+[[outputs]]
+id = "Llx5cvfL5GJ2FOKP-DSi-"
+uri = "file://attached_assets/stock_images/envod_freight_3.jpg"
+type = "image"
+title = "freight forwarding cargo airplane truck fleet highway international shipping"
+
+[[outputs]]
+id = "cclN7fJjPiGW3kKAll_B2"
+uri = "file://attached_assets/stock_images/envod_freight_4.jpg"
+type = "image"
+title = "freight forwarding cargo airplane truck fleet highway international shipping"

@@ -10,6 +10,7 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
+- `pnpm --filter @workspace/api-server run seed-gallery` — seed the Operations Gallery from committed photos in `attached_assets/stock_images/` (idempotent, resumable; needs object-storage + DB env)
 - Required env: `DATABASE_URL`, `SESSION_SECRET`
 
 ## Stack
