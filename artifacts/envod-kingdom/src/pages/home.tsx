@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import {
   Search, Clock, Shield, Globe2, CheckCircle2, ArrowRight,
 } from "lucide-react";
+import { GlobalNetworkMap } from "@/components/GlobalNetworkMap";
 import { ScrollAnimSection, type AnimChapter } from "@/components/ScrollAnimSection";
 import { StatsCounter } from "@/components/StatsCounter";
 import { ClientMarquee } from "@/components/ClientMarquee";
@@ -90,6 +91,7 @@ export default function Home() {
 
   return (
     <div className="w-full">
+      <GlobalNetworkMap />
 
       {/* ── Scroll-Driven Animation Sections (Autoplay) ── */}
       <ScrollAnimSection

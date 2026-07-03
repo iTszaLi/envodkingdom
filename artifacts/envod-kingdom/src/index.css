@@ -200,3 +200,29 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* ── Global Network Map animations ── */
+@keyframes envod-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.envod-float {
+  animation: envod-float 3.2s ease-in-out infinite;
+}
+
+@keyframes envod-particle {
+  0% { transform: translate(0, 0); opacity: 0.2; }
+  100% { transform: translate(6px, -12px); opacity: 0.5; }
+}
+
+.envod-hide-scroll {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.envod-hide-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envod-float { animation: none; }
+}
