@@ -67,7 +67,7 @@ router.get("/", async (req, res): Promise<void> => {
 });
 
 router.post("/:section", upload.single("file"), async (req, res): Promise<void> => {
-  const { section } = req.params;
+  const section = String(req.params.section);
   if (!SECTIONS[section]) {
     res.status(400).json({ error: `Unknown section '${section}'. Must be: crane, air, warehouse.` });
     return;

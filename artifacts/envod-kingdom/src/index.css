@@ -226,3 +226,9 @@
 @media (prefers-reduced-motion: reduce) {
   .envod-float { animation: none; }
 }
+
+@layer components {
+  .admin-input {
+    @apply w-full bg-background border border-white/10 rounded-md px-3 py-2 text-sm text-white placeholder:text-muted-foreground focus:outline-none focus:border-secondary/60 transition-colors;
+  }
+}

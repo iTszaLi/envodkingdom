@@ -28,7 +28,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
     { href: "/services", en: "Services", ar: "خدماتنا" },
     { href: "/track", en: "Track", ar: "تتبع الشحنة" },
     { href: "/about", en: "About", ar: "عن الشركة" },
-    { href: "/blog", en: "Blog", ar: "المدونة" },
+    { href: "/gallery", en: "Gallery", ar: "المعرض" },
     { href: "/contact", en: "Contact", ar: "اتصل بنا" },
   ];
 
@@ -316,7 +316,7 @@ export function Footer() {
     [t("About Us", "عن الشركة"), "/about"],
     [t("All Services", "جميع الخدمات"), "/services"],
     [t("Track Shipment", "تتبع الشحنة"), "/track"],
-    [t("News & Blog", "أخبار ومدونة"), "/blog"],
+    [t("Gallery", "المعرض"), "/gallery"],
     [t("Contact Us", "اتصل بنا"), "/contact"],
     [t("Get a Free Quote", "احصل على عرض سعر"), "/contact"],
   ];

@@ -5,3 +5,4 @@
 - [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain
 - [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
 - [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG
+- [SEO head & crawlability](seo-head-and-crawl.md) — SEO via shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for crawlable media/sitemaps served under /api/

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useGetAdminMe, useAdminLogout } from "@workspace/api-client-react";
-import { LayoutDashboard, Package, FileText, Settings, LogOut, MessageSquare, HelpCircle, Star, Bell, Film } from "lucide-react";
+import { LayoutDashboard, Package, Settings, LogOut, MessageSquare, HelpCircle, Star, Bell, Film, Images } from "lucide-react";
 import logoPath from "@assets/image_1780437854819.png";
 
 export function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -33,7 +33,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
     { href: "/admin/services", label: "Services", icon: Settings },
     { href: "/admin/inquiries", label: "Inquiries", icon: MessageSquare },
     { href: "/admin/notifications", label: "Notifications", icon: Bell },
-    { href: "/admin/articles", label: "Blog", icon: FileText },
+    { href: "/admin/gallery", label: "Gallery", icon: Images },
     { href: "/admin/testimonials", label: "Testimonials", icon: Star },
     { href: "/admin/faqs", label: "FAQs", icon: HelpCircle },
     { href: "/admin/hero-videos", label: "Hero Videos", icon: Film },

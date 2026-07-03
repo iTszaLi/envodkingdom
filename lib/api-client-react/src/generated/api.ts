@@ -34,6 +34,9 @@ import type {
   Faq,
   FaqInput,
   FaqUpdate,
+  GalleryItem,
+  GalleryReorder,
+  GalleryUpdate,
   HealthStatus,
   HeroVideoSection,
   Inquiry,
@@ -42,6 +45,7 @@ import type {
   InquiryUpdate,
   ListArticlesParams,
   ListFaqsParams,
+  ListGalleryParams,
   ListInquiriesParams,
   ListShipmentsParams,
   LoginInput,
@@ -2583,6 +2587,380 @@ export const useDeleteArticle = <TError = ErrorType<unknown>,
         TContext
       > => {
       return useMutation(getDeleteArticleMutationOptions(options));
+    }
+
+export const getListGalleryUrl = (params?: ListGalleryParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/api/gallery?${stringifiedParams}` : `/api/gallery`
+}
+
+/**
+ * @summary List gallery items
+ */
+export const listGallery = async (params?: ListGalleryParams, options?: RequestInit): Promise<GalleryItem[]> => {
+
+  return customFetch<GalleryItem[]>(getListGalleryUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getListGalleryQueryKey = (params?: ListGalleryParams,) => {
+    return [
+    `/api/gallery`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getListGalleryQueryOptions = <TData = Awaited<ReturnType<typeof listGallery>>, TError = ErrorType<unknown>>(params?: ListGalleryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listGallery>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getListGalleryQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listGallery>>> = ({ signal }) => listGallery(params, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listGallery>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type ListGalleryQueryResult = NonNullable<Awaited<ReturnType<typeof listGallery>>>
+export type ListGalleryQueryError = ErrorType<unknown>
+
+
+/**
+ * @summary List gallery items
+ */
+
+export function useListGallery<TData = Awaited<ReturnType<typeof listGallery>>, TError = ErrorType<unknown>>(
+ params?: ListGalleryParams, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof listGallery>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getListGalleryQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getReorderGalleryUrl = () => {
+
+
+
+
+  return `/api/gallery/reorder`
+}
+
+/**
+ * @summary Reorder gallery items (admin)
+ */
+export const reorderGallery = async (galleryReorder: GalleryReorder, options?: RequestInit): Promise<GalleryItem[]> => {
+
+  return customFetch<GalleryItem[]>(getReorderGalleryUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      galleryReorder,)
+  }
+);}
+
+
+
+
+export const getReorderGalleryMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reorderGallery>>, TError,{data: BodyType<GalleryReorder>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof reorderGallery>>, TError,{data: BodyType<GalleryReorder>}, TContext> => {
+
+const mutationKey = ['reorderGallery'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reorderGallery>>, {data: BodyType<GalleryReorder>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  reorderGallery(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReorderGalleryMutationResult = NonNullable<Awaited<ReturnType<typeof reorderGallery>>>
+    export type ReorderGalleryMutationBody = BodyType<GalleryReorder>
+    export type ReorderGalleryMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Reorder gallery items (admin)
+ */
+export const useReorderGallery = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reorderGallery>>, TError,{data: BodyType<GalleryReorder>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof reorderGallery>>,
+        TError,
+        {data: BodyType<GalleryReorder>},
+        TContext
+      > => {
+      return useMutation(getReorderGalleryMutationOptions(options));
+    }
+
+export const getGetGalleryItemUrl = (id: number,) => {
+
+
+
+
+  return `/api/gallery/${id}`
+}
+
+/**
+ * @summary Get a gallery item
+ */
+export const getGalleryItem = async (id: number, options?: RequestInit): Promise<GalleryItem> => {
+
+  return customFetch<GalleryItem>(getGetGalleryItemUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+
+
+export const getGetGalleryItemQueryKey = (id: number,) => {
+    return [
+    `/api/gallery/${id}`
+    ] as const;
+    }
+
+
+export const getGetGalleryItemQueryOptions = <TData = Awaited<ReturnType<typeof getGalleryItem>>, TError = ErrorType<void>>(id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGalleryItem>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetGalleryItemQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getGalleryItem>>> = ({ signal }) => getGalleryItem(id, { signal, ...requestOptions });
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getGalleryItem>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetGalleryItemQueryResult = NonNullable<Awaited<ReturnType<typeof getGalleryItem>>>
+export type GetGalleryItemQueryError = ErrorType<void>
+
+
+/**
+ * @summary Get a gallery item
+ */
+
+export function useGetGalleryItem<TData = Awaited<ReturnType<typeof getGalleryItem>>, TError = ErrorType<void>>(
+ id: number, options?: { query?:UseQueryOptions<Awaited<ReturnType<typeof getGalleryItem>>, TError, TData>, request?: SecondParameter<typeof customFetch>}
+
+ ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+
+  const queryOptions = getGetGalleryItemQueryOptions(id,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+
+
+
+
+
+
+export const getUpdateGalleryItemUrl = (id: number,) => {
+
+
+
+
+  return `/api/gallery/${id}`
+}
+
+/**
+ * @summary Update gallery item metadata (admin)
+ */
+export const updateGalleryItem = async (id: number,
+    galleryUpdate: GalleryUpdate, options?: RequestInit): Promise<GalleryItem> => {
+
+  return customFetch<GalleryItem>(getUpdateGalleryItemUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      galleryUpdate,)
+  }
+);}
+
+
+
+
+export const getUpdateGalleryItemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateGalleryItem>>, TError,{id: number;data: BodyType<GalleryUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateGalleryItem>>, TError,{id: number;data: BodyType<GalleryUpdate>}, TContext> => {
+
+const mutationKey = ['updateGalleryItem'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateGalleryItem>>, {id: number;data: BodyType<GalleryUpdate>}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updateGalleryItem(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateGalleryItemMutationResult = NonNullable<Awaited<ReturnType<typeof updateGalleryItem>>>
+    export type UpdateGalleryItemMutationBody = BodyType<GalleryUpdate>
+    export type UpdateGalleryItemMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Update gallery item metadata (admin)
+ */
+export const useUpdateGalleryItem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateGalleryItem>>, TError,{id: number;data: BodyType<GalleryUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof updateGalleryItem>>,
+        TError,
+        {id: number;data: BodyType<GalleryUpdate>},
+        TContext
+      > => {
+      return useMutation(getUpdateGalleryItemMutationOptions(options));
+    }
+
+export const getDeleteGalleryItemUrl = (id: number,) => {
+
+
+
+
+  return `/api/gallery/${id}`
+}
+
+/**
+ * @summary Delete gallery item (admin)
+ */
+export const deleteGalleryItem = async (id: number, options?: RequestInit): Promise<void> => {
+
+  return customFetch<void>(getDeleteGalleryItemUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+);}
+
+
+
+
+export const getDeleteGalleryItemMutationOptions = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteGalleryItem>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteGalleryItem>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['deleteGalleryItem'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteGalleryItem>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  deleteGalleryItem(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeleteGalleryItemMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGalleryItem>>>
+
+    export type DeleteGalleryItemMutationError = ErrorType<unknown>
+
+    /**
+ * @summary Delete gallery item (admin)
+ */
+export const useDeleteGalleryItem = <TError = ErrorType<unknown>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteGalleryItem>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}
+ ): UseMutationResult<
+        Awaited<ReturnType<typeof deleteGalleryItem>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getDeleteGalleryItemMutationOptions(options));
     }
 
 export const getListClientsUrl = () => {

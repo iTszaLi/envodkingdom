@@ -708,6 +708,144 @@ export const DeleteArticleParams = zod.object({
 
 
 /**
+ * @summary List gallery items
+ */
+export const ListGalleryQueryParams = zod.object({
+  "category": zod.coerce.string().optional(),
+  "published": zod.coerce.boolean().optional()
+})
+
+export const ListGalleryResponseItem = zod.object({
+  "id": zod.number(),
+  "mediaType": zod.string(),
+  "objectKey": zod.string(),
+  "widths": zod.array(zod.number()),
+  "width": zod.number(),
+  "height": zod.number(),
+  "blurDataUrl": zod.string().nullish(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "altText": zod.string().nullish(),
+  "category": zod.string(),
+  "location": zod.string().nullish(),
+  "monthYear": zod.string().nullish(),
+  "videoUrl": zod.string().nullish(),
+  "sortOrder": zod.number(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+export const ListGalleryResponse = zod.array(ListGalleryResponseItem)
+
+
+/**
+ * @summary Reorder gallery items (admin)
+ */
+export const ReorderGalleryBody = zod.object({
+  "ids": zod.array(zod.number())
+})
+
+export const ReorderGalleryResponseItem = zod.object({
+  "id": zod.number(),
+  "mediaType": zod.string(),
+  "objectKey": zod.string(),
+  "widths": zod.array(zod.number()),
+  "width": zod.number(),
+  "height": zod.number(),
+  "blurDataUrl": zod.string().nullish(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "altText": zod.string().nullish(),
+  "category": zod.string(),
+  "location": zod.string().nullish(),
+  "monthYear": zod.string().nullish(),
+  "videoUrl": zod.string().nullish(),
+  "sortOrder": zod.number(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+export const ReorderGalleryResponse = zod.array(ReorderGalleryResponseItem)
+
+
+/**
+ * @summary Get a gallery item
+ */
+export const GetGalleryItemParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const GetGalleryItemResponse = zod.object({
+  "id": zod.number(),
+  "mediaType": zod.string(),
+  "objectKey": zod.string(),
+  "widths": zod.array(zod.number()),
+  "width": zod.number(),
+  "height": zod.number(),
+  "blurDataUrl": zod.string().nullish(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "altText": zod.string().nullish(),
+  "category": zod.string(),
+  "location": zod.string().nullish(),
+  "monthYear": zod.string().nullish(),
+  "videoUrl": zod.string().nullish(),
+  "sortOrder": zod.number(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Update gallery item metadata (admin)
+ */
+export const UpdateGalleryItemParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const UpdateGalleryItemBody = zod.object({
+  "title": zod.string().optional(),
+  "description": zod.string().optional(),
+  "altText": zod.string().optional(),
+  "category": zod.string().optional(),
+  "location": zod.string().optional(),
+  "monthYear": zod.string().optional(),
+  "sortOrder": zod.number().optional(),
+  "isPublished": zod.boolean().optional()
+})
+
+export const UpdateGalleryItemResponse = zod.object({
+  "id": zod.number(),
+  "mediaType": zod.string(),
+  "objectKey": zod.string(),
+  "widths": zod.array(zod.number()),
+  "width": zod.number(),
+  "height": zod.number(),
+  "blurDataUrl": zod.string().nullish(),
+  "title": zod.string(),
+  "description": zod.string().nullish(),
+  "altText": zod.string().nullish(),
+  "category": zod.string(),
+  "location": zod.string().nullish(),
+  "monthYear": zod.string().nullish(),
+  "videoUrl": zod.string().nullish(),
+  "sortOrder": zod.number(),
+  "isPublished": zod.boolean(),
+  "createdAt": zod.string(),
+  "updatedAt": zod.string()
+})
+
+
+/**
+ * @summary Delete gallery item (admin)
+ */
+export const DeleteGalleryItemParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+/**
  * @summary List client logos
  */
 export const ListClientsResponseItem = zod.object({

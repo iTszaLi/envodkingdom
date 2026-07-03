@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter } from "wouter";
+import { Switch, Route, Router as WouterRouter, Redirect } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
@@ -13,14 +13,14 @@ import Track from "@/pages/track";
 import Services from "@/pages/services";
 import Contact from "@/pages/contact";
 import About from "@/pages/about";
-import Blog from "@/pages/blog/index";
-import BlogPost from "@/pages/blog/[slug]";
+import Gallery from "@/pages/gallery/index";
 import ServiceDetail from "@/pages/service-detail";
 
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
 import AdminNotifications from "@/pages/admin/notifications";
 import AdminHeroVideos from "@/pages/admin/hero-videos";
+import AdminGallery from "@/pages/admin/gallery";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +41,7 @@ function Router() {
       <Route path="/admin/settings" component={AdminDashboard} />
       <Route path="/admin/notifications" component={AdminNotifications} />
       <Route path="/admin/hero-videos" component={AdminHeroVideos} />
+      <Route path="/admin/gallery" component={AdminGallery} />
       
       <Route path="/">
         <MainLayout><Home /></MainLayout>
@@ -57,12 +58,11 @@ function Router() {
       <Route path="/about">
         <MainLayout><About /></MainLayout>
       </Route>
-      <Route path="/blog">
-        <MainLayout><Blog /></MainLayout>
+      <Route path="/gallery">
+        <MainLayout><Gallery /></MainLayout>
       </Route>
-      <Route path="/blog/:slug">
-        <MainLayout><BlogPost /></MainLayout>
-      </Route>
+      <Route path="/blog"><Redirect to="/gallery" /></Route>
+      <Route path="/blog/:slug"><Redirect to="/gallery" /></Route>
       <Route path="/contact">
         <MainLayout><Contact /></MainLayout>
       </Route>

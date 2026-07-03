@@ -13,6 +13,8 @@ import inquiriesRouter from "./inquiries";
 import settingsRouter from "./settings";
 import notificationsRouter from "./notifications";
 import heroVideosRouter from "./hero-videos";
+import galleryRouter from "./gallery";
+import seoRouter from "./seo";
 
 const router: IRouter = Router();
 
@@ -30,5 +32,7 @@ router.use("/inquiries", inquiriesRouter);
 router.use("/settings", settingsRouter);
 router.use("/notifications", notificationsRouter);
 router.use("/hero-videos", heroVideosRouter);
+router.use("/gallery", galleryRouter);
+router.use(seoRouter);
 
 export default router;

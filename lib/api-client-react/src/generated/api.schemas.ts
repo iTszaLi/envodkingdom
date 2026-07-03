@@ -359,6 +359,48 @@ export interface ArticlePublish {
   isPublished: boolean;
 }
 
+export interface GalleryItem {
+  id: number;
+  mediaType: string;
+  objectKey: string;
+  widths: number[];
+  width: number;
+  height: number;
+  /** @nullable */
+  blurDataUrl?: string | null;
+  title: string;
+  /** @nullable */
+  description?: string | null;
+  /** @nullable */
+  altText?: string | null;
+  category: string;
+  /** @nullable */
+  location?: string | null;
+  /** @nullable */
+  monthYear?: string | null;
+  /** @nullable */
+  videoUrl?: string | null;
+  sortOrder: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GalleryUpdate {
+  title?: string;
+  description?: string;
+  altText?: string;
+  category?: string;
+  location?: string;
+  monthYear?: string;
+  sortOrder?: number;
+  isPublished?: boolean;
+}
+
+export interface GalleryReorder {
+  ids: number[];
+}
+
 export interface Client {
   id: number;
   name: string;
@@ -518,6 +560,11 @@ category?: string;
 published?: boolean;
 page?: number;
 limit?: number;
+};
+
+export type ListGalleryParams = {
+category?: string;
+published?: boolean;
 };
 
 export type ListInquiriesParams = {
