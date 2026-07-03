@@ -7,6 +7,7 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm --filter @workspace/envod-kingdom run dev` — run the frontend (Vite)
 - `pnpm run typecheck` — full typecheck across all packages
+- `pnpm --filter @workspace/api-server run test` — run the API server test suite (vitest, in-memory Postgres via PGlite)
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
@@ -77,6 +78,7 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 - When using query hooks with `enabled`, always pass `queryKey` too: `{ query: { enabled: !!id, queryKey: getXQueryKey(id) } }`
 - `pnpm run typecheck:libs` must be run before `pnpm --filter @workspace/api-server run typecheck` if DB schema changed
 - Never run `pnpm dev` at workspace root — use workflow restarts instead
+- API tests use PGlite (in-memory Postgres) so they need no real DB. Because drizzle-orm creates a per-package peer variant when an optional driver peer (e.g. `@electric-sql/pglite`) is present, **every** package that both depends on `drizzle-orm` and shares types with `@workspace/db` must have `@electric-sql/pglite` installed (currently `lib/db`, `api-server`, `scripts`) or workspace typecheck breaks with "separate declarations of a private property 'shouldInlineParams'"
 
 ## User preferences
 

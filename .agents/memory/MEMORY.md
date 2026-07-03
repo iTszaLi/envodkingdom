@@ -7,3 +7,4 @@
 - [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG
 - [SEO head & crawlability](seo-head-and-crawl.md) — SEO via shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for crawlable media/sitemaps served under /api/
 - [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — absolute dropdowns overflowing a backdrop-blur header vanish on iOS Safari (fine in Chromium); portal to body as fixed opaque panel with measured top offset
+- [drizzle-orm peer variants](drizzle-peer-variant.md) — an optional driver peer (e.g. PGlite) forks drizzle-orm per package; all drizzle+@workspace/db consumers must share the same peer or typecheck breaks on "shouldInlineParams"
