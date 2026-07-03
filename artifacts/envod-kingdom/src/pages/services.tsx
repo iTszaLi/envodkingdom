@@ -8,6 +8,7 @@ import {
   Ship, Plane, Truck, Package, ShieldCheck, Clock, FileCheck,
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
   Heart, UtensilsCrossed, PawPrint,
+  Anchor, AlertTriangle, Maximize2,
   CheckCircle2, ArrowRight, Globe2, Award,
 } from "lucide-react";
 
@@ -35,6 +36,9 @@ const EXT: Record<number, ServiceExt> = {
   12: { features: ["Cold chain management", "Pharmaceutical compliance", "SFDA-cleared shipments", "Hospital & clinic delivery", "Controlled temperature tracking"], featuresAr: ["إدارة سلسلة التبريد", "امتثال صيدلاني", "شحنات مخلصة من هيئة الغذاء والدواء", "توصيل للمستشفيات والعيادات", "تتبع درجات الحرارة المضبوطة"], tag: "Cold Chain", tagAr: "سلسلة تبريد" },
   13: { features: ["Temperature-controlled transport", "SFDA food clearance", "Halal certification support", "Perishable goods handling", "Supermarket distribution"], featuresAr: ["نقل بدرجات حرارة مضبوطة", "تخليص غذائي من هيئة الغذاء والدواء", "دعم شهادة الحلال", "مناولة البضائع القابلة للتلف", "توزيع للسوبرماركت"] },
   14: { features: ["SFDA veterinary import", "Live animal transport", "Animal health certificates", "Quarantine coordination", "GCC animal movement"], featuresAr: ["استيراد بيطري من هيئة الغذاء والدواء", "نقل الحيوانات الحية", "شهادات صحة الحيوانات", "تنسيق الحجر الصحي", "تنقل الحيوانات خليجياً"] },
+  15: { features: ["Heavy machinery", "Steel structures", "Industrial equipment", "Construction materials", "Non-containerized cargo", "Port-to-port breakbulk"], featuresAr: ["آلات ثقيلة", "هياكل فولاذية", "معدات صناعية", "مواد بناء", "بضائع غير حاوية", "بريك بالك من ميناء لميناء"], tag: "Breakbulk", tagAr: "بريك بالك" },
+  16: { features: ["IMO & IATA compliant", "Hazardous chemicals", "Flammable goods", "Temperature-sensitive DG", "Certified DG handling", "Safe packaging & docs"], featuresAr: ["متوافق مع IMO وIATA", "مواد كيميائية خطرة", "سلع قابلة للاشتعال", "DG حساس للحرارة", "مناولة DG معتمدة", "تغليف آمن وتوثيق"], tag: "DG Certified", tagAr: "معتمد DG" },
+  17: { features: ["Heavy lift cargo", "Oversized machinery", "Wind turbine components", "Transformers", "Industrial project cargo", "Specialized trailers & rigging"], featuresAr: ["شحن ثقيل", "آلات ضخمة", "مكونات توربينات الرياح", "محولات", "بضائع مشاريع صناعية", "مقطورات ورافعات متخصصة"], tag: "OOG Specialist", tagAr: "متخصص OOG" },
 };
 
 // ─── Icon resolver ───────────────────────────────────────────────────────────
@@ -43,6 +47,7 @@ function ServiceIcon({ name, className = "w-7 h-7" }: { name: string; className?
     Ship, Plane, Truck, Package, Warehouse, FileCheck, GitBranch,
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck, Clock,
+    Anchor, AlertTriangle, Maximize2,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} />;
@@ -279,7 +284,7 @@ export default function Services() {
             animate={{ opacity: 1, y: 0 }}
             className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-5"
           >
-            {t("14 SPECIALIZED SERVICES", "14 خدمة متخصصة")}
+            {t("17 SPECIALIZED SERVICES", "17 خدمة متخصصة")}
           </motion.p>
 
           <motion.h1
@@ -301,8 +306,8 @@ export default function Services() {
             className="text-white/55 max-w-2xl mx-auto text-base leading-relaxed mb-10"
           >
             {t(
-              "From ATA Carnet and exhibition logistics to project cargo, medical cold-chain and GCC transportation — backed by 25+ years of Saudi expertise.",
-              "من كارنيه ATA ولوجستيات المعارض إلى بضائع المشاريع والسلسلة الباردة الطبية والنقل الخليجي — مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
+              "From ATA Carnet and exhibition logistics to breakbulk, dangerous goods, oversized OOG cargo, project cargo, medical cold-chain and GCC transportation — backed by 25+ years of Saudi expertise.",
+              "من كارنيه ATA ولوجستيات المعارض إلى شحن بريك بالك والبضائع الخطرة والبضائع الضخمة OOG وبضائع المشاريع والسلسلة الباردة الطبية والنقل الخليجي — مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
             )}
           </motion.p>
 
@@ -317,7 +322,7 @@ export default function Services() {
               { icon: Award,       v: "25+",  l: t("Years",     "سنة")    },
               { icon: Globe2,      v: "50+",  l: t("Countries", "دولة")   },
               { icon: Clock,       v: "24hr", l: t("Clearance", "تخليص")  },
-              { icon: ShieldCheck, v: "14",   l: t("Services",  "خدمة")   },
+              { icon: ShieldCheck, v: "17",   l: t("Services",  "خدمة")   },
             ].map(({ icon: Icon, v, l }) => (
               <div key={v} className={`flex items-center gap-2 text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <Icon className="w-4 h-4 text-secondary" />
