@@ -155,24 +155,27 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
       className="group relative"
     >
       <motion.div
-        whileHover={{ y: -5 }}
+        whileHover={{ y: -6, boxShadow: "0 20px 60px -12px rgba(10,35,66,0.15)" }}
         transition={{ type: "spring", stiffness: 300, damping: 22 }}
         onClick={() => setOpen((o) => !o)}
         className={`
-          relative rounded-2xl p-6 cursor-pointer h-full border transition-all duration-300 overflow-hidden
-          bg-white/[0.03] backdrop-blur-sm
+          relative rounded-2xl p-6 cursor-pointer h-full transition-all duration-300 overflow-hidden
+          bg-white border
           ${service.accent
-            ? "border-secondary/30 hover:border-secondary/60 bg-secondary/[0.04]"
-            : "border-white/8 hover:border-white/20"
+            ? "border-secondary/30 shadow-md shadow-secondary/8"
+            : "border-[#E2E8F0] shadow-sm"
           }
         `}
       >
-        <div className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none rounded-2xl ${service.accent ? "bg-secondary/5" : "bg-white/[0.02]"}`} />
+        {/* Accent top line */}
+        {service.accent && (
+          <div className="absolute top-0 left-6 right-6 h-0.5 bg-gradient-to-r from-transparent via-secondary to-transparent" />
+        )}
 
         {/* Tag badge */}
         {service.tag && (
           <div className="absolute top-4 right-4 rtl:right-auto rtl:left-4">
-            <span className="text-[9px] font-bold tracking-widest uppercase bg-secondary/20 text-secondary px-2 py-0.5 rounded-full border border-secondary/30">
+            <span className="text-[9px] font-bold tracking-widest uppercase bg-secondary/10 text-secondary px-2 py-0.5 rounded-full border border-secondary/20">
               {isRtl ? service.tagAr : service.tag}
             </span>
           </div>
@@ -182,16 +185,16 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
         <motion.div
           whileHover={{ rotate: 8, scale: 1.1 }}
           transition={{ type: "spring", stiffness: 300 }}
-          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${service.accent ? "bg-secondary/15" : "bg-white/5"} group-hover:bg-secondary/10 transition-colors`}
+          className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 group-hover:bg-secondary/15 transition-colors ${service.accent ? "bg-secondary/12" : "bg-[#F1F5F9]"}`}
         >
-          <Icon className={`w-6 h-6 ${service.accent ? "text-secondary" : "text-white/60 group-hover:text-secondary"} transition-colors`} />
+          <Icon className="w-6 h-6 text-secondary transition-colors" />
         </motion.div>
 
-        <h3 className={`font-bold text-white mb-2 text-base leading-tight ${isRtl ? "text-right" : "text-left"}`}>{title}</h3>
-        <p className={`text-sm text-white/50 leading-relaxed mb-4 ${isRtl ? "text-right" : "text-left"}`}>{desc}</p>
+        <h3 className={`font-bold mb-2 text-base leading-tight ${isRtl ? "text-right" : "text-left"}`} style={{ color: "#0A2342" }}>{title}</h3>
+        <p className={`text-sm leading-relaxed mb-4 ${isRtl ? "text-right" : "text-left"}`} style={{ color: "#64748B" }}>{desc}</p>
 
         {/* Expand toggle */}
-        <div className={`flex items-center gap-1.5 text-xs font-semibold ${service.accent ? "text-secondary" : "text-white/40 group-hover:text-secondary"} transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
+        <div className={`flex items-center gap-1.5 text-xs font-semibold text-secondary transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
           <span>{open ? (isRtl ? "أقل" : "Less") : (isRtl ? "المزيد" : "Details")}</span>
           <motion.div animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.3 }}>
             <ChevronDown className="w-3.5 h-3.5" />
@@ -214,7 +217,8 @@ function ServiceCard({ service, index }: { service: Service; index: number }) {
                   initial={{ opacity: 0, x: isRtl ? 8 : -8 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04 }}
-                  className={`flex items-center gap-1.5 text-xs text-white/60 ${isRtl ? "flex-row-reverse text-right" : ""}`}
+                  className={`flex items-center gap-1.5 text-xs ${isRtl ? "flex-row-reverse text-right" : ""}`}
+                  style={{ color: "#475569" }}
                 >
                   <CheckCircle2 className="w-3 h-3 text-secondary shrink-0" />
                   {f}
@@ -232,18 +236,12 @@ export function ServicesSection() {
   const { t, isRtl } = useLanguage();
 
   return (
-    <section className="py-28 bg-background relative overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none"
-        style={{
-          backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-      <div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[400px] pointer-events-none"
-        style={{ background: "radial-gradient(ellipse, rgba(214,40,40,0.04) 0%, transparent 70%)" }}
-      />
+    <section className="py-32 relative overflow-hidden" style={{ background: "#F8FAFC" }}>
+      {/* Subtle light decorative blobs */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none opacity-[0.04]"
+        style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] pointer-events-none opacity-[0.03]"
+        style={{ background: "radial-gradient(circle, #D62828 0%, transparent 70%)" }} />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-16 ${isRtl ? "rtl" : ""}`}>
@@ -260,7 +258,8 @@ export function ServicesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="text-3xl md:text-5xl font-black text-white mb-4"
+            className="text-3xl md:text-5xl font-black mb-4"
+            style={{ color: "#0A2342" }}
           >
             {t("Comprehensive", "خدمات لوجستية")}
             <span className="text-secondary"> {t("Logistics Solutions", "شاملة ومتخصصة")}</span>
@@ -270,7 +269,8 @@ export function ServicesSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
-            className="text-muted-foreground max-w-2xl mx-auto text-sm leading-relaxed"
+            className="max-w-2xl mx-auto text-sm leading-relaxed"
+            style={{ color: "#64748B" }}
           >
             {t(
               "From Exhibition & Event Logistics to Customs Clearance, ATA Carnet and Project Cargo — 12 specialised services backed by 25+ years of Saudi expertise.",
@@ -279,7 +279,7 @@ export function ServicesSection() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
           {SERVICES.map((service, i) => (
             <ServiceCard key={i} service={service} index={i} />
           ))}
@@ -290,11 +290,11 @@ export function ServicesSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
-          className="text-center mt-12"
+          className="text-center mt-14"
         >
           <Link
             href="/services"
-            className="inline-block border border-white/15 hover:border-secondary/50 text-white hover:text-secondary py-3 px-10 rounded-xl font-semibold transition-all text-sm tracking-wide"
+            className="inline-block border-2 border-[#0A2342] hover:border-secondary hover:text-secondary text-[#0A2342] py-3.5 px-12 rounded-xl font-bold transition-all text-sm tracking-wide hover:-translate-y-0.5"
           >
             {t("View All Services", "عرض جميع الخدمات")}
           </Link>

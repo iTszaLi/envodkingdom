@@ -155,21 +155,12 @@ export function IndustriesSection() {
   const { t, isRtl } = useLanguage();
 
   return (
-    <section className="py-28 relative overflow-hidden bg-background">
-      {/* subtle grid overlay */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
-      {/* red radial glow */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 70% 40% at 50% 80%,rgba(214,40,40,0.05) 0%,transparent 70%)" }}
-      />
+    <section className="py-32 relative overflow-hidden" style={{ background: "#FFFFFF" }}>
+      {/* Subtle light decoration */}
+      <div className="absolute top-0 left-0 w-[500px] h-[500px] pointer-events-none opacity-[0.03]"
+        style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
+      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] pointer-events-none opacity-[0.03]"
+        style={{ background: "radial-gradient(circle, #D62828 0%, transparent 70%)" }} />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Heading */}
@@ -187,7 +178,8 @@ export function IndustriesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
-            className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight"
+            className="text-3xl md:text-5xl font-black mb-4 leading-tight"
+            style={{ color: "#0A2342" }}
           >
             {t("Logistics Expertise Across", "خبرة لوجستية عبر")}
             <span className="text-secondary"> {t("Every Industry", "كل القطاعات")}</span>
@@ -197,7 +189,8 @@ export function IndustriesSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.16 }}
-            className="text-white/45 max-w-2xl mx-auto text-sm leading-relaxed"
+            className="max-w-2xl mx-auto text-sm leading-relaxed"
+            style={{ color: "#64748B" }}
           >
             {t(
               "From Saudi Aramco's mega-projects to Qiddiya's entertainment cargo — ENVOD KINGDOM delivers specialised logistics solutions across 12 key industries.",
@@ -231,19 +224,19 @@ export function IndustriesSection() {
                 <div
                   className={`
                     relative flex flex-col items-center text-center p-5 rounded-2xl cursor-default
-                    border border-white/7 hover:border-secondary/35
-                    bg-white/[0.025] hover:bg-white/[0.05]
+                    bg-white border border-[#E2E8F0] hover:border-secondary/30
+                    shadow-sm hover:shadow-md
                     transition-all duration-300 h-full
                   `}
                 >
-                  {/* Glow on hover */}
+                  {/* Subtle glow on hover */}
                   <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                    style={{ background: "radial-gradient(ellipse 80% 60% at 50% 100%,rgba(214,40,40,0.08) 0%,transparent 70%)" }}
+                    style={{ background: "radial-gradient(ellipse 80% 60% at 50% 100%,rgba(214,40,40,0.04) 0%,transparent 70%)" }}
                   />
 
                   {/* Tag badge */}
                   {tag && (
-                    <span className="absolute top-3 right-3 text-[8px] font-bold tracking-widest uppercase text-secondary bg-secondary/15 border border-secondary/25 px-1.5 py-0.5 rounded-full">
+                    <span className="absolute top-3 right-3 text-[8px] font-bold tracking-widest uppercase text-secondary bg-secondary/10 border border-secondary/20 px-1.5 py-0.5 rounded-full">
                       {tag}
                     </span>
                   )}
@@ -254,10 +247,10 @@ export function IndustriesSection() {
                   </div>
 
                   {/* Name */}
-                  <h3 className="font-bold text-white text-[13px] leading-tight mb-2">{name}</h3>
+                  <h3 className="font-bold text-[13px] leading-tight mb-2" style={{ color: "#0A2342" }}>{name}</h3>
 
-                  {/* Description — revealed on hover (desktop), always on mobile */}
-                  <p className="text-[10px] text-white/40 leading-relaxed group-hover:text-white/60 transition-colors duration-300">
+                  {/* Description */}
+                  <p className="text-[10px] leading-relaxed transition-colors duration-300" style={{ color: "#94A3B8" }}>
                     {desc}
                   </p>
                 </div>
@@ -274,7 +267,7 @@ export function IndustriesSection() {
           transition={{ delay: 0.3 }}
           className="text-center mt-12"
         >
-          <p className="text-white/35 text-sm mb-5">
+          <p className="text-sm mb-5" style={{ color: "#64748B" }}>
             {t(
               "Don't see your industry? We handle all cargo types.",
               "لا ترى قطاعك؟ نتعامل مع جميع أنواع البضائع.",

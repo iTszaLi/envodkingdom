@@ -129,7 +129,7 @@ export default function Home() {
       <ClientMarquee />
 
       {/* ── Track Shipment ── */}
-      <section className="py-16 bg-card/60 border-y border-white/5">
+      <section className="py-20 border-y" style={{ background: "#F8FAFC", borderColor: "#E2E8F0" }}>
         <div className="max-w-4xl mx-auto px-6 text-center">
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -139,23 +139,23 @@ export default function Home() {
             <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3">
               {t("REAL-TIME TRACKING", "التتبع الفوري")}
             </p>
-            <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
+            <h3 className="text-2xl md:text-3xl font-bold mb-2" style={{ color: "#0A2342" }}>
               {t("Track Your Cargo", "تتبع شحنتك")}
             </h3>
-            <p className="text-muted-foreground mb-6 text-sm">
+            <p className="mb-6 text-sm" style={{ color: "#64748B" }}>
               {t("Enter your tracking, reference, or invoice number.", "أدخل رقم التتبع أو المرجع أو الفاتورة.")}
             </p>
             <form onSubmit={handleTrack} className="flex flex-col md:flex-row gap-2 max-w-xl mx-auto">
               <div className="relative flex-1">
-                <Search className={`absolute ${isRtl ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4`} />
+                <Search className={`absolute ${isRtl ? "right-3" : "left-3"} top-1/2 -translate-y-1/2 w-4 h-4`} style={{ color: "#94A3B8" }} />
                 <Input
                   value={tracking}
                   onChange={(e) => setTracking(e.target.value)}
                   placeholder={t("e.g. ENVOD-2024-001", "مثال: ENVOD-2024-001")}
-                  className={`bg-background border-white/10 text-white ${isRtl ? "pr-10" : "pl-10"} py-5`}
+                  className={`bg-white border-[#E2E8F0] text-[#1A202C] placeholder:text-[#94A3B8] focus:border-secondary ${isRtl ? "pr-10" : "pl-10"} py-5`}
                 />
               </div>
-              <Button type="submit" className="bg-secondary hover:bg-secondary/90 text-white py-5 px-7 shrink-0">
+              <Button type="submit" className="bg-secondary hover:bg-secondary/90 text-white py-5 px-7 shrink-0 shadow-md shadow-secondary/20 hover:-translate-y-0.5 transition-transform">
                 {t("Track", "تتبع")}
               </Button>
             </form>
@@ -164,15 +164,10 @@ export default function Home() {
       </section>
 
       {/* ── Why ENVOD — 8 Pillars ── */}
-      <section className="py-28 bg-background relative overflow-hidden">
-        <div
-          className="absolute inset-0 pointer-events-none opacity-[0.025]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
+      <section className="py-32 relative overflow-hidden" style={{ background: "#FFFFFF" }}>
+        {/* Subtle decoration */}
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none opacity-[0.03]"
+          style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
         <div className="container mx-auto px-4 relative z-10">
           <div className={`text-center mb-16 ${isRtl ? "rtl" : ""}`}>
             <motion.p
@@ -188,14 +183,15 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-3xl md:text-5xl font-black text-white"
+              className="text-3xl md:text-5xl font-black"
+              style={{ color: "#0A2342" }}
             >
               {t("Saudi Arabia's", "الشريك")}
               <span className="text-secondary"> {t("Premium Logistics Partner", "اللوجستي الأول في المملكة")}</span>
             </motion.h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               { icon: Clock,        stat: "24hr",  en: "Customs Clearance",          ar: "تخليص جمركي" },
               { icon: Globe2,       stat: "50+",   en: "Countries Served",            ar: "دولة نخدمها" },
@@ -212,14 +208,14 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ delay: (i % 4) * 0.08, duration: 0.5 }}
-                whileHover={{ y: -4 }}
-                className={`bg-card rounded-xl p-6 border border-white/5 hover:border-secondary/30 transition-all group cursor-default ${isRtl ? "text-right" : ""}`}
+                whileHover={{ y: -5, boxShadow: "0 16px 40px -8px rgba(10,35,66,0.12)" }}
+                className={`bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-sm hover:border-secondary/30 transition-all group cursor-default ${isRtl ? "text-right" : ""}`}
               >
-                <div className="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center mb-4 group-hover:bg-secondary/20 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-secondary/8 flex items-center justify-center mb-4 group-hover:bg-secondary/15 transition-colors">
                   <Icon className="w-5 h-5 text-secondary" />
                 </div>
                 <div className="text-2xl font-black text-secondary mb-1">{stat}</div>
-                <div className="text-sm font-semibold text-white">{isRtl ? ar : en}</div>
+                <div className="text-sm font-semibold" style={{ color: "#1A202C" }}>{isRtl ? ar : en}</div>
               </motion.div>
             ))}
           </div>

@@ -143,19 +143,19 @@ function AccordionItem({
   const a = isRtl ? faq.answerAr : faq.answer;
 
   return (
-    <div className={`border-b border-white/8 last:border-0 ${isRtl ? "rtl" : ""}`}>
+    <div className={`border-b border-[#E2E8F0] last:border-0 ${isRtl ? "rtl" : ""}`}>
       <button
         onClick={onToggle}
         className={`w-full py-5 flex items-start gap-4 text-left group ${isRtl ? "flex-row-reverse text-right" : ""}`}
         aria-expanded={isOpen}
       >
-        <span className={`flex-none mt-0.5 w-6 h-6 rounded-full flex items-center justify-center border transition-all duration-300 ${isOpen ? "bg-secondary border-secondary" : "border-white/20 group-hover:border-secondary/50"}`}>
+        <span className={`flex-none mt-0.5 w-6 h-6 rounded-full flex items-center justify-center border transition-all duration-300 ${isOpen ? "bg-secondary border-secondary" : "border-[#CBD5E1] group-hover:border-secondary/50"}`}>
           {isOpen
             ? <Minus className="w-3 h-3 text-white" />
-            : <Plus className={`w-3 h-3 text-white/50 group-hover:text-secondary transition-colors`} />
+            : <Plus className="w-3 h-3 text-[#94A3B8] group-hover:text-secondary transition-colors" />
           }
         </span>
-        <span className={`font-semibold text-sm md:text-base leading-snug transition-colors duration-200 ${isOpen ? "text-white" : "text-white/70 group-hover:text-white"}`}>
+        <span className={`font-semibold text-sm md:text-base leading-snug transition-colors duration-200 ${isOpen ? "text-secondary" : "text-[#475569] group-hover:text-[#0A2342]"}`}>
           {q}
         </span>
       </button>
@@ -169,7 +169,7 @@ function AccordionItem({
             transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             className="overflow-hidden"
           >
-            <p className={`pb-5 pl-10 pr-4 text-sm text-white/55 leading-relaxed ${isRtl ? "pr-10 pl-4" : ""}`}>
+            <p className={`pb-5 pl-10 pr-4 text-sm leading-relaxed ${isRtl ? "pr-10 pl-4" : ""}`} style={{ color: "#64748B" }}>
               {a}
             </p>
           </motion.div>
@@ -205,9 +205,10 @@ export function FAQSection() {
 
   return (
     <section
-      className="py-20 bg-background relative overflow-hidden"
+      className="py-28 relative overflow-hidden"
       id="faq"
       aria-labelledby="faq-heading"
+      style={{ background: "#F8FAFC" }}
     >
       {/* FAQ Schema */}
       <script
@@ -215,8 +216,10 @@ export function FAQSection() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <div className="absolute inset-0 pointer-events-none opacity-[0.025]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/20 to-transparent" />
+      {/* Subtle decoration */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] pointer-events-none opacity-[0.03]"
+        style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#0A2342]/10 to-transparent" />
 
       <div className="container mx-auto px-4 relative z-10">
 
@@ -236,7 +239,8 @@ export function FAQSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.08 }}
-            className="text-3xl md:text-4xl font-black text-white mb-4"
+            className="text-3xl md:text-4xl font-black mb-4"
+          style={{ color: "#0A2342" }}
           >
             {t("Everything You Need to Know About", "كل ما تحتاج معرفته عن")}
             <span className="text-secondary"> {t("Our Logistics Services", "خدماتنا اللوجستية")}</span>
@@ -246,7 +250,8 @@ export function FAQSection() {
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ delay: 0.16 }}
-            className="text-white/40 max-w-2xl mx-auto text-sm"
+            className="max-w-2xl mx-auto text-sm"
+            style={{ color: "#64748B" }}
           >
             {t(
               "Common questions about customs clearance, road freight, air freight, sea freight, warehousing, and exhibition logistics in Saudi Arabia.",
@@ -264,7 +269,7 @@ export function FAQSection() {
               <button
                 key={cat}
                 onClick={() => { setActiveCategory(cat); setOpenIdx(null); }}
-                className={`text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-200 ${active ? "bg-secondary border-secondary text-white shadow-lg shadow-secondary/20" : "border-white/15 text-white/50 hover:border-secondary/40 hover:text-white/70"}`}
+                className={`text-[11px] font-bold uppercase tracking-wider px-4 py-2 rounded-full border transition-all duration-200 ${active ? "bg-secondary border-secondary text-white shadow-lg shadow-secondary/20" : "border-[#E2E8F0] text-[#64748B] hover:border-secondary/40 hover:text-secondary bg-white"}`}
               >
                 {label}
               </button>
@@ -278,7 +283,7 @@ export function FAQSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto bg-white/[0.025] border border-white/8 rounded-2xl px-6 md:px-8"
+          className="max-w-3xl mx-auto bg-white border border-[#E2E8F0] rounded-2xl px-6 md:px-8 shadow-sm"
         >
           {filtered.map((faq, i) => (
             <AccordionItem
@@ -298,7 +303,7 @@ export function FAQSection() {
           viewport={{ once: true }}
           className="text-center mt-10"
         >
-          <p className="text-white/30 text-sm mb-4">
+          <p className="text-sm mb-4" style={{ color: "#64748B" }}>
             {t("Still have questions? Our team is ready to help.", "لا تزال لديك أسئلة؟ فريقنا جاهز للمساعدة.")}
           </p>
           <a

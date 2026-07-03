@@ -24,11 +24,16 @@ export function CustomsClearanceSection() {
   const { t, isRtl } = useLanguage();
 
   return (
-    <section className="relative py-28 overflow-hidden bg-background">
+    <section className="relative py-28 overflow-hidden" style={{ background: "linear-gradient(160deg, #020c1b 0%, #041525 40%, #070e1f 100%)" }}>
+      {/* Top separator */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/30 to-transparent" />
       {/* Navy sidebar accent */}
       <div
         className={`absolute top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-secondary to-transparent ${isRtl ? "right-0" : "left-0"}`}
       />
+      {/* Subtle ambient glow */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 60% 40% at 20% 50%, rgba(10,35,66,0.4) 0%, transparent 70%)" }} />
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Header */}

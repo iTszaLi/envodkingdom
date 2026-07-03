@@ -76,7 +76,9 @@ export function TrustSection() {
       aria-label={t("Trusted Across Saudi Arabia & GCC", "موثوق به عبر المملكة والخليج")}
     >
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/25 to-transparent" />
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+      {/* Ambient glow — no grid */}
+      <div className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 80% 50% at 50% 50%, rgba(214,40,40,0.04) 0%, transparent 70%)" }} />
 
       <div className="container mx-auto px-4 relative z-10">
         <div className={`text-center mb-14 ${isRtl ? "rtl" : ""}`}>
