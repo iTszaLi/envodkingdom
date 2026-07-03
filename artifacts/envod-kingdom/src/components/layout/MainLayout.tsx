@@ -25,6 +25,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
   }, []);
 
   const navLinks = [
+    { href: "/", en: "Home", ar: "الرئيسية" },
     { href: "/services", en: "Services", ar: "خدماتنا" },
     { href: "/track", en: "Track", ar: "تتبع الشحنة" },
     { href: "/about", en: "About", ar: "عن الشركة" },
@@ -72,7 +73,12 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
 
         <nav className="hidden md:flex items-center gap-7">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="text-white/85 hover:text-secondary font-medium transition-colors text-sm">
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => { if (link.href === "/") window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="text-white/85 hover:text-secondary font-medium transition-colors text-sm"
+            >
               {t(link.en, link.ar)}
             </Link>
           ))}
@@ -99,7 +105,12 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
       {mobileOpen && (
         <div className="md:hidden absolute top-full left-0 w-full bg-primary/97 backdrop-blur-md py-4 px-4 flex flex-col gap-4 shadow-lg border-t border-white/10">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="text-white text-base hover:text-secondary font-medium transition-colors py-1">
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={() => { setMobileOpen(false); if (link.href === "/") window.scrollTo({ top: 0, behavior: "smooth" }); }}
+              className="text-white text-base hover:text-secondary font-medium transition-colors py-1"
+            >
               {t(link.en, link.ar)}
             </Link>
           ))}
