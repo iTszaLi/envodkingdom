@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle2 } from "lucide-react";
 
 export interface AnimChapter {
   startProgress: number;
@@ -8,6 +9,8 @@ export interface AnimChapter {
   titleAr?: string;
   subtitle?: string;
   subtitleAr?: string;
+  features?: string[];
+  featuresAr?: string[];
 }
 
 interface Props {
@@ -44,32 +47,44 @@ function renderFrameToCanvas(
   ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
 }
 
+/* ── Floating particles ── */
+const PARTICLES = Array.from({ length: 18 }, (_, i) => ({
+  id: i,
+  left:     `${5 + Math.random() * 90}%`,
+  top:      `${5 + Math.random() * 90}%`,
+  size:     1 + Math.random() * 2,
+  delay:    Math.random() * 8,
+  duration: 6 + Math.random() * 10,
+  opacity:  0.06 + Math.random() * 0.12,
+}));
+
 export function ScrollAnimSection({
   frameFolder,
   frameCount,
   chapters,
   isRtl = false,
 }: Props) {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
-  const frameRef = useRef(0);
+  const sectionRef  = useRef<HTMLDivElement>(null);
+  const canvasRef   = useRef<HTMLCanvasElement>(null);
+  const imagesRef   = useRef<HTMLImageElement[]>([]);
+  const frameRef    = useRef(0);
   const lastTimeRef = useRef(0);
-  const rafRef = useRef<number>(0);
+  const rafRef      = useRef<number>(0);
 
-  const [loadedCount, setLoadedCount] = useState(0);
-  const [chapterIdx, setChapterIdx] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+  const [loadedCount,    setLoadedCount]    = useState(0);
+  const [chapterIdx,     setChapterIdx]     = useState(0);
+  const [isVisible,      setIsVisible]      = useState(false);
   const [startedLoading, setStartedLoading] = useState(false);
+  const [mouse,          setMouse]          = useState({ x: 0, y: 0 });
 
   // Canvas DPR sizing
   const syncCanvasSize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = window.innerWidth * dpr;
+    canvas.width  = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
-    canvas.style.width = window.innerWidth + "px";
+    canvas.style.width  = window.innerWidth + "px";
     canvas.style.height = window.innerHeight + "px";
     if (imagesRef.current.length > 0) {
       renderFrameToCanvas(frameRef.current, imagesRef.current, canvas);
@@ -81,6 +96,21 @@ export function ScrollAnimSection({
     window.addEventListener("resize", syncCanvasSize);
     return () => window.removeEventListener("resize", syncCanvasSize);
   }, [syncCanvasSize]);
+
+  // Mouse parallax
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const handleMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      setMouse({
+        x: ((e.clientX - rect.left) / rect.width  - 0.5) * 12,
+        y: ((e.clientY - rect.top)  / rect.height - 0.5) * 8,
+      });
+    };
+    el.addEventListener("mousemove", handleMove);
+    return () => el.removeEventListener("mousemove", handleMove);
+  }, []);
 
   // IntersectionObserver — triggers load + play/pause
   useEffect(() => {
@@ -119,9 +149,7 @@ export function ScrollAnimSection({
       images.push(img);
     }
     imagesRef.current = images;
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, [startedLoading, frameFolder, frameCount]);
 
   // Autoplay loop — rAF-based, only runs when section is visible
@@ -151,7 +179,7 @@ export function ScrollAnimSection({
         setChapterIdx(ci);
 
         const canvas = canvasRef.current;
-        const imgs = imagesRef.current;
+        const imgs   = imagesRef.current;
         if (canvas && imgs[next]?.complete) {
           renderFrameToCanvas(next, imgs, canvas);
         }
@@ -163,10 +191,11 @@ export function ScrollAnimSection({
     return () => cancelAnimationFrame(rafRef.current);
   }, [isVisible, loadedCount, frameCount, chapters]);
 
-  const chapter = chapters[chapterIdx];
+  const chapter    = chapters[chapterIdx];
   const loadPercent = frameCount > 0 ? Math.round((loadedCount / frameCount) * 100) : 0;
-  const isReady = loadedCount >= Math.min(10, frameCount);
+  const isReady    = loadedCount >= Math.min(10, frameCount);
   const titleParts = chapter?.title.split(". ").filter(Boolean) ?? [];
+  const features   = isRtl ? chapter?.featuresAr : chapter?.features;
 
   return (
     <motion.section
@@ -177,16 +206,44 @@ export function ScrollAnimSection({
       viewport={{ once: false, amount: 0.2 }}
       transition={{ duration: 1, ease: "easeOut" }}
     >
-      {/* Canvas */}
+      {/* Canvas — with subtle mouse parallax */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0"
-        style={{ opacity: isReady ? 1 : 0, transition: "opacity 0.6s ease" }}
+        style={{
+          opacity: isReady ? 1 : 0,
+          transition: "opacity 0.6s ease, transform 0.8s ease",
+          transform: `translate(${mouse.x * 0.4}px, ${mouse.y * 0.4}px) scale(1.04)`,
+        }}
       />
 
-      {/* Cinematic overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/10 to-black/70 pointer-events-none z-10" />
+      {/* ── Stronger cinematic overlay matching spec ── */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10"
+        style={{ background: "linear-gradient(rgba(5,10,20,.70), rgba(5,10,20,.45), rgba(5,10,20,.75))" }}
+      />
+      {/* Vignette edges */}
+      <div className="absolute inset-0 pointer-events-none z-10" style={{ background: "radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.45) 100%)" }} />
+      {/* Bottom bleed into next section */}
       <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-background to-transparent pointer-events-none z-10" />
+
+      {/* ── Floating particles ── */}
+      <div className="absolute inset-0 z-10 pointer-events-none overflow-hidden">
+        {PARTICLES.map(p => (
+          <div
+            key={p.id}
+            className="absolute rounded-full bg-white"
+            style={{
+              left: p.left,
+              top: p.top,
+              width: p.size,
+              height: p.size,
+              opacity: p.opacity,
+              animation: `float-particle ${p.duration}s ease-in-out ${p.delay}s infinite alternate`,
+            }}
+          />
+        ))}
+      </div>
 
       {/* Loading bar */}
       {loadPercent < 100 && (
@@ -200,9 +257,8 @@ export function ScrollAnimSection({
 
       {/* Chapter text */}
       <div
-        className={`absolute inset-0 z-20 flex flex-col justify-center ${
-          isRtl ? "items-end" : "items-start"
-        }`}
+        className={`absolute inset-0 z-20 flex flex-col justify-center ${isRtl ? "items-end" : "items-start"}`}
+        style={{ transform: `translate(${-mouse.x * 0.15}px, ${-mouse.y * 0.1}px)` }}
       >
         <div className="w-full max-w-7xl mx-auto px-8 md:px-16 xl:px-24">
           <AnimatePresence mode="wait">
@@ -212,9 +268,10 @@ export function ScrollAnimSection({
                 initial={{ opacity: 0, y: 48 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -24 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
                 className={isRtl ? "text-right" : "text-left"}
               >
+                {/* Eyebrow */}
                 <motion.p
                   initial={{ opacity: 0, x: isRtl ? 20 : -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -224,33 +281,69 @@ export function ScrollAnimSection({
                   ENVOD KINGDOM SHIPPING SERVICES LLC
                 </motion.p>
 
-                <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black text-white uppercase tracking-tight leading-[1.05] max-w-4xl">
+                {/* Title — word-by-word reveal */}
+                <h2 className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-black text-white uppercase tracking-tight leading-[1.05] max-w-4xl overflow-hidden">
                   {isRtl && chapter.titleAr ? (
-                    chapter.titleAr
+                    <motion.span
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.15, duration: 0.7, ease: [0.22,1,0.36,1] as [number,number,number,number] }}
+                      className="block"
+                    >
+                      {chapter.titleAr}
+                    </motion.span>
                   ) : (
                     titleParts.map((part, i) => (
-                      <span key={i} className="block">
+                      <motion.span
+                        key={i}
+                        className="block overflow-hidden"
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.15 + i * 0.12, duration: 0.7, ease: [0.22,1,0.36,1] as [number,number,number,number] }}
+                      >
                         {i === 1 ? (
                           <span className="text-secondary">{part}.</span>
                         ) : (
                           `${part}${i < titleParts.length - 1 ? "." : ""}`
                         )}
-                      </span>
+                      </motion.span>
                     ))
                   )}
                 </h2>
 
+                {/* Subtitle */}
                 {chapter.subtitle && (
                   <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.38, duration: 0.6 }}
                     className="mt-6 text-base md:text-lg text-white/65 max-w-2xl font-light leading-relaxed"
                   >
-                    {isRtl && chapter.subtitleAr
-                      ? chapter.subtitleAr
-                      : chapter.subtitle}
+                    {isRtl && chapter.subtitleAr ? chapter.subtitleAr : chapter.subtitle}
                   </motion.p>
+                )}
+
+                {/* Premium feature checkmarks */}
+                {features && features.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5, duration: 0.6 }}
+                    className={`mt-8 flex flex-wrap gap-3 ${isRtl ? "justify-end" : ""}`}
+                  >
+                    {features.map((feat, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: isRtl ? 16 : -16 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.55 + i * 0.07, duration: 0.45 }}
+                        className={`flex items-center gap-2 bg-white/[0.07] backdrop-blur-md border border-white/15 rounded-full px-4 py-2 ${isRtl ? "flex-row-reverse" : ""}`}
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5 text-secondary flex-none" />
+                        <span className="text-white/85 text-xs font-semibold whitespace-nowrap">{feat}</span>
+                      </motion.div>
+                    ))}
+                  </motion.div>
                 )}
               </motion.div>
             )}
@@ -265,15 +358,20 @@ export function ScrollAnimSection({
         transition={{ delay: 1 }}
         className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2"
       >
-        <span className="text-white/40 text-[10px] tracking-[0.25em] uppercase">
-          Scroll
-        </span>
+        <span className="text-white/40 text-[10px] tracking-[0.25em] uppercase">Scroll</span>
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
           className="w-px h-10 bg-gradient-to-b from-white/40 to-transparent"
         />
       </motion.div>
+
+      <style>{`
+        @keyframes float-particle {
+          0%   { transform: translate(0, 0) scale(1); }
+          100% { transform: translate(${Math.random() > 0.5 ? "" : "-"}${8 + Math.floor(Math.random() * 16)}px, ${Math.random() > 0.5 ? "" : "-"}${8 + Math.floor(Math.random() * 12)}px) scale(${0.8 + Math.random() * 0.6}); }
+        }
+      `}</style>
     </motion.section>
   );
 }

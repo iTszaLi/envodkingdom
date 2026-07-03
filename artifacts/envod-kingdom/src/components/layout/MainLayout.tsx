@@ -8,9 +8,10 @@ import {
 import logoIcon from "@assets/image_1780532431289.png";
 import logoFull from "@assets/image_1780437854819.png";
 import { Button } from "@/components/ui/button";
+import { QuoteModal } from "@/components/QuoteModal";
 
 /* ─────────────────────────── Navbar ─────────────────────────── */
-export function Navbar() {
+export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
   const { language, setLanguage, t, isRtl } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -31,7 +32,7 @@ export function Navbar() {
 
   return (
     <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-primary/95 backdrop-blur-md shadow-md" : "bg-black/30 backdrop-blur-sm"}`}>
-      <div className="bg-secondary/15 border-b border-secondary/20 py-2 px-4">
+      <div className="bg-secondary/15 border-b border-secondary/20 py-1.5 px-4">
         <div className="max-w-7xl mx-auto">
           <div className={`flex items-center justify-center gap-6 text-xs font-semibold flex-wrap ${isRtl ? "flex-row-reverse" : ""}`}>
             <span className={`flex items-center gap-1.5 text-secondary ${isRtl ? "flex-row-reverse" : ""}`}>
@@ -52,10 +53,10 @@ export function Navbar() {
         </div>
       </div>
 
-      <div className="container mx-auto px-4 flex items-center justify-between py-3">
+      <div className="container mx-auto px-4 flex items-center justify-between py-2">
         <Link href="/" className="flex items-center gap-3 group">
           <div
-            className="relative flex-shrink-0 w-11 h-11 rounded-full overflow-hidden ring-1 ring-white/10 group-hover:ring-secondary/50 transition-all duration-300"
+            className="relative flex-shrink-0 w-9 h-9 rounded-full overflow-hidden ring-1 ring-white/10 group-hover:ring-secondary/50 transition-all duration-300"
             style={{ background: "radial-gradient(circle,rgba(255,255,255,.08) 0%,rgba(255,255,255,.02) 100%)", boxShadow: "0 0 12px rgba(214,40,40,.25),inset 0 0 8px rgba(0,0,0,.2)" }}
           >
             <img src={logoIcon} alt="إنفود كينغدوم" className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
@@ -79,9 +80,13 @@ export function Navbar() {
           <Button variant="ghost" size="sm" onClick={() => setLanguage(language === "en" ? "ar" : "en")} className="text-white hover:bg-white/10 text-sm">
             <Globe className="w-4 h-4 mr-1.5" />{language === "en" ? "عربي" : "EN"}
           </Button>
-          <Link href="/contact" className="bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-md font-medium transition-colors text-sm">
-            {t("Get Quote", "احصل على تسعيرة")}
-          </Link>
+          <button
+            onClick={onGetQuote}
+            className="group relative bg-secondary hover:bg-secondary/85 text-white px-6 py-3 rounded-xl font-black text-[13px] uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 hover:shadow-secondary/35 hover:-translate-y-px overflow-hidden"
+          >
+            <span className="relative z-10">{t("Get a Free Quote", "احصل على تسعيرة")}</span>
+            <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+          </button>
         </div>
 
         <button className="md:hidden text-white p-1" onClick={() => setMobileOpen(!mobileOpen)}>
@@ -100,9 +105,12 @@ export function Navbar() {
             <Button variant="outline" onClick={() => setLanguage(language === "en" ? "ar" : "en")} className="w-full justify-center">
               <Globe className="w-4 h-4 mr-2" />{language === "en" ? "عربي" : "EN"}
             </Button>
-            <Link href="/contact" className="w-full text-center bg-secondary hover:bg-secondary/90 text-white px-4 py-2 rounded-md font-medium transition-colors">
-              {t("Get Quote", "احصل على تسعيرة")}
-            </Link>
+            <button
+              onClick={() => { setMobileOpen(false); onGetQuote?.(); }}
+              className="w-full text-center bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-colors"
+            >
+              {t("Get a Free Quote", "احصل على تسعيرة مجانية")}
+            </button>
           </div>
         </div>
       )}
@@ -547,11 +555,13 @@ export function Footer() {
 
 /* ─────────────────────────── Main Layout ─────────────────────────── */
 export function MainLayout({ children }: { children: React.ReactNode }) {
+  const [quoteOpen, setQuoteOpen] = useState(false);
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      <Navbar onGetQuote={() => setQuoteOpen(true)} />
       <main className="flex-1">{children}</main>
       <Footer />
+      <QuoteModal isOpen={quoteOpen} onClose={() => setQuoteOpen(false)} />
 
       {/* Premium branded WhatsApp floating button */}
       <a
