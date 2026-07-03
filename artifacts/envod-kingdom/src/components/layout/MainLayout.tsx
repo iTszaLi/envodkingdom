@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/language-context";
+import { motion } from "framer-motion";
+import { GlobalNetworkMap } from "@/components/GlobalNetworkMap";
 import {
   Globe, Menu, X, Clock, Shield, Globe2,
   MapPin, Phone, Printer, Mail, ChevronRight, Award,
@@ -180,46 +182,6 @@ function StatsStrip() {
   );
 }
 
-/* ─────────────────────────── Network Map ─────────────────────────── */
-function NetworkMap() {
-  const offices = [
-    { name: "Riyadh HQ", x: 54, y: 50, primary: true },
-    { name: "Jeddah",    x: 49, y: 57 },
-    { name: "Dammam",    x: 57, y: 47 },
-    { name: "Dubai",     x: 62, y: 52 },
-    { name: "Manama",    x: 60, y: 48 },
-    { name: "Bengaluru", x: 72, y: 60 },
-  ];
-  const connections: [number, number][] = [[0,1],[0,2],[0,3],[0,4],[0,5],[3,5]];
-  return (
-    <div className="relative w-full overflow-hidden rounded-xl bg-white/[0.02] border border-white/8 mt-5" style={{ height: 160 }}>
-      <svg viewBox="0 0 100 72" className="w-full h-full">
-        <rect width="100" height="72" fill="#060f1f" />
-        <path d="M8 32Q14 22 22 24Q28 18 38 20Q46 17 54 19Q62 16 70 20Q78 18 84 22Q90 20 95 26Q97 32 95 38Q93 42 88 44Q82 42 78 46Q72 44 66 50Q60 46 54 52Q48 48 42 52Q36 50 28 48Q20 50 14 46Q8 42 7 36Z" fill="#0d1f35" stroke="#1a3a5c" strokeWidth="0.3" />
-        {connections.map(([a, b], i) => (
-          <line key={i} x1={offices[a].x} y1={offices[a].y} x2={offices[b].x} y2={offices[b].y}
-            stroke="#D62828" strokeWidth="0.5" strokeDasharray="1.5 1" opacity="0.55"
-            style={{ animation: `map-dash ${1.8 + i * 0.3}s linear infinite` }} />
-        ))}
-        {offices.map((o, i) => (
-          <g key={i}>
-            <circle cx={o.x} cy={o.y} r={o.primary ? 2 : 1.3} fill={o.primary ? "#D62828" : "#4a90d9"} />
-            {o.primary && (
-              <circle cx={o.x} cy={o.y} r={4} fill="none" stroke="#D62828" strokeWidth="0.5" opacity="0.4"
-                style={{ animation: "map-ping 2s ease-out infinite" }} />
-            )}
-            <text x={o.x + 2.5} y={o.y + 1} fontSize="3" fill="white" opacity="0.75" fontFamily="Arial,sans-serif">{o.name}</text>
-          </g>
-        ))}
-      </svg>
-      <style>{`
-        @keyframes map-dash { from { stroke-dashoffset: 0 } to { stroke-dashoffset: -10 } }
-        @keyframes map-ping { 0%,100% { r:2; opacity:.6 } 70% { r:5; opacity:0 } }
-      `}</style>
-    </div>
-  );
-}
-
 /* ─────────────────────────── Social Icons ─────────────────────────── */
 function SocialIcons() {
   const socials: { label: string; href: string; path: string }[] = [
@@ -250,15 +212,25 @@ function SocialIcons() {
     },
   ];
   return (
-    <div className="flex items-center gap-3 mt-5">
-      {socials.map((s) => (
-        <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}
-          className="w-9 h-9 rounded-full border border-white/15 flex items-center justify-center text-white/50 hover:text-white hover:border-secondary hover:bg-secondary/10 transition-all duration-300"
+    <div className="flex items-center gap-4 mt-8">
+      {socials.map((s, i) => (
+        <motion.a
+          key={s.label}
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={s.label}
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
+          className="relative w-10 h-10 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/60 hover:text-white transition-all duration-300 group overflow-hidden"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <span className="absolute inset-0 bg-gradient-to-tr from-secondary/80 to-secondary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          <svg className="relative z-10" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
             <path d={s.path} />
           </svg>
-        </a>
+        </motion.a>
       ))}
     </div>
   );
@@ -267,10 +239,13 @@ function SocialIcons() {
 /* ─────────────────────────── Cert Badge ─────────────────────────── */
 function CertBadge({ name, sub }: { name: string; sub?: string }) {
   return (
-    <div className="flex flex-col items-center justify-center gap-1 px-4 py-3 rounded-xl border border-white/10 bg-white/[0.03] hover:border-secondary/30 hover:bg-secondary/5 transition-all duration-300 cursor-default group min-w-[84px]">
-      <Award className="w-5 h-5 text-secondary/70 group-hover:text-secondary transition-colors" />
-      <span className="text-white font-bold text-[11px] tracking-wide text-center">{name}</span>
-      {sub && <span className="text-white/35 text-[9px] tracking-widest uppercase">{sub}</span>}
+    <div className="relative group overflow-hidden rounded-xl border border-white/10 bg-[#0a1526] hover:border-secondary/40 transition-all duration-500 cursor-default min-w-[90px] shadow-lg hover:shadow-[0_4px_20px_rgba(214,40,40,0.15)] hover:-translate-y-1">
+      <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="flex flex-col items-center justify-center gap-1.5 px-5 py-4 relative z-10">
+        <Award className="w-6 h-6 text-white/30 group-hover:text-secondary transition-colors duration-500" />
+        <span className="text-white font-bold text-[12px] tracking-widest text-center">{name}</span>
+        {sub && <span className="text-white/40 text-[9px] tracking-[0.2em] uppercase">{sub}</span>}
+      </div>
     </div>
   );
 }
@@ -356,72 +331,99 @@ export function Footer() {
     { name: "ISO 45001",  sub: "Safety" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.1 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] as const } }
+  };
+
   return (
-    <footer className="bg-[#06101e] text-white" dir={isRtl ? "rtl" : "ltr"}>
+    <footer className="bg-[#06101e] text-white relative overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
+      <GlobalNetworkMap />
+      
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-secondary/50 to-transparent opacity-50" />
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-secondary/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#0a192f] rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3" />
 
       {/* ── Main grid ── */}
-      <div className="container mx-auto px-6 pt-20 pb-14">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12">
+      <div className="container mx-auto px-6 pt-24 pb-16 relative z-10">
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+        >
 
-          {/* Brand — col-span-3 */}
-          <div className="lg:col-span-3">
+          {/* Brand — col-span-4 */}
+          <motion.div className="lg:col-span-4" variants={itemVariants}>
             <Link
               href="/"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              className="inline-block mb-7 group"
+              className="inline-block mb-8 group"
             >
-              <div className="bg-white px-5 py-3.5 rounded-xl inline-flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_32px_rgba(214,40,40,0.3)]">
-                <img src={logoFull} alt="ENVOD KINGDOM Shipping Services LLC" className="h-14 object-contain" />
+              <div className="bg-white/95 px-6 py-4 rounded-2xl inline-flex items-center justify-center transition-all duration-500 group-hover:shadow-[0_8px_32px_rgba(214,40,40,0.25)] group-hover:-translate-y-1 group-hover:bg-white border border-white/10">
+                <img src={logoFull} alt="ENVOD KINGDOM Shipping Services LLC" className="h-14 object-contain opacity-95 group-hover:opacity-100 transition-opacity" />
               </div>
             </Link>
 
-            <p className="text-[13.5px] leading-[1.85] text-white/50 mb-7">
+            <p className="text-[14px] leading-relaxed text-white/60 mb-8 font-medium">
               {t(
                 "Saudi Arabia's trusted partner for Exhibition Logistics, ATA Carnet, Customs Clearance, Project Cargo, and Global Shipping — 25+ years of expertise.",
                 "الشريك الموثوق في المملكة للمعارض والتخليص الجمركي وكارنيه ATA وبضائع المشاريع والشحن العالمي — أكثر من 25 عاماً."
               )}
             </p>
 
-            <div className="flex flex-wrap gap-2 mb-7">
+            <div className="flex flex-wrap gap-2.5 mb-8">
               {["SABER", "ISO 9001", "ATA Carnet", "SFDA"].map((b) => (
-                <span key={b} className="text-[10px] font-bold uppercase tracking-widest bg-secondary/10 text-secondary px-3 py-1.5 rounded-full border border-secondary/20">
+                <span key={b} className="text-[10px] font-black uppercase tracking-[0.15em] bg-white/[0.03] text-white/80 px-3.5 py-1.5 rounded-full border border-white/10 hover:border-secondary/30 hover:bg-secondary/10 hover:text-secondary transition-all duration-300">
                   {b}
                 </span>
               ))}
             </div>
 
             <SocialIcons />
-          </div>
+          </motion.div>
 
           {/* Services — col-span-3 */}
-          <div className="lg:col-span-3">
-            <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+          <motion.div className="lg:col-span-3" variants={itemVariants}>
+            <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-secondary"></span>
               {t("Our Services", "خدماتنا")}
             </h4>
-            <ul className="space-y-3.5">
+            <ul className="space-y-4">
               {services.map(([label, href], i) => (
                 <li key={i}>
-                  <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
-                    <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
-                    {label}
+                  <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
+                    <ChevronRight className={`w-3.5 h-3.5 text-secondary/0 group-hover:text-secondary transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 ${isRtl ? "rotate-180 translate-x-2 group-hover:-translate-x-0" : ""}`} />
+                    <span className="transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300">{label}</span>
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </motion.div>
 
-          {/* Industries + Quick Links — col-span-3 */}
-          <div className="lg:col-span-3 flex flex-col gap-10">
+          {/* Industries + Quick Links — col-span-2 */}
+          <motion.div className="lg:col-span-2 flex flex-col gap-12" variants={itemVariants}>
             <div>
-              <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
-                {t("Industries Served", "القطاعات")}
+              <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-secondary"></span>
+                {t("Industries", "القطاعات")}
               </h4>
-              <ul className="space-y-3.5">
-                {industries.map(([label, href], i) => (
+              <ul className="space-y-4">
+                {industries.slice(0, 5).map(([label, href], i) => (
                   <li key={i}>
-                    <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
-                      <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
-                      {label}
+                    <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
+                      <ChevronRight className={`w-3.5 h-3.5 text-secondary/0 group-hover:text-secondary transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 ${isRtl ? "rotate-180 translate-x-2 group-hover:-translate-x-0" : ""}`} />
+                      <span className="transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300">{label}</span>
                     </Link>
                   </li>
                 ))}
@@ -429,35 +431,37 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+              <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+                <span className="w-2 h-2 rounded-full bg-secondary"></span>
                 {t("Quick Links", "روابط سريعة")}
               </h4>
-              <ul className="space-y-3.5">
-                {quickLinks.map(([label, href], i) => (
+              <ul className="space-y-4">
+                {quickLinks.slice(0, 4).map(([label, href], i) => (
                   <li key={i}>
-                    <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
-                      <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
-                      {label}
+                    <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
+                      <ChevronRight className={`w-3.5 h-3.5 text-secondary/0 group-hover:text-secondary transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 ${isRtl ? "rotate-180 translate-x-2 group-hover:-translate-x-0" : ""}`} />
+                      <span className="transform -translate-x-2 group-hover:translate-x-0 transition-transform duration-300">{label}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
-          </div>
+          </motion.div>
 
           {/* Contact — col-span-3 */}
-          <div className="lg:col-span-3">
-            <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+          <motion.div className="lg:col-span-3" variants={itemVariants}>
+            <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+              <span className="w-2 h-2 rounded-full bg-secondary"></span>
               {t("Contact Us", "اتصل بنا")}
             </h4>
 
-            <ul className="space-y-5">
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-secondary" />
+            <ul className="space-y-6">
+              <li className="flex gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
+                  <MapPin className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
-                  <p className="text-white font-semibold text-[13px] mb-1">{t("Riyadh Head Office", "المقر الرئيسي — الرياض")}</p>
+                  <p className="text-white font-bold text-[14px] mb-1.5">{t("Riyadh Head Office", "المقر الرئيسي — الرياض")}</p>
                   <p className="text-white/50 text-[13px] leading-relaxed">
                     {t("Prince Mansour Bin Abdulaziz St.", "شارع الأمير منصور بن عبدالعزيز")}<br />
                     {t("Al Malaz, Riyadh 12831", "حي الملز، الرياض 12831")}<br />
@@ -467,65 +471,58 @@ export function Footer() {
                 </div>
               </li>
 
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-secondary" />
+              <li className="flex gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
+                  <Phone className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
-                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Phone", "هاتف")}</p>
-                  <a href="tel:+966502260256" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1">{t("Phone", "هاتف")}</p>
+                  <a href="tel:+966502260256" className="text-white/80 text-[14px] hover:text-secondary transition-colors font-medium">
                     +966 50 226 0256
                   </a>
                 </div>
               </li>
 
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
-                  <Printer className="w-4 h-4 text-secondary" />
-                </div>
-                <div>
-                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Fax", "فاكس")}</p>
-                  <p className="text-white/70 text-[13px] font-medium">+966 11 238 0517</p>
-                </div>
-              </li>
-
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center shrink-0">
-                  <svg className="w-4 h-4 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">
+              <li className="flex gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-[#25D366]/10 group-hover:border-[#25D366]/30 transition-colors duration-300">
+                  <svg className="w-4 h-4 text-white/60 group-hover:text-[#25D366] transition-colors" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
                 </div>
                 <div>
-                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">WhatsApp</p>
-                  <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="text-white/70 text-[13px] hover:text-[#25D366] transition-colors font-medium">
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1">WhatsApp</p>
+                  <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="text-white/80 text-[14px] hover:text-[#25D366] transition-colors font-medium">
                     +966 50 226 0256
                   </a>
                 </div>
               </li>
 
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
-                  <Mail className="w-4 h-4 text-secondary" />
+              <li className="flex gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
+                  <Mail className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
-                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Email", "البريد الإلكتروني")}</p>
-                  <a href="mailto:info@envodkingdom.net" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1">{t("Email", "البريد الإلكتروني")}</p>
+                  <a href="mailto:info@envodkingdom.net" className="text-white/80 text-[14px] hover:text-secondary transition-colors font-medium">
                     info@envodkingdom.net
                   </a>
                 </div>
               </li>
 
-              <li className="flex gap-3.5">
-                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
-                  <Clock className="w-4 h-4 text-secondary" />
+              <li className="flex gap-4 group pt-2">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
+                  <Clock className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
-                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Business Hours", "ساعات العمل")}</p>
-                  <p className="text-white/70 text-[13px] leading-relaxed">
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1">{t("Business Hours", "ساعات العمل")}</p>
+                  <p className="text-white/70 text-[13px] leading-relaxed mb-2">
                     {t("Sun – Thu: 8:00 AM – 6:00 PM", "الأحد – الخميس: 8ص – 6م")}<br />
                     {t("Sat: 9:00 AM – 2:00 PM", "السبت: 9ص – 2م")}
                   </p>
-                  <p className="text-secondary text-[12px] font-semibold mt-1.5">{t("24/7 Tracking & Support", "دعم وتتبع على مدار الساعة")}</p>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/10 border border-secondary/20">
+                    <span className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse" />
+                    <p className="text-secondary text-[11px] font-bold tracking-wide uppercase">{t("24/7 Tracking & Support", "دعم وتتبع على مدار الساعة")}</p>
+                  </div>
                 </div>
               </li>
             </ul>
@@ -533,39 +530,49 @@ export function Footer() {
             <a
               href="https://www.google.com/maps/search/?api=1&query=Envod+Kingdom+Shipping+Services+LLC%2C+Al+Malaz%2C+Riyadh"
               target="_blank" rel="noopener noreferrer"
-              className="mt-5 inline-flex items-center gap-2 text-[12px] text-secondary hover:text-secondary/70 font-semibold transition-colors"
+              className="mt-8 inline-flex items-center justify-center w-full py-3.5 rounded-xl bg-white/[0.02] border border-white/10 text-[13px] text-white hover:text-white hover:bg-white/[0.05] hover:border-white/20 font-bold tracking-wide transition-all duration-300 gap-2"
             >
-              <MapPin className="w-3.5 h-3.5" />
-              {t("View on Google Maps →", "عرض على خرائط جوجل ←")}
+              <MapPin className="w-4 h-4 text-secondary" />
+              {t("View on Google Maps", "عرض على خرائط جوجل")}
             </a>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
 
       {/* ── Certifications Bar ── */}
-      <div className="border-t border-white/[0.06]">
-        <div className="container mx-auto px-6 py-8">
-          <p className="text-center text-[10px] font-bold uppercase tracking-[0.35em] text-white/25 mb-6">
+      <div className="border-t border-white/[0.04] bg-[#0a1526]/50 relative z-10">
+        <div className="container mx-auto px-6 py-12">
+          <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-8">
             {t("Certifications & Compliance", "الشهادات والامتثال")}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {certs.map((c) => <CertBadge key={c.name} {...c} />)}
-          </div>
+          <motion.div 
+            className="flex flex-wrap items-center justify-center gap-4"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={containerVariants}
+          >
+            {certs.map((c) => (
+              <motion.div key={c.name} variants={itemVariants}>
+                <CertBadge {...c} />
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </div>
 
       {/* ── Bottom Bar ── */}
-      <div className="border-t border-white/[0.06] bg-[#040c18]">
-        <div className="container mx-auto px-6 py-5">
-          <div className={`flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] text-white/30 ${isRtl ? "md:flex-row-reverse" : ""}`}>
-            <p>
+      <div className="border-t border-white/[0.04] bg-[#020610] relative z-10">
+        <div className="container mx-auto px-6 py-6">
+          <div className={`flex flex-col md:flex-row items-center justify-between gap-4 text-[13px] text-white/40 font-medium ${isRtl ? "md:flex-row-reverse" : ""}`}>
+            <p className="text-center md:text-left">
               © {year} {t("ENVOD KINGDOM SHIPPING SERVICES LLC", "انفود كينغدوم لخدمات الشحن ذ.م.م")}.{" "}
               {t("All rights reserved.", "جميع الحقوق محفوظة.")}
             </p>
-            <div className="flex items-center gap-5 flex-wrap justify-center">
-              <a href="#" className="hover:text-secondary transition-colors">{t("Privacy Policy", "سياسة الخصوصية")}</a>
-              <a href="#" className="hover:text-secondary transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
-              <a href="#" className="hover:text-secondary transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
+            <div className="flex items-center gap-6 flex-wrap justify-center">
+              <a href="#" className="hover:text-white transition-colors">{t("Privacy Policy", "سياسة الخصوصية")}</a>
+              <a href="#" className="hover:text-white transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
+              <a href="#" className="hover:text-white transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
             </div>
           </div>
         </div>

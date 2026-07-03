@@ -2,4 +2,6 @@
 - [ScrollAnimSection hero](scroll-anim-hero.md) — the sparkle/star is baked into the JPEG frames (not DOM); z-layering + object-fit-cover gotchas for overlays
 - [API client import path](api-client-imports.md) — use `@workspace/api-client-react` not `@api-client-react/generated/api`; same for types
 - [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
+- [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain
+- [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
 - [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG

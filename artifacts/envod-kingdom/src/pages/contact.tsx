@@ -89,7 +89,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="text-white font-medium mb-1">{t("Email", "البريد الإلكتروني")}</h3>
-                  <p className="text-muted-foreground">info@envodkingdom.com</p>
+                  <p className="text-muted-foreground">info@envodkingdom.net</p>
                 </div>
               </div>
             </div>
