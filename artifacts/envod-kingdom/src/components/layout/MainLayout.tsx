@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import { motion } from "framer-motion";
@@ -17,12 +18,24 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
   const { language, setLanguage, t, isRtl } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuTop, setMenuTop] = useState(0);
+  const headerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const measure = () => {
+      if (headerRef.current) setMenuTop(headerRef.current.getBoundingClientRect().bottom);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [mobileOpen]);
 
   const navLinks = [
     { href: "/", en: "Home", ar: "الرئيسية" },
@@ -34,7 +47,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
   ];
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-primary/95 backdrop-blur-md shadow-md" : "bg-black/30 backdrop-blur-sm"}`}>
+    <header ref={headerRef} className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-primary/95 backdrop-blur-md shadow-md" : "bg-black/30 backdrop-blur-sm"}`}>
       <div className="bg-secondary/15 border-b border-secondary/20 py-1.5 px-4">
         <div className="max-w-7xl mx-auto">
           <div className={`flex items-center justify-center gap-6 text-xs font-semibold flex-wrap ${isRtl ? "flex-row-reverse" : ""}`}>
@@ -97,36 +110,48 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
           </button>
         </div>
 
-        <button className="md:hidden text-white p-1" onClick={() => setMobileOpen(!mobileOpen)}>
+        <button
+          className="md:hidden text-white p-1"
+          aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          onClick={() => {
+            if (!mobileOpen && headerRef.current) setMenuTop(headerRef.current.getBoundingClientRect().bottom);
+            setMobileOpen(!mobileOpen);
+          }}
+        >
           {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       </div>
 
-      {mobileOpen && (
-        <div className="md:hidden absolute top-full left-0 w-full bg-primary/97 backdrop-blur-md py-4 px-4 flex flex-col gap-4 shadow-lg border-t border-white/10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => { setMobileOpen(false); if (link.href === "/") window.scrollTo({ top: 0, behavior: "smooth" }); }}
-              className="text-white text-base hover:text-secondary font-medium transition-colors py-1"
-            >
-              {t(link.en, link.ar)}
-            </Link>
-          ))}
-          <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
-            <Button variant="outline" onClick={() => setLanguage(language === "en" ? "ar" : "en")} className="w-full justify-center">
-              <Globe className="w-4 h-4 mr-2" />{language === "en" ? "عربي" : "EN"}
-            </Button>
-            <button
-              onClick={() => { setMobileOpen(false); onGetQuote?.(); }}
-              className="w-full text-center bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-colors"
-            >
-              {t("Get a Free Quote", "احصل على تسعيرة مجانية")}
-            </button>
-          </div>
-        </div>
-      )}
+      {mobileOpen &&
+        createPortal(
+          <div
+            className="md:hidden fixed left-0 right-0 bg-primary py-4 px-4 flex flex-col gap-4 shadow-lg border-t border-white/10 z-[60]"
+            style={{ top: menuTop }}
+          >
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => { setMobileOpen(false); if (link.href === "/") window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                className="text-white text-base hover:text-secondary font-medium transition-colors py-1"
+              >
+                {t(link.en, link.ar)}
+              </Link>
+            ))}
+            <div className="flex flex-col gap-3 pt-4 border-t border-white/10">
+              <Button variant="outline" onClick={() => setLanguage(language === "en" ? "ar" : "en")} className="w-full justify-center">
+                <Globe className="w-4 h-4 mr-2" />{language === "en" ? "عربي" : "EN"}
+              </Button>
+              <button
+                onClick={() => { setMobileOpen(false); onGetQuote?.(); }}
+                className="w-full text-center bg-secondary hover:bg-secondary/90 text-white px-4 py-3 rounded-xl font-black text-sm uppercase tracking-wider transition-colors"
+              >
+                {t("Get a Free Quote", "احصل على تسعيرة مجانية")}
+              </button>
+            </div>
+          </div>,
+          document.body,
+        )}
     </header>
   );
 }
