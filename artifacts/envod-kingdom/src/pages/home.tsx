@@ -27,8 +27,8 @@ const craneChapters: AnimChapter[] = [
     titleAr: "أكثر من 25 عاماً من التميز اللوجستي.",
     subtitle: "Saudi Arabia's Trusted Partner For Exhibition Logistics, ATA Carnet Services, Customs Clearance and Global Freight Solutions.",
     subtitleAr: "الشريك الموثوق للمملكة العربية السعودية في لوجستيات المعارض وكارنيه ATA والتخليص الجمركي.",
-    features: ["ATA Carnet Specialists", "Customs Clearance in 24 Hours", "GCC Road Transport", "Air · Sea · Land Freight"],
-    featuresAr: ["متخصصون في كارنيه ATA", "تخليص جمركي خلال 24 ساعة", "نقل بري خليجي", "جوي · بحري · بري"],
+    features: ["ATA Carnet Specialists", "Customs Clearance in 24 Hours", "GCC Road Transport", "Air · Sea · Land Freight", "Exhibition & Trade Shows"],
+    featuresAr: ["متخصصون في كارنيه ATA", "تخليص جمركي خلال 24 ساعة", "نقل بري خليجي", "جوي · بحري · بري", "المعارض والمؤتمرات"],
   },
   {
     startProgress: 0.5,
