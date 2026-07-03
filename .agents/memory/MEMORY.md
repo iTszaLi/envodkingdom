@@ -1,3 +1,4 @@
 - [Scroll animation frame extraction](scroll-frames.md) — animated WebPs extracted via Python Pillow to JPEG sequences in public/frames/{crane,air,warehouse}/
 - [API client import path](api-client-imports.md) — use `@workspace/api-client-react` not `@api-client-react/generated/api`; same for types
 - [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
+- [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG
