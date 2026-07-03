@@ -15,6 +15,7 @@ import Contact from "@/pages/contact";
 import About from "@/pages/about";
 import Blog from "@/pages/blog/index";
 import BlogPost from "@/pages/blog/[slug]";
+import ServiceDetail from "@/pages/service-detail";
 
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
