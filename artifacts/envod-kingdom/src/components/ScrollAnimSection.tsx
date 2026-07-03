@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import logoIcon from "@assets/image_1780532431289.png";
 
 export interface AnimChapter {
   startProgress: number;
@@ -245,6 +246,31 @@ export function ScrollAnimSection({
         ))}
       </div>
 
+      {/* ── ENVOD logo mark — replaces the former sparkle, lower-right ── */}
+      <div
+        className="absolute right-6 bottom-24 md:right-[7%] md:bottom-[20%] z-[15] pointer-events-none"
+        style={{
+          transform: `translate(${mouse.x * 0.4}px, ${mouse.y * 0.4}px)`,
+          transition: "transform 0.3s ease-out",
+        }}
+      >
+        <div style={{ animation: "logo-float 6s ease-in-out infinite alternate" }}>
+          <div
+            className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden ring-1 ring-white/20"
+            style={{
+              background: "radial-gradient(circle,rgba(255,255,255,.10) 0%,rgba(255,255,255,.03) 100%)",
+              boxShadow: "0 0 24px rgba(214,40,40,.35), 0 0 52px rgba(214,40,40,.15), inset 0 0 10px rgba(0,0,0,.25)",
+            }}
+          >
+            <img src={logoIcon} alt="ENVOD KINGDOM" className="w-full h-full object-cover" />
+            <div
+              className="absolute inset-0 rounded-full pointer-events-none"
+              style={{ background: "radial-gradient(circle at 50% 50%,transparent 55%,rgba(0,0,0,.30) 100%)" }}
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Loading bar */}
       {loadPercent < 100 && (
         <div className="absolute top-0 inset-x-0 h-0.5 bg-white/10 z-30">
@@ -367,6 +393,10 @@ export function ScrollAnimSection({
       </motion.div>
 
       <style>{`
+        @keyframes logo-float {
+          0%   { transform: translateY(0); }
+          100% { transform: translateY(-10px); }
+        }
         @keyframes float-particle {
           0%   { transform: translate(0, 0) scale(1); }
           100% { transform: translate(${Math.random() > 0.5 ? "" : "-"}${8 + Math.floor(Math.random() * 16)}px, ${Math.random() > 0.5 ? "" : "-"}${8 + Math.floor(Math.random() * 12)}px) scale(${0.8 + Math.random() * 0.6}); }
