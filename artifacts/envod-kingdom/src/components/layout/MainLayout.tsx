@@ -312,15 +312,16 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   const services: [string, string][] = [
-    [t("Customs Clearance", "التخليص الجمركي"), "/services"],
-    [t("Ocean & Sea Freight", "الشحن البحري"), "/services"],
-    [t("Air Freight", "الشحن الجوي"), "/services"],
-    [t("Road Transportation", "النقل البري"), "/services"],
-    [t("Exhibition Logistics", "لوجستيات المعارض"), "/services"],
-    [t("ATA Carnet Services", "خدمات كارنيه ATA"), "/services"],
-    [t("Project Cargo", "بضائع المشاريع"), "/services"],
-    [t("GCC Cross-Border Shipping", "الشحن العابر للخليج"), "/services"],
-    [t("Warehousing & Distribution", "التخزين والتوزيع"), "/services"],
+    [t("Customs Clearance", "التخليص الجمركي"), "/services/customs-clearance"],
+    [t("Ocean & Sea Freight", "الشحن البحري"), "/services/ocean-freight"],
+    [t("Air Freight", "الشحن الجوي"), "/services/air-freight"],
+    [t("GCC Transportation", "النقل الخليجي"), "/services/gcc-transportation"],
+    [t("Exhibition Logistics", "لوجستيات المعارض"), "/services/exhibition-logistics"],
+    [t("ATA Carnet Services", "خدمات كارنيه ATA"), "/services/exhibition-logistics"],
+    [t("Project Cargo", "بضائع المشاريع"), "/services/project-cargo"],
+    [t("Warehousing & Distribution", "التخزين والتوزيع"), "/services/warehousing"],
+    [t("Freight Forwarding", "الشحن والتخليص"), "/services/freight-forwarding"],
+    [t("RoRo Shipping", "الشحن الدحرجي"), "/services/roro-shipping"],
   ];
 
   const industries: [string, string][] = [
@@ -338,7 +339,7 @@ export function Footer() {
   const quickLinks: [string, string][] = [
     [t("Home", "الرئيسية"), "/"],
     [t("About Us", "عن الشركة"), "/about"],
-    [t("Our Services", "خدماتنا"), "/services"],
+    [t("All Services", "جميع الخدمات"), "/services"],
     [t("Track Shipment", "تتبع الشحنة"), "/track"],
     [t("News & Blog", "أخبار ومدونة"), "/blog"],
     [t("Contact Us", "اتصل بنا"), "/contact"],
@@ -356,200 +357,209 @@ export function Footer() {
   ];
 
   return (
-    <>
-      <footer className="bg-primary text-white/70" dir={isRtl ? "rtl" : "ltr"}>
+    <footer className="bg-[#06101e] text-white" dir={isRtl ? "rtl" : "ltr"}>
 
-        {/* ── Main footer grid ── */}
-        <div className="container mx-auto px-4 pt-16 pb-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+      {/* ── Main grid ── */}
+      <div className="container mx-auto px-6 pt-20 pb-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-8 gap-y-12">
 
-            {/* Brand column — spans 2 */}
-            <div className="lg:col-span-2">
-              <Link
-                href="/"
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="inline-block mb-6 group"
-              >
-                <div className="bg-white px-5 py-3 rounded-xl inline-flex items-center justify-center transition-all duration-400 group-hover:shadow-[0_0_40px_rgba(214,40,40,0.35)]">
-                  <img src={logoFull} alt="ENVOD KINGDOM Shipping Services LLC" className="h-16 object-contain" />
-                </div>
-              </Link>
-
-              <p className="text-sm leading-relaxed mb-5 max-w-xs text-white/55">
-                {t(
-                  "Saudi Arabia's trusted partner for Exhibition Logistics, ATA Carnet, Customs Clearance, Project Cargo, Road Freight, and Global Shipping — 25+ years of expertise across Riyadh, Jeddah, Dammam & GCC.",
-                  "الشريك الموثوق في المملكة للمعارض والتخليص الجمركي وكارنيه ATA وبضائع المشاريع والشحن العالمي — أكثر من 25 عاماً من الخبرة."
-                )}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {["SABER", "ISO 9001", "ATA Carnet", "SFDA"].map((b) => (
-                  <span key={b} className="text-[10px] font-bold uppercase tracking-widest bg-secondary/15 text-secondary px-2.5 py-1 rounded-full border border-secondary/25">{b}</span>
-                ))}
+          {/* Brand — col-span-3 */}
+          <div className="lg:col-span-3">
+            <Link
+              href="/"
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              className="inline-block mb-7 group"
+            >
+              <div className="bg-white px-5 py-3.5 rounded-xl inline-flex items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_32px_rgba(214,40,40,0.3)]">
+                <img src={logoFull} alt="ENVOD KINGDOM Shipping Services LLC" className="h-14 object-contain" />
               </div>
+            </Link>
 
-              <SocialIcons />
-              <NetworkMap />
+            <p className="text-[13.5px] leading-[1.85] text-white/50 mb-7">
+              {t(
+                "Saudi Arabia's trusted partner for Exhibition Logistics, ATA Carnet, Customs Clearance, Project Cargo, and Global Shipping — 25+ years of expertise.",
+                "الشريك الموثوق في المملكة للمعارض والتخليص الجمركي وكارنيه ATA وبضائع المشاريع والشحن العالمي — أكثر من 25 عاماً."
+              )}
+            </p>
+
+            <div className="flex flex-wrap gap-2 mb-7">
+              {["SABER", "ISO 9001", "ATA Carnet", "SFDA"].map((b) => (
+                <span key={b} className="text-[10px] font-bold uppercase tracking-widest bg-secondary/10 text-secondary px-3 py-1.5 rounded-full border border-secondary/20">
+                  {b}
+                </span>
+              ))}
             </div>
 
-            {/* Services */}
-            <div>
-              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-5 pb-3 border-b border-white/10">
-                {t("Our Services", "خدماتنا")}
-              </h4>
-              <ul className="space-y-2.5">
-                {services.map(([label, href], i) => (
-                  <li key={i}>
-                    <Link href={href} className="flex items-center gap-1.5 text-xs text-white/50 hover:text-secondary transition-colors duration-200 group">
-                      <ChevronRight className="w-3 h-3 text-secondary/40 group-hover:text-secondary shrink-0 transition-colors" />
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <SocialIcons />
+          </div>
 
-            {/* Industries */}
+          {/* Services — col-span-3 */}
+          <div className="lg:col-span-3">
+            <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+              {t("Our Services", "خدماتنا")}
+            </h4>
+            <ul className="space-y-3.5">
+              {services.map(([label, href], i) => (
+                <li key={i}>
+                  <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
+                    <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industries + Quick Links — col-span-3 */}
+          <div className="lg:col-span-3 flex flex-col gap-10">
             <div>
-              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-5 pb-3 border-b border-white/10">
-                {t("Industries Served", "القطاعات التي نخدمها")}
+              <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+                {t("Industries Served", "القطاعات")}
               </h4>
-              <ul className="space-y-2.5 mb-8">
+              <ul className="space-y-3.5">
                 {industries.map(([label, href], i) => (
                   <li key={i}>
-                    <Link href={href} className="flex items-center gap-1.5 text-xs text-white/50 hover:text-secondary transition-colors duration-200 group">
-                      <ChevronRight className="w-3 h-3 text-secondary/40 group-hover:text-secondary shrink-0 transition-colors" />
+                    <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
+                      <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
+            </div>
 
-              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-4 pb-3 border-b border-white/10">
+            <div>
+              <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
                 {t("Quick Links", "روابط سريعة")}
               </h4>
-              <ul className="space-y-2.5">
+              <ul className="space-y-3.5">
                 {quickLinks.map(([label, href], i) => (
                   <li key={i}>
-                    <Link href={href} className="flex items-center gap-1.5 text-xs text-white/50 hover:text-secondary transition-colors duration-200 group">
-                      <ChevronRight className="w-3 h-3 text-secondary/40 group-hover:text-secondary shrink-0 transition-colors" />
+                    <Link href={href} className="flex items-center gap-2 text-[13px] text-white/55 hover:text-secondary transition-colors duration-200 group">
+                      <span className="w-1 h-1 rounded-full bg-secondary/40 group-hover:bg-secondary shrink-0 transition-colors" />
                       {label}
                     </Link>
                   </li>
                 ))}
               </ul>
             </div>
+          </div>
 
-            {/* Contact */}
-            <div>
-              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-5 pb-3 border-b border-white/10">
-                {t("Contact Us", "اتصل بنا")}
-              </h4>
-              <ul className="space-y-4 text-xs">
-                <li className="flex gap-2.5">
-                  <MapPin className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
-                  <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-1">{t("Riyadh Head Office", "المقر الرئيسي — الرياض")}</p>
-                    <p>{t("Prince Mansour Bin Abdulaziz Street,", "شارع الأمير منصور بن عبدالعزيز،")}</p>
-                    <p>{t("Al Malaz District, Riyadh 12831,", "حي الملز، الرياض 12831،")}</p>
-                    <p>{t("Saudi Arabia", "المملكة العربية السعودية")}</p>
-                  </div>
-                </li>
-                <li className="flex gap-2.5">
-                  <Phone className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
-                  <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-0.5">{t("Phone", "هاتف")}</p>
-                    <a href="tel:+966583671739" className="hover:text-secondary transition-colors">+966 58 367 1739</a>
-                  </div>
-                </li>
-                <li className="flex gap-2.5">
-                  <svg className="w-3.5 h-3.5 text-[#25D366] shrink-0 mt-0.5" viewBox="0 0 24 24" fill="currentColor">
+          {/* Contact — col-span-3 */}
+          <div className="lg:col-span-3">
+            <h4 className="text-white font-bold text-[11px] uppercase tracking-[0.22em] mb-6 pb-3 border-b border-white/[0.08]">
+              {t("Contact Us", "اتصل بنا")}
+            </h4>
+
+            <ul className="space-y-5">
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-[13px] mb-1">{t("Riyadh Head Office", "المقر الرئيسي — الرياض")}</p>
+                  <p className="text-white/50 text-[13px] leading-relaxed">
+                    {t("Prince Mansour Bin Abdulaziz St.", "شارع الأمير منصور بن عبدالعزيز")}<br />
+                    {t("Al Malaz, Riyadh 12831", "حي الملز، الرياض 12831")}<br />
+                    {t("Saudi Arabia", "المملكة العربية السعودية")}
+                  </p>
+                </div>
+              </li>
+
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Phone", "هاتف")}</p>
+                  <a href="tel:+966583671739" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
+                    +966 58 367 1739
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-[#25D366]/10 border border-[#25D366]/20 flex items-center justify-center shrink-0">
+                  <svg className="w-4 h-4 text-[#25D366]" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                   </svg>
-                  <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-0.5">WhatsApp</p>
-                    <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="hover:text-secondary transition-colors">+966 50 226 0256</a>
-                  </div>
-                </li>
-                <li className="flex gap-2.5">
-                  <Mail className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
-                  <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-0.5">{t("Email", "بريد إلكتروني")}</p>
-                    <a href="mailto:info@envodkingdom.com" className="hover:text-secondary transition-colors">info@envodkingdom.com</a>
-                  </div>
-                </li>
-                <li className="flex gap-2.5">
-                  <Clock className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
-                  <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-0.5">{t("Business Hours", "ساعات العمل")}</p>
-                    <p>{t("Sun – Thu: 8:00 AM – 6:00 PM", "الأحد – الخميس: 8ص – 6م")}</p>
-                    <p>{t("Sat: 9:00 AM – 2:00 PM", "السبت: 9ص – 2م")}</p>
-                    <p className="text-secondary font-semibold mt-1">{t("24/7 Tracking & Support", "دعم وتتبع على مدار الساعة")}</p>
-                  </div>
-                </li>
-              </ul>
+                </div>
+                <div>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">WhatsApp</p>
+                  <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="text-white/70 text-[13px] hover:text-[#25D366] transition-colors font-medium">
+                    +966 50 226 0256
+                  </a>
+                </div>
+              </li>
 
-              <a
-                href="https://maps.google.com/?q=Prince+Mansour+Bin+Abdulaziz+Street,Al+Malaz,Riyadh+12831,Saudi+Arabia"
-                target="_blank" rel="noopener noreferrer"
-                className="mt-4 flex items-center gap-1.5 text-[11px] text-secondary hover:text-secondary/70 font-semibold transition-colors"
-              >
-                <MapPin className="w-3.5 h-3.5" />
-                {t("View on Google Maps →", "عرض على خرائط جوجل ←")}
-              </a>
-            </div>
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
+                  <Mail className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Email", "البريد الإلكتروني")}</p>
+                  <a href="mailto:info@envodkingdom.net" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
+                    info@envodkingdom.net
+                  </a>
+                </div>
+              </li>
+
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
+                  <Clock className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Business Hours", "ساعات العمل")}</p>
+                  <p className="text-white/70 text-[13px] leading-relaxed">
+                    {t("Sun – Thu: 8:00 AM – 6:00 PM", "الأحد – الخميس: 8ص – 6م")}<br />
+                    {t("Sat: 9:00 AM – 2:00 PM", "السبت: 9ص – 2م")}
+                  </p>
+                  <p className="text-secondary text-[12px] font-semibold mt-1.5">{t("24/7 Tracking & Support", "دعم وتتبع على مدار الساعة")}</p>
+                </div>
+              </li>
+            </ul>
+
+            <a
+              href="https://maps.google.com/?q=Prince+Mansour+Bin+Abdulaziz+Street,Al+Malaz,Riyadh+12831,Saudi+Arabia"
+              target="_blank" rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center gap-2 text-[12px] text-secondary hover:text-secondary/70 font-semibold transition-colors"
+            >
+              <MapPin className="w-3.5 h-3.5" />
+              {t("View on Google Maps →", "عرض على خرائط جوجل ←")}
+            </a>
           </div>
         </div>
+      </div>
 
-        {/* ── Certifications Bar ── */}
-        <div className="border-t border-white/8 bg-white/[0.02]">
-          <div className="container mx-auto px-4 py-7">
-            <p className="text-center text-[10px] font-bold uppercase tracking-[0.35em] text-white/30 mb-5">
-              {t("Certifications & Compliance", "الشهادات والامتثال")}
+      {/* ── Certifications Bar ── */}
+      <div className="border-t border-white/[0.06]">
+        <div className="container mx-auto px-6 py-8">
+          <p className="text-center text-[10px] font-bold uppercase tracking-[0.35em] text-white/25 mb-6">
+            {t("Certifications & Compliance", "الشهادات والامتثال")}
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            {certs.map((c) => <CertBadge key={c.name} {...c} />)}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Bottom Bar ── */}
+      <div className="border-t border-white/[0.06] bg-[#040c18]">
+        <div className="container mx-auto px-6 py-5">
+          <div className={`flex flex-col md:flex-row items-center justify-between gap-3 text-[12px] text-white/30 ${isRtl ? "md:flex-row-reverse" : ""}`}>
+            <p>
+              © {year} {t("ENVOD KINGDOM SHIPPING SERVICES LLC", "انفود كينغدوم لخدمات الشحن ذ.م.م")}.{" "}
+              {t("All rights reserved.", "جميع الحقوق محفوظة.")}
             </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {certs.map((c) => <CertBadge key={c.name} {...c} />)}
+            <div className="flex items-center gap-5 flex-wrap justify-center">
+              <a href="#" className="hover:text-secondary transition-colors">{t("Privacy Policy", "سياسة الخصوصية")}</a>
+              <a href="#" className="hover:text-secondary transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
+              <a href="#" className="hover:text-secondary transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
             </div>
           </div>
         </div>
-
-        {/* ── Business Registration Bar ── */}
-        <div className="border-t border-white/8 bg-[#040b16]">
-          <div className="container mx-auto px-4 py-4">
-            <div className={`flex flex-wrap items-center justify-center gap-x-6 gap-y-1.5 text-[10px] text-white/20 ${isRtl ? "flex-row-reverse" : ""}`}>
-              <span>{t("CR No:", "رقم السجل التجاري:")} <span className="text-white/35">1010XXXXXXX</span></span>
-              <span className="text-white/10">·</span>
-              <span>{t("VAT No:", "الرقم الضريبي:")} <span className="text-white/35">3XXXXXXXXXXX003</span></span>
-              <span className="text-white/10">·</span>
-              <span>{t("Saudi Business License:", "الترخيص التجاري السعودي:")} <span className="text-white/35">7XXXXXXXXX</span></span>
-              <span className="text-white/10">·</span>
-              <span>{t("Customs Broker License:", "رخصة التخليص الجمركي:")} <span className="text-white/35">GAZT Licensed</span></span>
-            </div>
-          </div>
-        </div>
-
-        {/* ── Bottom Bar ── */}
-        <div className="border-t border-white/8 bg-[#050c18]">
-          <div className="container mx-auto px-4 py-5">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-3 text-[11px] text-white/30">
-              <p>
-                © {year} {t("ENVOD KINGDOM SHIPPING SERVICES LLC", "انفود كينغدوم لخدمات الشحن ذ.م.م")}.{" "}
-                {t("All rights reserved.", "جميع الحقوق محفوظة.")}
-              </p>
-              <div className="flex items-center gap-4 flex-wrap justify-center">
-                <a href="#" className="hover:text-secondary transition-colors">{t("Privacy Policy", "سياسة الخصوصية")}</a>
-                <span className="text-white/15">·</span>
-                <a href="#" className="hover:text-secondary transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
-                <span className="text-white/15">·</span>
-                <a href="#" className="hover:text-secondary transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
-                <span className="text-white/15">·</span>
-                <a href="/sitemap.xml" className="hover:text-secondary transition-colors">Sitemap</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </>
+      </div>
+    </footer>
   );
 }
 
