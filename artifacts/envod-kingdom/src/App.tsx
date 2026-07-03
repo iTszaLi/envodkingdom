@@ -1,4 +1,4 @@
-import { Switch, Route, Router as WouterRouter, Redirect } from "wouter";
+import { Switch, Route, Router as WouterRouter, Redirect, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { LanguageProvider } from "@/lib/language-context";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { initScrollEngine, destroyScrollEngine } from "@/lib/scroll-engine";
+import { initScrollEngine, destroyScrollEngine, scrollToTop } from "@/lib/scroll-engine";
 
 import Home from "@/pages/home";
 import Track from "@/pages/track";
@@ -23,6 +23,14 @@ import AdminHeroVideos from "@/pages/admin/hero-videos";
 import AdminGallery from "@/pages/admin/gallery";
 
 const queryClient = new QueryClient();
+
+function ScrollToTop() {
+  const [location] = useLocation();
+  useEffect(() => {
+    scrollToTop(true);
+  }, [location]);
+  return null;
+}
 
 function Router() {
   return (
@@ -86,6 +94,7 @@ function App() {
       <LanguageProvider>
         <TooltipProvider>
           <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+            <ScrollToTop />
             <Router />
           </WouterRouter>
           <Toaster />

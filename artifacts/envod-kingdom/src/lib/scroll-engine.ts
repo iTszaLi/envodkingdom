@@ -32,4 +32,14 @@ export function destroyScrollEngine() {
   }
 }
 
+export function scrollToTop(immediate = true) {
+  if (lenis) {
+    lenis.scrollTo(0, { immediate, force: true });
+    return;
+  }
+  if (typeof window !== "undefined") {
+    window.scrollTo(0, 0);
+  }
+}
+
 export { gsap, ScrollTrigger };
