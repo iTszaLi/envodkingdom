@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { SERVICE_META, SLUG_TO_ID, buildMailto } from "@/lib/service-data";
 
-function ServiceIcon({ name, className = "w-8 h-8" }: { name: string; className?: string }) {
+function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; className?: string; style?: React.CSSProperties }) {
   const map: Record<string, React.ElementType> = {
     Ship, Plane, Truck, Package, Warehouse, FileCheck, GitBranch,
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
@@ -20,7 +20,7 @@ function ServiceIcon({ name, className = "w-8 h-8" }: { name: string; className?
     Anchor, AlertTriangle, Maximize2,
   };
   const Icon = map[name] ?? Package;
-  return <Icon className={className} />;
+  return <Icon className={className} style={style} />;
 }
 
 function FAQItem({ q, a, qAr, aAr, isRtl }: { q: string; a: string; qAr: string; aAr: string; isRtl: boolean }) {

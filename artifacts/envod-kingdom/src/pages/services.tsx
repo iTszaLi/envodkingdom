@@ -8,73 +8,271 @@ import {
   Ship, Plane, Truck, Package, ShieldCheck, Clock, FileCheck,
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
   Heart, UtensilsCrossed, PawPrint,
-  Anchor, AlertTriangle, Maximize2,
-  CheckCircle2, ArrowRight, Globe2, Award,
+  Anchor, AlertTriangle, Maximize2, Car,
+  CheckCircle2, ArrowRight, Globe2, Award, Mail,
 } from "lucide-react";
+import { SERVICE_META } from "@/lib/service-data";
 
-// ─── Extended per-service config ────────────────────────────────────────────
+// ─── Per-service features ─────────────────────────────────────────────────────
 interface ServiceExt {
   features: string[];
   featuresAr: string[];
   tag?: string;
   tagAr?: string;
   spotlight?: boolean;
+  featured?: boolean;
 }
 
 const EXT: Record<number, ServiceExt> = {
-  1:  { features: ["FCL & LCL options", "Global port coverage", "Ro-Ro & break bulk", "Port-to-door delivery", "Dangerous goods handling"], featuresAr: ["خيارات FCL وLCL", "تغطية الموانئ العالمية", "شحن رورو والبضائع السائبة", "توصيل من الميناء للباب", "مناولة البضائع الخطرة"] },
-  2:  { features: ["Express & charter flights", "50+ country network", "Perishable & pharma", "Time-definite delivery", "Door-to-airport service"], featuresAr: ["رحلات سريعة ومستأجرة", "شبكة 50+ دولة", "البضائع القابلة للتلف والأدوية", "توصيل بموعد محدد", "خدمة من الباب للمطار"] },
-  3:  { features: ["FTL & LTL options", "Saudi Arabia & GCC", "Cross-border customs", "Refrigerated transport", "Dedicated fleet"], featuresAr: ["حمولات كاملة وجزئية", "المملكة ودول الخليج", "تخليص جمركي عبر الحدود", "نقل مبرد", "أسطول مخصص"] },
-  4:  { features: ["Saudi Customs expertise", "SABER & SFDA support", "ATA Carnet processing", "Temporary import clearance", "Re-export documentation", "24-hour guarantee"], featuresAr: ["خبرة جمارك سعودية", "دعم سابر وهيئة الغذاء والدواء", "معالجة كارنيه ATA", "تخليص الاستيراد المؤقت", "وثائق إعادة التصدير", "ضمان 24 ساعة"], tag: "24hr Guarantee", tagAr: "ضمان 24 ساعة" },
-  5:  { features: ["Bonded warehousing", "Inventory management system", "Pick & pack services", "Temperature-controlled zones", "24/7 security & CCTV"], featuresAr: ["مستودعات جمركية", "نظام إدارة المخزون", "خدمات التجميع والتغليف", "مناطق مبردة", "أمن على مدار الساعة"] },
-  6:  { features: ["End-to-end coordination", "Multi-modal solutions", "Documentation handling", "Insurance & cargo cover", "Real-time tracking"], featuresAr: ["تنسيق من البداية للنهاية", "حلول متعددة الوسائط", "معالجة الوثائق", "تأمين وتغطية الشحن", "تتبع في الوقت الفعلي"] },
-  7:  { features: ["Supply chain optimization", "Vendor management", "Last-mile delivery", "KPI reporting & analytics", "ERP integration"], featuresAr: ["تحسين سلسلة التوريد", "إدارة الموردين", "توصيل المرحلة الأخيرة", "تقارير مؤشرات الأداء", "تكامل مع أنظمة ERP"] },
-  8:  { features: ["Heavy & oversized cargo", "Oil & gas equipment", "Route & feasibility study", "Crane & rigging services", "Multi-modal execution"], featuresAr: ["الشحنات الثقيلة والضخمة", "معدات النفط والغاز", "دراسة المسار والجدوى", "خدمات الرافعات", "تنفيذ متعدد الوسائط"], tag: "Specialist", tagAr: "متخصص" },
-  9:  { features: ["Residential & corporate", "Packing & unpacking", "International relocation", "Customs support", "Door-to-door guarantee"], featuresAr: ["سكني ومؤسسي", "تغليف وفك التغليف", "انتقال دولي", "دعم جمركي", "ضمان من باب لباب"] },
-  10: { features: ["Last-mile delivery", "Returns management", "Fulfillment centers", "COD collection", "E-commerce platform integration"], featuresAr: ["توصيل المرحلة الأخيرة", "إدارة المرتجعات", "مراكز الوفاء", "تحصيل الدفع عند الاستلام", "تكامل منصات التجارة الإلكترونية"] },
-  11: { features: ["ATA Carnet management", "Temporary import & re-export", "Venue delivery coordination", "Time-critical transport", "Exhibition crating & packing", "On-site support"], featuresAr: ["إدارة كارنيه ATA", "الاستيراد المؤقت وإعادة التصدير", "تنسيق توصيل قاعة المعرض", "نقل حساس للوقت", "تغليف وتعبئة معارض", "دعم في الموقع"], tag: "ENVOD Specialist", tagAr: "متخصص انفود", spotlight: true },
-  12: { features: ["Cold chain management", "Pharmaceutical compliance", "SFDA-cleared shipments", "Hospital & clinic delivery", "Controlled temperature tracking"], featuresAr: ["إدارة سلسلة التبريد", "امتثال صيدلاني", "شحنات مخلصة من هيئة الغذاء والدواء", "توصيل للمستشفيات والعيادات", "تتبع درجات الحرارة المضبوطة"], tag: "Cold Chain", tagAr: "سلسلة تبريد" },
-  13: { features: ["Temperature-controlled transport", "SFDA food clearance", "Halal certification support", "Perishable goods handling", "Supermarket distribution"], featuresAr: ["نقل بدرجات حرارة مضبوطة", "تخليص غذائي من هيئة الغذاء والدواء", "دعم شهادة الحلال", "مناولة البضائع القابلة للتلف", "توزيع للسوبرماركت"] },
-  14: { features: ["SFDA veterinary import", "Live animal transport", "Animal health certificates", "Quarantine coordination", "GCC animal movement"], featuresAr: ["استيراد بيطري من هيئة الغذاء والدواء", "نقل الحيوانات الحية", "شهادات صحة الحيوانات", "تنسيق الحجر الصحي", "تنقل الحيوانات خليجياً"] },
-  15: { features: ["Heavy machinery", "Steel structures", "Industrial equipment", "Construction materials", "Non-containerized cargo", "Port-to-port breakbulk"], featuresAr: ["آلات ثقيلة", "هياكل فولاذية", "معدات صناعية", "مواد بناء", "بضائع غير حاوية", "بريك بالك من ميناء لميناء"], tag: "Breakbulk", tagAr: "بريك بالك" },
-  16: { features: ["IMO & IATA compliant", "Hazardous chemicals", "Flammable goods", "Temperature-sensitive DG", "Certified DG handling", "Safe packaging & docs"], featuresAr: ["متوافق مع IMO وIATA", "مواد كيميائية خطرة", "سلع قابلة للاشتعال", "DG حساس للحرارة", "مناولة DG معتمدة", "تغليف آمن وتوثيق"], tag: "DG Certified", tagAr: "معتمد DG" },
-  17: { features: ["Heavy lift cargo", "Oversized machinery", "Wind turbine components", "Transformers", "Industrial project cargo", "Specialized trailers & rigging"], featuresAr: ["شحن ثقيل", "آلات ضخمة", "مكونات توربينات الرياح", "محولات", "بضائع مشاريع صناعية", "مقطورات ورافعات متخصصة"], tag: "OOG Specialist", tagAr: "متخصص OOG" },
+  1:  { features: ["FCL & LCL options", "Global port coverage", "Ro-Ro & break bulk"], featuresAr: ["خيارات FCL وLCL", "تغطية الموانئ العالمية", "شحن رورو والبضائع السائبة"] },
+  2:  { features: ["Express & charter flights", "50+ country network", "Pharma & perishables"], featuresAr: ["رحلات سريعة ومستأجرة", "شبكة 50+ دولة", "الأدوية والبضائع القابلة للتلف"] },
+  3:  { features: ["FTL & LTL options", "All 6 GCC countries", "Cross-border customs"], featuresAr: ["حمولات كاملة وجزئية", "جميع دول الخليج الست", "تخليص جمركي عبر الحدود"] },
+  4:  { features: ["24-hour clearance guarantee", "SABER, SFDA & ATA Carnet", "Saudi Customs broker"], featuresAr: ["ضمان التخليص في 24 ساعة", "سابر وهيئة الغذاء وكارنيه ATA", "وسيط جمارك سعودي معتمد"], tag: "24hr Guarantee", tagAr: "ضمان 24 ساعة", featured: true },
+  5:  { features: ["Bonded warehousing", "Pick & pack + fulfillment", "24/7 security & CCTV"], featuresAr: ["مستودعات جمركية", "تجميع وتغليف وتوزيع", "أمن وكاميرات على مدار الساعة"] },
+  6:  { features: ["Door-to-door coordination", "Multi-modal solutions", "Real-time cargo tracking"], featuresAr: ["تنسيق من الباب للباب", "حلول متعددة الوسائط", "تتبع الشحن في الوقت الفعلي"] },
+  7:  { features: ["Supply chain optimization", "ERP integration", "Vendor & last-mile management"], featuresAr: ["تحسين سلسلة التوريد", "تكامل مع أنظمة ERP", "إدارة الموردين والمرحلة الأخيرة"] },
+  8:  { features: ["Heavy lift & OOG cargo", "Oil & gas equipment", "Route survey & rigging"], featuresAr: ["رفع ثقيل وبضائع OOG", "معدات النفط والغاز", "مسح المسار وخدمات الرافعات"], tag: "Specialist", tagAr: "متخصص", featured: true },
+  9:  { features: ["Residential & corporate moves", "International relocation", "Full packing & customs"], featuresAr: ["نقل سكني ومؤسسي", "انتقال دولي", "تغليف كامل وتخليص جمركي"] },
+  10: { features: ["Last-mile delivery", "Returns management", "Salla, Zid & Amazon integration"], featuresAr: ["توصيل المرحلة الأخيرة", "إدارة المرتجعات", "تكامل سلة وZid وأمازون"] },
+  11: { features: ["ATA Carnet — 24hr processing", "On-site logistics team", "Temporary import & re-export"], featuresAr: ["كارنيه ATA — معالجة في 24 ساعة", "فريق لوجستيات في الموقع", "الاستيراد المؤقت وإعادة التصدير"], tag: "ENVOD Specialist", tagAr: "متخصص انفود", spotlight: true },
+  12: { features: ["GDP-certified cold chain", "SFDA pharma clearance", "Hospital direct delivery"], featuresAr: ["سلسلة باردة معتمدة GDP", "تخليص دوائي من هيئة SFDA", "توصيل مباشر للمستشفيات"], tag: "Cold Chain", tagAr: "سلسلة تبريد" },
+  13: { features: ["SFDA food clearance", "Halal certification support", "Refrigerated transport"], featuresAr: ["تخليص غذائي من هيئة SFDA", "دعم شهادة الحلال", "نقل مبرد"] },
+  14: { features: ["SFDA veterinary import", "Live animal IATA transport", "Quarantine coordination"], featuresAr: ["استيراد بيطري من SFDA", "نقل حيوانات حية وفق IATA", "تنسيق الحجر الصحي"] },
+  15: { features: ["Heavy machinery & steel", "Non-containerized cargo", "Port-to-port handling"], featuresAr: ["آلات ثقيلة وحديد", "بضائع غير حاوية", "معالجة من ميناء لميناء"], tag: "Breakbulk", tagAr: "بريك بالك", featured: true },
+  16: { features: ["IMO & IATA compliant", "All 9 DG classes", "Safe packaging & certified docs"], featuresAr: ["متوافق مع IMO وIATA", "جميع الفئات التسع للبضائع الخطرة", "تغليف آمن وتوثيق معتمد"], tag: "DG Certified", tagAr: "معتمد DG" },
+  17: { features: ["Wind turbines & transformers", "Specialized trailers & rigging", "Saudi permit management"], featuresAr: ["توربينات الرياح والمحولات", "مقطورات ورافعات متخصصة", "إدارة التصاريح السعودية"], tag: "OOG Specialist", tagAr: "متخصص OOG" },
+  18: { features: ["Vehicles, trucks & machinery", "Full Saudi customs clearance", "Major Saudi port access"], featuresAr: ["سيارات وشاحنات وآلات", "تخليص جمركي سعودي كامل", "وصول للموانئ السعودية الرئيسية"], tag: "RoRo", tagAr: "رورو" },
 };
 
-// ─── Icon resolver ───────────────────────────────────────────────────────────
+// ─── Icon resolver ─────────────────────────────────────────────────────────────
 function ServiceIcon({ name, className = "w-7 h-7" }: { name: string; className?: string }) {
   const map: Record<string, React.ElementType> = {
     Ship, Plane, Truck, Package, Warehouse, FileCheck, GitBranch,
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck, Clock,
-    Anchor, AlertTriangle, Maximize2,
+    Anchor, AlertTriangle, Maximize2, Car,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} />;
 }
 
-// ─── Spotlight card ──────────────────────────────────────────────────────────
+// ─── Premium card (standard) ───────────────────────────────────────────────────
+function PremiumCard({ service, index, isRtl }: { service: Service; index: number; isRtl: boolean }) {
+  const { t } = useLanguage();
+  const ext = EXT[service.id] ?? { features: [], featuresAr: [] };
+  const meta = SERVICE_META[service.id];
+  const features = (isRtl ? ext.featuresAr : ext.features).slice(0, 3);
+  const name = isRtl ? service.nameAr : service.name;
+  const desc = isRtl ? service.descriptionAr : service.description;
+  const slug = meta?.slug ?? "";
+  const gradient = meta?.gradient ?? "linear-gradient(135deg,#0a1a2e 0%,#0d2038 100%)";
+  const accent = meta?.accentHex ?? "#D62828";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ delay: (index % 3) * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
+      className="h-full"
+    >
+      <motion.div
+        whileHover={{ y: -6 }}
+        transition={{ type: "spring", stiffness: 300, damping: 24 }}
+        className="group h-full rounded-[20px] overflow-hidden border border-white/8 hover:border-white/18 flex flex-col transition-all duration-300"
+        style={{ background: "#080f1a", boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}
+      >
+        {/* ── Gradient banner ── */}
+        <div
+          className="relative h-32 flex items-center justify-center overflow-hidden flex-shrink-0"
+          style={{ background: gradient }}
+        >
+          {/* Noise texture overlay */}
+          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundSize: "128px 128px" }} />
+          {/* Radial accent */}
+          <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 70% at 50% 60%, ${accent}22 0%, transparent 70%)` }} />
+          {/* Animated border glow on hover */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ boxShadow: `inset 0 0 30px ${accent}25` }} />
+
+          {/* Icon */}
+          <motion.div
+            className="relative z-10 w-16 h-16 rounded-2xl flex items-center justify-center border border-white/10 backdrop-blur-sm"
+            style={{ background: `${accent}18` }}
+            whileHover={{ scale: 1.1, rotate: 3 }}
+            transition={{ type: "spring", stiffness: 350, damping: 20 }}
+          >
+            <ServiceIcon name={service.icon} className="w-8 h-8 text-white" />
+          </motion.div>
+
+          {/* Tag badge */}
+          {ext.tag && (
+            <div
+              className="absolute top-3 right-3 rtl:right-auto rtl:left-3 text-[9px] font-black tracking-[0.3em] uppercase px-2.5 py-1 rounded-full border"
+              style={{ background: `${accent}25`, borderColor: `${accent}50`, color: accent }}
+            >
+              {isRtl ? ext.tagAr : ext.tag}
+            </div>
+          )}
+        </div>
+
+        {/* ── Card body ── */}
+        <div className={`flex flex-col flex-1 p-5 ${isRtl ? "text-right" : ""}`}>
+          <h3 className="font-black text-white text-[15px] leading-snug mb-2">{name}</h3>
+          <p className="text-white/45 text-xs leading-relaxed mb-4 flex-shrink-0 line-clamp-2">{desc}</p>
+
+          {/* 3 bullet points */}
+          <ul className="space-y-2 mb-5 flex-1">
+            {features.map((f, i) => (
+              <li key={i} className={`flex items-center gap-2 text-xs text-white/65 ${isRtl ? "flex-row-reverse" : ""}`}>
+                <CheckCircle2 className="w-3.5 h-3.5 shrink-0" style={{ color: accent }} />
+                {f}
+              </li>
+            ))}
+          </ul>
+
+          {/* Footer */}
+          <div className={`flex items-center justify-between pt-4 border-t border-white/6 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <Link
+              href={`/services/${slug}`}
+              className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider transition-all group-hover:gap-2 ${isRtl ? "flex-row-reverse" : ""}`}
+              style={{ color: accent }}
+            >
+              {t("View Details", "التفاصيل")}
+              <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180" : ""}`} />
+            </Link>
+            <a
+              href={`mailto:info@envodkingdom.net?subject=${encodeURIComponent(`Inquiry - ${service.name}`)}`}
+              className="w-8 h-8 rounded-lg flex items-center justify-center border border-white/8 hover:border-white/20 hover:bg-white/5 transition-all"
+              title="Email inquiry"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <Mail className="w-3.5 h-3.5 text-white/40" />
+            </a>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Featured (wide) card ──────────────────────────────────────────────────────
+function FeaturedCard({ service, index, isRtl }: { service: Service; index: number; isRtl: boolean }) {
+  const { t } = useLanguage();
+  const ext = EXT[service.id] ?? { features: [], featuresAr: [] };
+  const meta = SERVICE_META[service.id];
+  const features = (isRtl ? ext.featuresAr : ext.features).slice(0, 3);
+  const name = isRtl ? service.nameAr : service.name;
+  const desc = isRtl ? service.descriptionAr : service.description;
+  const slug = meta?.slug ?? "";
+  const gradient = meta?.gradient ?? "linear-gradient(135deg,#0a1a2e 0%,#0d2038 100%)";
+  const accent = meta?.accentHex ?? "#D62828";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ delay: index * 0.08, duration: 0.6, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
+      className="sm:col-span-2"
+    >
+      <motion.div
+        whileHover={{ y: -5 }}
+        transition={{ type: "spring", stiffness: 280, damping: 22 }}
+        className="group relative rounded-[22px] overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300"
+        style={{ background: "#080f1a", boxShadow: "0 6px 32px rgba(0,0,0,0.35)" }}
+      >
+        {/* Top accent bar */}
+        <div className="absolute inset-x-0 top-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(90deg, transparent, ${accent}90, transparent)` }} />
+
+        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-0 ${isRtl ? "" : ""}`}>
+          {/* Left: Banner */}
+          <div
+            className="relative min-h-[200px] flex items-center justify-center overflow-hidden"
+            style={{ background: gradient }}
+          >
+            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 80% 80% at 50% 50%, ${accent}22 0%, transparent 70%)` }} />
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "32px 32px" }} />
+
+            <div className="relative z-10 flex flex-col items-center gap-4">
+              <motion.div
+                className="w-20 h-20 rounded-3xl flex items-center justify-center border border-white/15"
+                style={{ background: `${accent}18` }}
+                whileHover={{ scale: 1.08 }}
+              >
+                <ServiceIcon name={service.icon} className="w-10 h-10 text-white" />
+              </motion.div>
+              {ext.tag && (
+                <span
+                  className="text-[9px] font-black tracking-[0.3em] uppercase px-3 py-1 rounded-full border"
+                  style={{ background: `${accent}25`, borderColor: `${accent}50`, color: accent }}
+                >
+                  {isRtl ? ext.tagAr : ext.tag}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Content */}
+          <div className={`p-7 flex flex-col justify-between ${isRtl ? "text-right" : ""}`}>
+            <div>
+              <h3 className="font-black text-white text-xl md:text-2xl leading-tight mb-2">{name}</h3>
+              <p className="text-white/50 text-sm leading-relaxed mb-5">{desc}</p>
+              <ul className="space-y-2.5 mb-6">
+                {features.map((f, i) => (
+                  <li key={i} className={`flex items-center gap-2.5 text-sm text-white/70 ${isRtl ? "flex-row-reverse" : ""}`}>
+                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: accent }} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <Link
+                href={`/services/${slug}`}
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white transition-all hover:opacity-90 shadow-lg ${isRtl ? "flex-row-reverse" : ""}`}
+                style={{ background: accent, boxShadow: `0 4px 16px ${accent}35` }}
+              >
+                {t("View Details", "التفاصيل")}
+                <ArrowRight className={`w-3.5 h-3.5 ${isRtl ? "rotate-180" : ""}`} />
+              </Link>
+              <a
+                href={`mailto:info@envodkingdom.net?subject=${encodeURIComponent(`Inquiry - ${service.name}`)}`}
+                className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider border border-white/12 hover:bg-white/5 text-white/60 hover:text-white transition-all ${isRtl ? "flex-row-reverse" : ""}`}
+              >
+                <Mail className="w-3.5 h-3.5" />
+                {t("Inquire", "استفسار")}
+              </a>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+// ─── Spotlight card (Exhibition) ───────────────────────────────────────────────
 function SpotlightCard({ service, isRtl }: { service: Service; isRtl: boolean }) {
   const { t } = useLanguage();
   const ext = EXT[service.id] ?? { features: [], featuresAr: [] };
+  const meta = SERVICE_META[service.id];
   const features = isRtl ? ext.featuresAr : ext.features;
   const name = isRtl ? service.nameAr : service.name;
   const desc = isRtl ? service.descriptionAr : service.description;
+  const slug = meta?.slug ?? "";
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-      className="relative rounded-3xl overflow-hidden border border-secondary/25"
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
+      className="relative rounded-3xl overflow-hidden border border-secondary/25 hover:border-secondary/40 transition-all duration-300"
       style={{ background: "linear-gradient(135deg, rgba(214,40,40,0.07) 0%, rgba(10,35,66,0.55) 100%)" }}
     >
-      {/* Ambient glow */}
       <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 55% at 25% 40%, rgba(214,40,40,0.09) 0%, transparent 70%)" }} />
+      <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
 
-      <div className={`grid grid-cols-1 md:grid-cols-2 ${isRtl ? "md:flex-row-reverse" : ""}`}>
-        {/* Content */}
+      <div className={`grid grid-cols-1 md:grid-cols-2 ${isRtl ? "" : ""}`}>
         <div className={`p-8 md:p-12 ${isRtl ? "text-right" : ""}`}>
           <div className={`flex items-center gap-3 mb-6 ${isRtl ? "flex-row-reverse" : ""}`}>
             <div className="w-14 h-14 rounded-2xl bg-secondary/15 border border-secondary/30 flex items-center justify-center shrink-0">
@@ -92,30 +290,30 @@ function SpotlightCard({ service, isRtl }: { service: Service; isRtl: boolean })
 
           <ul className="space-y-2.5 mb-8">
             {features.map((f, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, x: isRtl ? 12 : -12 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.055 }}
-                className={`flex items-center gap-2.5 text-sm text-white/70 ${isRtl ? "flex-row-reverse" : ""}`}
-              >
+              <motion.li key={i} initial={{ opacity: 0, x: isRtl ? 12 : -12 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.055 }} className={`flex items-center gap-2.5 text-sm text-white/70 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" />
                 {f}
               </motion.li>
             ))}
           </ul>
 
-          <Link
-            href="/contact"
-            className={`inline-flex items-center gap-2 bg-secondary hover:bg-secondary/90 text-white px-7 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 ${isRtl ? "flex-row-reverse" : ""}`}
-          >
-            {t("Get a Quote", "احصل على عرض سعر")}
-            <ArrowRight className={`w-4 h-4 ${isRtl ? "rotate-180" : ""}`} />
-          </Link>
+          <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <Link
+              href={`/services/${slug}`}
+              className={`inline-flex items-center gap-2 bg-secondary hover:bg-secondary/90 text-white px-7 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 ${isRtl ? "flex-row-reverse" : ""}`}
+            >
+              {t("View Service", "استعراض الخدمة")}
+              <ArrowRight className={`w-4 h-4 ${isRtl ? "rotate-180" : ""}`} />
+            </Link>
+            <a
+              href={`mailto:info@envodkingdom.net?subject=${encodeURIComponent(`Inquiry - ${service.name}`)}`}
+              className="inline-flex items-center gap-2 bg-white/[0.06] border border-white/12 hover:bg-white/[0.1] text-white px-5 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all"
+            >
+              <Mail className="w-4 h-4" />
+            </a>
+          </div>
         </div>
 
-        {/* Stats panel */}
         <div className={`border-t md:border-t-0 md:border-l border-white/8 p-8 md:p-12 flex flex-col justify-center gap-8 ${isRtl ? "text-right" : ""}`}>
           {[
             { v: "25+",  l: t("Years Supporting Exhibitions", "عاماً في دعم المعارض") },
@@ -134,102 +332,7 @@ function SpotlightCard({ service, isRtl }: { service: Service; isRtl: boolean })
   );
 }
 
-// ─── Standard service card ────────────────────────────────────────────────
-function ServiceCard({ service, index, isRtl }: { service: Service; index: number; isRtl: boolean }) {
-  const { t } = useLanguage();
-  const [expanded, setExpanded] = useState(false);
-  const ext = EXT[service.id] ?? { features: [], featuresAr: [] };
-  const features = isRtl ? ext.featuresAr : ext.features;
-  const name = isRtl ? service.nameAr : service.name;
-  const desc = isRtl ? service.descriptionAr : service.description;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 28 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
-      transition={{ delay: (index % 3) * 0.07, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-    >
-      <motion.div
-        whileHover={{ y: -5 }}
-        transition={{ type: "spring", stiffness: 280, damping: 22 }}
-        onClick={() => setExpanded((e) => !e)}
-        className={`group rounded-2xl border border-white/8 bg-white/[0.03] hover:border-secondary/35 hover:bg-secondary/[0.03] transition-all duration-300 cursor-pointer overflow-hidden h-full ${isRtl ? "text-right" : ""}`}
-      >
-        {/* Hover top bar */}
-        <div className="h-0.5 bg-gradient-to-r from-secondary/0 via-secondary/60 to-secondary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-        <div className="p-6">
-          {/* Header */}
-          <div className={`flex items-start gap-3 mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-            <div className="w-11 h-11 rounded-xl bg-secondary/10 group-hover:bg-secondary/20 transition-colors flex items-center justify-center shrink-0">
-              <ServiceIcon name={service.icon} className="w-5 h-5 text-secondary" />
-            </div>
-            {ext.tag && (
-              <span className="text-[9px] font-bold tracking-widest uppercase bg-secondary/12 text-secondary border border-secondary/20 px-2 py-0.5 rounded-full mt-1 whitespace-nowrap">
-                {isRtl ? ext.tagAr : ext.tag}
-              </span>
-            )}
-          </div>
-
-          <h3 className="font-bold text-white text-base mb-2 leading-snug">{name}</h3>
-          <p className="text-white/48 text-sm leading-relaxed mb-5">{desc}</p>
-
-          {/* Expand toggle */}
-          <button className={`flex items-center gap-1.5 text-xs font-semibold text-secondary/60 group-hover:text-secondary transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
-            <span>{expanded ? t("Hide details", "إخفاء التفاصيل") : t("View details", "عرض التفاصيل")}</span>
-            <motion.svg
-              animate={{ rotate: expanded ? 180 : 0 }}
-              transition={{ duration: 0.25 }}
-              className="w-3.5 h-3.5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-            >
-              <path d="M6 9l6 6 6-6" />
-            </motion.svg>
-          </button>
-
-          {/* Expandable */}
-          <AnimatePresence initial={false}>
-            {expanded && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: "auto" }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="overflow-hidden"
-              >
-                <ul className="mt-4 space-y-2 pt-4 border-t border-white/8">
-                  {features.map((f, i) => (
-                    <li
-                      key={i}
-                      className={`flex items-center gap-2 text-xs text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}
-                    >
-                      <CheckCircle2 className="w-3.5 h-3.5 text-secondary shrink-0" />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/contact"
-                  onClick={(e) => e.stopPropagation()}
-                  className={`inline-flex items-center gap-1.5 mt-5 text-xs font-semibold text-secondary hover:underline underline-offset-2 transition-all ${isRtl ? "flex-row-reverse" : ""}`}
-                >
-                  {t("Request this service", "اطلب هذه الخدمة")}
-                  <ArrowRight className={`w-3 h-3 ${isRtl ? "rotate-180" : ""}`} />
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-// ─── Page ───────────────────────────────────────────────────────────────────
+// ─── Page ──────────────────────────────────────────────────────────────────────
 type Tab = "all" | "core" | "specialized";
 
 export default function Services() {
@@ -240,8 +343,9 @@ export default function Services() {
   const services = servicesData ?? [];
   const spotlight = services.filter((s) => EXT[s.id]?.spotlight);
   const nonSpotlight = services.filter((s) => !EXT[s.id]?.spotlight);
+  const totalCount = services.length;
 
-  const filtered =
+  const baseFiltered =
     activeTab === "all"
       ? nonSpotlight
       : activeTab === "core"
@@ -257,72 +361,33 @@ export default function Services() {
   return (
     <div className="min-h-screen bg-background">
 
-      {/* ── Cinematic Hero ─────────────────────────────────────────── */}
-      <div
-        className="relative pt-32 pb-24 overflow-hidden"
-        style={{ background: "linear-gradient(180deg, #020d1c 0%, #030f22 60%, hsl(var(--background)) 100%)" }}
-      >
-        {/* Grid texture */}
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-          }}
-        />
-        {/* Red glow */}
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] pointer-events-none"
-          style={{ background: "radial-gradient(ellipse, rgba(214,40,40,0.1) 0%, transparent 70%)" }}
-        />
+      {/* ── Hero ─────────────────────────────────────────────────────── */}
+      <div className="relative pt-32 pb-24 overflow-hidden" style={{ background: "linear-gradient(180deg, #020d1c 0%, #030f22 60%, hsl(var(--background)) 100%)" }}>
+        <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)", backgroundSize: "48px 48px" }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] pointer-events-none" style={{ background: "radial-gradient(ellipse, rgba(214,40,40,0.1) 0%, transparent 70%)" }} />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         <div className={`container mx-auto px-4 text-center ${isRtl ? "rtl" : ""}`}>
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-5"
-          >
-            {t("17 SPECIALIZED SERVICES", "17 خدمة متخصصة")}
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-5">
+            {t(`${totalCount} SPECIALIZED SERVICES`, `${totalCount} خدمة متخصصة`)}
           </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight leading-[1.05] mb-6 max-w-5xl mx-auto"
-          >
+          <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="text-4xl md:text-6xl lg:text-7xl font-black text-white uppercase tracking-tight leading-[1.05] mb-6 max-w-5xl mx-auto">
             {t("Comprehensive", "خدمات لوجستية")}
             <span className="text-secondary"> {t("Logistics", "شاملة")}</span>
-            <br />
-            {t("Solutions", "ومتخصصة")}
+            <br />{t("Solutions", "ومتخصصة")}
           </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-white/55 max-w-2xl mx-auto text-base leading-relaxed mb-10"
-          >
+          <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-white/55 max-w-2xl mx-auto text-base leading-relaxed mb-10">
             {t(
-              "From ATA Carnet and exhibition logistics to breakbulk, dangerous goods, oversized OOG cargo, project cargo, medical cold-chain and GCC transportation — backed by 25+ years of Saudi expertise.",
-              "من كارنيه ATA ولوجستيات المعارض إلى شحن بريك بالك والبضائع الخطرة والبضائع الضخمة OOG وبضائع المشاريع والسلسلة الباردة الطبية والنقل الخليجي — مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
+              "From ATA Carnet and exhibition logistics to breakbulk, dangerous goods, OOG cargo, RoRo, project cargo, medical cold-chain and GCC transportation — backed by 25+ years of Saudi expertise.",
+              "من كارنيه ATA ولوجستيات المعارض إلى بريك بالك والبضائع الخطرة وبضائع OOG ورورو وبضائع المشاريع والسلسلة الباردة الطبية والنقل الخليجي — مدعومة بأكثر من 25 عاماً من الخبرة السعودية.",
             )}
           </motion.p>
-
-          {/* Inline stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className={`flex flex-wrap justify-center gap-8 text-sm ${isRtl ? "flex-row-reverse" : ""}`}
-          >
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className={`flex flex-wrap justify-center gap-8 text-sm ${isRtl ? "flex-row-reverse" : ""}`}>
             {[
-              { icon: Award,       v: "25+",  l: t("Years",     "سنة")    },
-              { icon: Globe2,      v: "50+",  l: t("Countries", "دولة")   },
-              { icon: Clock,       v: "24hr", l: t("Clearance", "تخليص")  },
-              { icon: ShieldCheck, v: "17",   l: t("Services",  "خدمة")   },
+              { icon: Award,       v: "25+",          l: t("Years",     "سنة")    },
+              { icon: Globe2,      v: "50+",           l: t("Countries", "دولة")   },
+              { icon: Clock,       v: "24hr",          l: t("Clearance", "تخليص")  },
+              { icon: ShieldCheck, v: `${totalCount}`, l: t("Services",  "خدمة")   },
             ].map(({ icon: Icon, v, l }) => (
               <div key={v} className={`flex items-center gap-2 text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <Icon className="w-4 h-4 text-secondary" />
@@ -334,33 +399,21 @@ export default function Services() {
         </div>
       </div>
 
-      {/* ── Spotlight: Exhibition & Event Logistics ─────────────────── */}
+      {/* ── Spotlight: Exhibition & Event Logistics ──────────────────── */}
       {spotlight.length > 0 && (
         <section className="py-16 container mx-auto px-4">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            className={`text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6 ${isRtl ? "text-right" : ""}`}
-          >
+          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className={`text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6 ${isRtl ? "text-right" : ""}`}>
             {t("ENVOD SPECIALTY", "تخصص انفود")}
           </motion.p>
           <div className="space-y-5">
-            {spotlight.map((s) => (
-              <SpotlightCard key={s.id} service={s} isRtl={isRtl} />
-            ))}
+            {spotlight.map((s) => <SpotlightCard key={s.id} service={s} isRtl={isRtl} />)}
           </div>
         </section>
       )}
 
-      {/* ── All Services Grid ───────────────────────────────────────── */}
+      {/* ── All Services Grid ─────────────────────────────────────────── */}
       <section className="py-6 pb-28 container mx-auto px-4">
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className={`text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6 ${isRtl ? "text-right" : ""}`}
-        >
+        <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} className={`text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6 ${isRtl ? "text-right" : ""}`}>
           {t("ALL SERVICES", "جميع الخدمات")}
         </motion.p>
 
@@ -370,21 +423,15 @@ export default function Services() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                activeTab === tab.id
-                  ? "bg-secondary text-white shadow-lg shadow-secondary/20"
-                  : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white border border-white/8"
-              }`}
+              className={`px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${activeTab === tab.id ? "bg-secondary text-white shadow-lg shadow-secondary/20" : "bg-white/5 text-white/50 hover:bg-white/10 hover:text-white border border-white/8"}`}
             >
               {isRtl ? tab.labelAr : tab.label}
-              <span className={`ml-2 rtl:ml-0 rtl:mr-2 text-xs font-bold tabular-nums ${activeTab === tab.id ? "text-white/70" : "text-white/25"}`}>
-                {tab.count}
-              </span>
+              <span className={`ml-2 rtl:ml-0 rtl:mr-2 text-xs font-bold tabular-nums ${activeTab === tab.id ? "text-white/70" : "text-white/25"}`}>{tab.count}</span>
             </button>
           ))}
         </div>
 
-        {/* Animated grid */}
+        {/* Animated grid — featured cards span 2 cols, regular span 1 */}
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}
@@ -394,42 +441,31 @@ export default function Services() {
             transition={{ duration: 0.28 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
           >
-            {filtered.map((service, i) => (
-              <ServiceCard key={service.id} service={service} index={i} isRtl={isRtl} />
-            ))}
+            {baseFiltered.map((service, i) =>
+              EXT[service.id]?.featured ? (
+                <FeaturedCard key={service.id} service={service} index={i} isRtl={isRtl} />
+              ) : (
+                <PremiumCard key={service.id} service={service} index={i} isRtl={isRtl} />
+              )
+            )}
           </motion.div>
         </AnimatePresence>
       </section>
 
-      {/* ── CTA Banner ─────────────────────────────────────────────── */}
-      <section
-        className="py-24 relative overflow-hidden"
-        style={{ background: "linear-gradient(135deg, #020d1c 0%, #030f22 100%)" }}
-      >
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{ background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(214,40,40,0.07) 0%, transparent 70%)" }}
-        />
+      {/* ── CTA Banner ──────────────────────────────────────────────── */}
+      <section className="py-24 relative overflow-hidden" style={{ background: "linear-gradient(135deg, #020d1c 0%, #030f22 100%)" }}>
+        <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 60% 40% at 50% 50%, rgba(214,40,40,0.07) 0%, transparent 70%)" }} />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/25 to-transparent" />
 
         <div className={`container mx-auto px-4 text-center relative z-10 ${isRtl ? "rtl" : ""}`}>
-          <motion.div
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">
-              {t("GET STARTED TODAY", "ابدأ اليوم")}
-            </p>
+          <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">{t("GET STARTED TODAY", "ابدأ اليوم")}</p>
             <h2 className="text-3xl md:text-5xl font-black text-white mb-4 max-w-3xl mx-auto leading-tight">
               {t("Need a Custom Logistics", "تحتاج إلى حل لوجستي")}
               <span className="text-secondary"> {t("Solution?", "مخصص؟")}</span>
             </h2>
             <p className="text-white/48 max-w-xl mx-auto mb-10 text-sm leading-relaxed">
-              {t(
-                "Our specialists will design a bespoke logistics plan for your exact requirements — exhibition, project cargo, or standard freight.",
-                "سيصمم فريق المتخصصين لدينا خطة لوجستية مخصصة لمتطلباتك الدقيقة — معارض أو بضائع مشاريع أو شحن قياسي.",
-              )}
+              {t("Our specialists will design a bespoke logistics plan for your exact requirements.", "سيصمم فريق المتخصصين لدينا خطة لوجستية مخصصة لمتطلباتك الدقيقة.")}
             </p>
             <div className={`flex flex-col sm:flex-row gap-4 justify-center ${isRtl ? "sm:flex-row-reverse" : ""}`}>
               <Link
@@ -445,9 +481,7 @@ export default function Services() {
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white py-4 px-10 rounded-xl font-bold text-sm uppercase tracking-wider transition-colors"
               >
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
-                </svg>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" /></svg>
                 {t("WhatsApp Us", "تواصل عبر واتساب")}
               </a>
             </div>

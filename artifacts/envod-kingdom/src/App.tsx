@@ -51,6 +51,9 @@ function Router() {
       <Route path="/services">
         <MainLayout><Services /></MainLayout>
       </Route>
+      <Route path="/services/:slug">
+        <MainLayout><ServiceDetail /></MainLayout>
+      </Route>
       <Route path="/about">
         <MainLayout><About /></MainLayout>
       </Route>

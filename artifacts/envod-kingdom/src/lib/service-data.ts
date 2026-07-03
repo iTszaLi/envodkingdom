@@ -578,6 +578,39 @@ export const SERVICE_META: Record<number, ServiceMeta> = {
       { q: "What is OOG (Out-of-Gauge) cargo?", a: "OOG refers to cargo that exceeds the standard dimensions of a 20ft or 40ft shipping container. This includes large machinery, turbines, transformers, and other industrial equipment requiring specialized handling.", qAr: "ما هي البضائع خارج القياس (OOG)؟", aAr: "OOG تشير إلى البضائع التي تتجاوز الأبعاد القياسية لحاوية 20 أو 40 قدماً." },
     ],
   },
+  18: {
+    id: 18, slug: "roro-shipping",
+    gradient: "linear-gradient(135deg,#0a1420 0%,#0e1e30 50%,#060e18 100%)",
+    accentHex: "#38bdf8",
+    industries: ["Automotive","Heavy Equipment","Construction","Agriculture","Government Fleet"],
+    industriesAr: ["السيارات","المعدات الثقيلة","البناء","الزراعة","أساطيل حكومية"],
+    process: [
+      { en: "Booking", ar: "الحجز" },
+      { en: "Vehicle Inspection", ar: "فحص المركبة" },
+      { en: "Port Loading", ar: "التحميل بالميناء" },
+      { en: "Sea Transit", ar: "العبور البحري" },
+      { en: "Port Discharge", ar: "التفريغ" },
+      { en: "Customs Clearance", ar: "التخليص الجمركي" },
+      { en: "Final Delivery", ar: "التسليم النهائي" },
+    ],
+    subServices: [
+      { name: "Private Vehicle Shipping", nameAr: "شحن السيارات الخاصة", desc: "Door-to-port or port-to-port shipping for personal vehicles.", descAr: "شحن السيارات الخاصة من الباب للميناء أو بين الموانئ." },
+      { name: "Commercial Fleet Transport", nameAr: "نقل الأساطيل التجارية", desc: "Bulk RoRo for dealer, rental, and government fleets.", descAr: "رورو للأساطيل التجارية والوكلاء والجهات الحكومية." },
+      { name: "Heavy Equipment RoRo", nameAr: "رورو للمعدات الثقيلة", desc: "Self-propelled heavy machinery via RoRo vessels.", descAr: "الآلات الثقيلة ذاتية الحركة عبر سفن رورو." },
+      { name: "Agricultural Machinery", nameAr: "الآلات الزراعية", desc: "Tractors, harvesters, and agricultural equipment shipping.", descAr: "شحن الجرارات والحصادات والمعدات الزراعية." },
+      { name: "Bus & Truck Transport", nameAr: "نقل الحافلات والشاحنات", desc: "New and used bus and commercial truck RoRo.", descAr: "شحن رورو للحافلات والشاحنات التجارية الجديدة والمستعملة." },
+      { name: "RoRo Import Clearance", nameAr: "تخليص استيراد رورو", desc: "Full Saudi customs clearance for RoRo vehicles.", descAr: "تخليص جمركي سعودي كامل لمركبات رورو." },
+    ],
+    whyEnvod: [
+      { en: "Direct access to Jeddah Islamic Port and King Abdulaziz Port", ar: "وصول مباشر لميناء جدة الإسلامي وميناء الملك عبدالعزيز" },
+      { en: "Full customs clearance for imported vehicles", ar: "تخليص جمركي كامل للمركبات المستوردة" },
+      { en: "All vehicle types — cars, trucks, heavy equipment", ar: "جميع أنواع المركبات — سيارات وشاحنات ومعدات ثقيلة" },
+      { en: "Competitive rates on major RoRo shipping lanes", ar: "أسعار تنافسية على خطوط الشحن الرورو الرئيسية" },
+    ],
+    faq: [
+      { q: "What is RoRo shipping?", a: "RoRo (Roll-on/Roll-off) is a method of shipping wheeled cargo — vehicles, trucks, machinery — that can be driven or towed onto the vessel, making it ideal for cars and heavy equipment.", qAr: "ما هو الشحن الدحرجي رورو؟", aAr: "رورو (Roll-on/Roll-off) هو شحن البضائع ذات العجلات كالسيارات والشاحنات والمعدات يتم تحميلها بالقيادة أو السحب على متن السفينة." },
+    ],
+  },
 };
 
 export const SLUG_TO_ID: Record<string, number> = Object.fromEntries(
