@@ -17,12 +17,18 @@ export interface GalleryItem {
   blurDataUrl?: string | null;
   title: string;
   /** @nullable */
+  titleAr?: string | null;
+  /** @nullable */
   description?: string | null;
+  /** @nullable */
+  descriptionAr?: string | null;
   /** @nullable */
   altText?: string | null;
   category: string;
   /** @nullable */
   location?: string | null;
+  /** @nullable */
+  locationAr?: string | null;
   /** @nullable */
   monthYear?: string | null;
   /** @nullable */

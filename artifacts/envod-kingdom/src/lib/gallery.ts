@@ -60,6 +60,46 @@ export function categoryLabel(id: string, t: (en: string, ar: string) => string)
   return id.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+/**
+ * Pick the Arabic value when the site is in Arabic and it's non-empty,
+ * otherwise fall back to the English value.
+ */
+export function localized(
+  en: string | null | undefined,
+  ar: string | null | undefined,
+  isRtl: boolean,
+): string | null {
+  if (isRtl) {
+    const trimmed = ar?.trim();
+    if (trimmed) return trimmed;
+  }
+  return en ?? null;
+}
+
+/** Localized title for a gallery item (Arabic when available in RTL, else English). */
+export function galleryTitle(
+  item: Pick<GalleryItem, "title" | "titleAr">,
+  isRtl: boolean,
+): string {
+  return localized(item.title, item.titleAr, isRtl) ?? item.title;
+}
+
+/** Localized description for a gallery item. */
+export function galleryDescription(
+  item: Pick<GalleryItem, "description" | "descriptionAr">,
+  isRtl: boolean,
+): string | null {
+  return localized(item.description, item.descriptionAr, isRtl);
+}
+
+/** Localized location for a gallery item. */
+export function galleryLocation(
+  item: Pick<GalleryItem, "location" | "locationAr">,
+  isRtl: boolean,
+): string | null {
+  return localized(item.location, item.locationAr, isRtl);
+}
+
 /** Format a `YYYY-MM` month key into a readable label, e.g. "March 2026". */
 export function formatMonthYear(monthYear: string | null | undefined): string | null {
   if (!monthYear) return null;

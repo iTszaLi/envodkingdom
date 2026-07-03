@@ -8,10 +8,16 @@
 
 export interface GalleryUpdate {
   title?: string;
+  /** @nullable */
+  titleAr?: string | null;
   description?: string;
+  /** @nullable */
+  descriptionAr?: string | null;
   altText?: string;
   category?: string;
   location?: string;
+  /** @nullable */
+  locationAr?: string | null;
   monthYear?: string;
   sortOrder?: number;
   isPublished?: boolean;

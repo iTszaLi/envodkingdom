@@ -3,7 +3,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, MapPin, Calendar, Tag } from "lucide-react";
 import type { GalleryItem } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
-import { buildSrcSet, largestSrc, categoryLabel, formatMonthYear } from "@/lib/gallery";
+import {
+  buildSrcSet,
+  largestSrc,
+  categoryLabel,
+  formatMonthYear,
+  galleryTitle,
+  galleryDescription,
+  galleryLocation,
+} from "@/lib/gallery";
 
 interface GalleryLightboxProps {
   items: GalleryItem[];
@@ -13,7 +21,7 @@ interface GalleryLightboxProps {
 }
 
 export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLightboxProps) {
-  const { t } = useLanguage();
+  const { t, isRtl } = useLanguage();
   const item = items[index];
   const total = items.length;
   const [zoomed, setZoomed] = useState(false);
@@ -129,6 +137,9 @@ export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLi
   };
 
   const monthLabel = formatMonthYear(item.monthYear);
+  const title = galleryTitle(item, isRtl);
+  const description = galleryDescription(item, isRtl);
+  const location = galleryLocation(item, isRtl);
 
   return (
     <AnimatePresence>
@@ -189,7 +200,7 @@ export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLi
               sizes="100vw"
               width={item.width}
               height={item.height}
-              alt={item.altText || item.title}
+              alt={item.altText || title}
               draggable={false}
               onClick={handleImageClick}
               onPointerDown={onPointerDown}
@@ -226,16 +237,16 @@ export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLi
         {/* Caption */}
         <div className="px-4 sm:px-8 py-5 bg-gradient-to-t from-black/80 to-transparent relative z-20">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-white text-lg sm:text-2xl font-bold mb-2">{item.title}</h2>
+            <h2 className="text-white text-lg sm:text-2xl font-bold mb-2">{title}</h2>
             <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-xs sm:text-sm text-white/60 mb-2">
               <span className="flex items-center gap-1.5">
                 <Tag className="w-3.5 h-3.5 text-secondary" />
                 {categoryLabel(item.category, t)}
               </span>
-              {item.location && (
+              {location && (
                 <span className="flex items-center gap-1.5">
                   <MapPin className="w-3.5 h-3.5 text-secondary" />
-                  {item.location}
+                  {location}
                 </span>
               )}
               {monthLabel && (
@@ -245,8 +256,8 @@ export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLi
                 </span>
               )}
             </div>
-            {item.description && (
-              <p className="text-white/50 text-sm max-w-2xl mx-auto leading-relaxed">{item.description}</p>
+            {description && (
+              <p className="text-white/50 text-sm max-w-2xl mx-auto leading-relaxed">{description}</p>
             )}
           </div>
         </div>

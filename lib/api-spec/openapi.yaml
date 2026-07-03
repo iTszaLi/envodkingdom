@@ -1665,13 +1665,19 @@ components:
           type: ["string", "null"]
         title:
           type: string
+        titleAr:
+          type: ["string", "null"]
         description:
+          type: ["string", "null"]
+        descriptionAr:
           type: ["string", "null"]
         altText:
           type: ["string", "null"]
         category:
           type: string
         location:
+          type: ["string", "null"]
+        locationAr:
           type: ["string", "null"]
         monthYear:
           type: ["string", "null"]
@@ -1691,14 +1697,20 @@ components:
       properties:
         title:
           type: string
+        titleAr:
+          type: ["string", "null"]
         description:
           type: string
+        descriptionAr:
+          type: ["string", "null"]
         altText:
           type: string
         category:
           type: string
         location:
           type: string
+        locationAr:
+          type: ["string", "null"]
         monthYear:
           type: string
         sortOrder:

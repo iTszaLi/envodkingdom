@@ -30,22 +30,28 @@ type UploadState = "idle" | "uploading" | "success" | "error";
 
 interface Draft {
   title: string;
+  titleAr: string;
   category: string;
   location: string;
+  locationAr: string;
   monthYear: string;
   altText: string;
   description: string;
+  descriptionAr: string;
   isPublished: boolean;
 }
 
 function toDraft(item: GalleryItem): Draft {
   return {
     title: item.title ?? "",
+    titleAr: item.titleAr ?? "",
     category: item.category ?? "operations",
     location: item.location ?? "",
+    locationAr: item.locationAr ?? "",
     monthYear: item.monthYear ?? "",
     altText: item.altText ?? "",
     description: item.description ?? "",
+    descriptionAr: item.descriptionAr ?? "",
     isPublished: item.isPublished,
   };
 }
@@ -131,11 +137,14 @@ export default function AdminGallery() {
         id,
         data: {
           title: draft.title,
+          titleAr: draft.titleAr,
           category: draft.category,
           location: draft.location,
+          locationAr: draft.locationAr,
           monthYear: draft.monthYear,
           altText: draft.altText,
           description: draft.description,
+          descriptionAr: draft.descriptionAr,
           isPublished: draft.isPublished,
         },
       },
@@ -306,6 +315,15 @@ export default function AdminGallery() {
                       className="admin-input"
                     />
                   </Field>
+                  <Field label="Title (Arabic)">
+                    <input
+                      value={draft.titleAr}
+                      onChange={(e) => updateDraft(item.id, { titleAr: e.target.value })}
+                      dir="rtl"
+                      placeholder="اتركه فارغاً لاستخدام الإنجليزية"
+                      className="admin-input"
+                    />
+                  </Field>
                   <Field label="Category">
                     <select
                       value={draft.category}
@@ -324,6 +342,15 @@ export default function AdminGallery() {
                       value={draft.location}
                       onChange={(e) => updateDraft(item.id, { location: e.target.value })}
                       placeholder="e.g. Jeddah Islamic Port"
+                      className="admin-input"
+                    />
+                  </Field>
+                  <Field label="Location (Arabic)">
+                    <input
+                      value={draft.locationAr}
+                      onChange={(e) => updateDraft(item.id, { locationAr: e.target.value })}
+                      dir="rtl"
+                      placeholder="اتركه فارغاً لاستخدام الإنجليزية"
                       className="admin-input"
                     />
                   </Field>
@@ -347,6 +374,15 @@ export default function AdminGallery() {
                     <input
                       value={draft.description}
                       onChange={(e) => updateDraft(item.id, { description: e.target.value })}
+                      className="admin-input"
+                    />
+                  </Field>
+                  <Field label="Description (Arabic)">
+                    <input
+                      value={draft.descriptionAr}
+                      onChange={(e) => updateDraft(item.id, { descriptionAr: e.target.value })}
+                      dir="rtl"
+                      placeholder="اتركه فارغاً لاستخدام الإنجليزية"
                       className="admin-input"
                     />
                   </Field>

@@ -14,6 +14,9 @@ import {
   categoryLabel,
   formatMonthYear,
   groupByMonth,
+  galleryTitle,
+  galleryDescription,
+  galleryLocation,
 } from "@/lib/gallery";
 import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 
@@ -79,15 +82,18 @@ function StaticStat({ value, label }: { value: string; label: string }) {
 }
 
 /* ─────────────────────── Gallery card ─────────────────────── */
-function GalleryCard({ item, onOpen, t }: { item: GalleryItem; onOpen: () => void; t: (en: string, ar: string) => string }) {
+function GalleryCard({ item, onOpen, t, isRtl }: { item: GalleryItem; onOpen: () => void; t: (en: string, ar: string) => string; isRtl: boolean }) {
   const [loaded, setLoaded] = useState(false);
   const monthLabel = formatMonthYear(item.monthYear);
+  const title = galleryTitle(item, isRtl);
+  const description = galleryDescription(item, isRtl);
+  const location = galleryLocation(item, isRtl);
 
   return (
     <button
       onClick={onOpen}
       className="group relative block w-full overflow-hidden rounded-xl bg-[#0c1a30] mb-4 break-inside-avoid text-left focus:outline-none focus:ring-2 focus:ring-secondary/70"
-      aria-label={item.title}
+      aria-label={title}
     >
       <div
         className="relative w-full"
@@ -104,7 +110,7 @@ function GalleryCard({ item, onOpen, t }: { item: GalleryItem; onOpen: () => voi
           sizes={GRID_SIZES}
           width={item.width}
           height={item.height}
-          alt={item.altText || item.title}
+          alt={item.altText || title}
           loading="lazy"
           decoding="async"
           onLoad={() => setLoaded(true)}
@@ -120,12 +126,12 @@ function GalleryCard({ item, onOpen, t }: { item: GalleryItem; onOpen: () => voi
 
         {/* Hover overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex flex-col justify-end p-4">
-          <h3 className="text-white font-bold text-base leading-snug mb-1.5 line-clamp-2">{item.title}</h3>
+          <h3 className="text-white font-bold text-base leading-snug mb-1.5 line-clamp-2">{title}</h3>
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-white/70">
-            {item.location && (
+            {location && (
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-secondary" />
-                {item.location}
+                {location}
               </span>
             )}
             {monthLabel && (
@@ -135,8 +141,8 @@ function GalleryCard({ item, onOpen, t }: { item: GalleryItem; onOpen: () => voi
               </span>
             )}
           </div>
-          {item.description && (
-            <p className="text-white/55 text-xs mt-1.5 line-clamp-2 leading-relaxed">{item.description}</p>
+          {description && (
+            <p className="text-white/55 text-xs mt-1.5 line-clamp-2 leading-relaxed">{description}</p>
           )}
         </div>
       </div>
@@ -334,7 +340,7 @@ export default function Gallery() {
         ) : (
           <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
             {filtered.map((item, i) => (
-              <GalleryCard key={item.id} item={item} t={t} onOpen={() => setLightboxIndex(i)} />
+              <GalleryCard key={item.id} item={item} t={t} isRtl={isRtl} onOpen={() => setLightboxIndex(i)} />
             ))}
           </div>
         )}
@@ -373,7 +379,7 @@ export default function Gallery() {
                           }
                         }}
                         className="group relative aspect-square overflow-hidden rounded-lg bg-[#0c1a30] focus:outline-none focus:ring-2 focus:ring-secondary/70"
-                        aria-label={item.title}
+                        aria-label={galleryTitle(item, isRtl)}
                         style={{
                           backgroundImage: item.blurDataUrl ? `url(${item.blurDataUrl})` : undefined,
                           backgroundSize: "cover",
@@ -386,7 +392,7 @@ export default function Gallery() {
                           sizes="(max-width: 768px) 33vw, 16vw"
                           width={item.width}
                           height={item.height}
-                          alt={item.altText || item.title}
+                          alt={item.altText || galleryTitle(item, isRtl)}
                           loading="lazy"
                           decoding="async"
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

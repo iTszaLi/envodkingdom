@@ -370,12 +370,18 @@ export interface GalleryItem {
   blurDataUrl?: string | null;
   title: string;
   /** @nullable */
+  titleAr?: string | null;
+  /** @nullable */
   description?: string | null;
+  /** @nullable */
+  descriptionAr?: string | null;
   /** @nullable */
   altText?: string | null;
   category: string;
   /** @nullable */
   location?: string | null;
+  /** @nullable */
+  locationAr?: string | null;
   /** @nullable */
   monthYear?: string | null;
   /** @nullable */
@@ -388,10 +394,16 @@ export interface GalleryItem {
 
 export interface GalleryUpdate {
   title?: string;
+  /** @nullable */
+  titleAr?: string | null;
   description?: string;
+  /** @nullable */
+  descriptionAr?: string | null;
   altText?: string;
   category?: string;
   location?: string;
+  /** @nullable */
+  locationAr?: string | null;
   monthYear?: string;
   sortOrder?: number;
   isPublished?: boolean;
