@@ -304,46 +304,47 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   const services: [string, string][] = [
-    [t("Ocean Freight", "الشحن البحري"), "/services"],
-    [t("Air Freight", "الشحن الجوي"), "/services"],
     [t("Customs Clearance", "التخليص الجمركي"), "/services"],
-    [t("Exhibition & Event Logistics", "لوجستيات المعارض والفعاليات"), "/services"],
+    [t("Ocean & Sea Freight", "الشحن البحري"), "/services"],
+    [t("Air Freight", "الشحن الجوي"), "/services"],
+    [t("Road Transportation", "النقل البري"), "/services"],
+    [t("Exhibition Logistics", "لوجستيات المعارض"), "/services"],
     [t("ATA Carnet Services", "خدمات كارنيه ATA"), "/services"],
-    [t("Project Cargo Logistics", "لوجستيات بضائع المشاريع"), "/services"],
-    [t("GCC Transportation", "النقل الخليجي"), "/services"],
+    [t("Project Cargo", "بضائع المشاريع"), "/services"],
+    [t("GCC Cross-Border Shipping", "الشحن العابر للخليج"), "/services"],
     [t("Warehousing & Distribution", "التخزين والتوزيع"), "/services"],
-    [t("Vehicle Shipping", "شحن المركبات"), "/services"],
-    [t("Marine Logistics", "اللوجستيات البحرية"), "/services"],
-    [t("Temporary Imports & Re-Exports", "الاستيراد المؤقت وإعادة التصدير"), "/services"],
+  ];
+
+  const industries: [string, string][] = [
+    [t("Oil & Gas", "النفط والغاز"), "/services"],
+    [t("Healthcare & Pharma", "الرعاية الصحية والأدوية"), "/services"],
+    [t("Construction", "البناء والإنشاء"), "/services"],
+    [t("Food & Beverage", "الغذاء والمشروبات"), "/services"],
+    [t("Automotive", "السيارات"), "/services"],
+    [t("Manufacturing", "التصنيع"), "/services"],
+    [t("E-Commerce", "التجارة الإلكترونية"), "/services"],
+    [t("Exhibition & Events", "المعارض والفعاليات"), "/services"],
+    [t("Government & Defense", "الحكومة والدفاع"), "/services"],
   ];
 
   const quickLinks: [string, string][] = [
     [t("Home", "الرئيسية"), "/"],
     [t("About Us", "عن الشركة"), "/about"],
-    [t("Services", "خدماتنا"), "/services"],
-    [t("Shipment Tracking", "تتبع الشحنة"), "/track"],
+    [t("Our Services", "خدماتنا"), "/services"],
+    [t("Track Shipment", "تتبع الشحنة"), "/track"],
     [t("News & Blog", "أخبار ومدونة"), "/blog"],
     [t("Contact Us", "اتصل بنا"), "/contact"],
-    [t("Get a Quote", "احصل على تسعيرة"), "/contact"],
-  ];
-
-  const offices = [
-    { city: t("Riyadh", "الرياض"),    sub: t("Head Office", "المقر الرئيسي"),    flag: "🇸🇦", primary: true },
-    { city: t("Jeddah", "جدة"),        sub: t("Western Region", "المنطقة الغربية"), flag: "🇸🇦" },
-    { city: t("Dammam", "الدمام"),     sub: t("Eastern Province", "المنطقة الشرقية"), flag: "🇸🇦" },
-    { city: t("Dubai", "دبي"),         sub: t("UAE Operations", "عمليات الإمارات"), flag: "🇦🇪" },
-    { city: t("Manama", "المنامة"),    sub: t("Bahrain Office", "مكتب البحرين"), flag: "🇧🇭" },
-    { city: t("Bengaluru", "بنغالور"), sub: t("India Operations", "عمليات الهند"), flag: "🇮🇳" },
+    [t("Get a Free Quote", "احصل على عرض سعر"), "/contact"],
   ];
 
   const certs = [
-    { name: "SABER",     sub: "Saudi" },
-    { name: "SFDA",      sub: "Certified" },
-    { name: "ATA Carnet",sub: "Member" },
-    { name: "IEC",       sub: "Certified" },
-    { name: "ISO 9001",  sub: "Quality" },
-    { name: "ISO 14001", sub: "Environment" },
-    { name: "ISO 45001", sub: "Safety" },
+    { name: "SABER",      sub: "Saudi" },
+    { name: "SFDA",       sub: "Certified" },
+    { name: "ATA Carnet", sub: "Member" },
+    { name: "IEC",        sub: "Certified" },
+    { name: "ISO 9001",   sub: "Quality" },
+    { name: "ISO 14001",  sub: "Environment" },
+    { name: "ISO 45001",  sub: "Safety" },
   ];
 
   return (
@@ -361,21 +362,19 @@ export function Footer() {
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 className="inline-block mb-6 group"
               >
-                <div
-                  className="bg-white px-5 py-3 rounded-xl inline-flex items-center justify-center transition-all duration-400 group-hover:shadow-[0_0_40px_rgba(214,40,40,0.35)]"
-                >
-                  <img src={logoFull} alt="ENVOD KINGDOM" className="h-16 object-contain" />
+                <div className="bg-white px-5 py-3 rounded-xl inline-flex items-center justify-center transition-all duration-400 group-hover:shadow-[0_0_40px_rgba(214,40,40,0.35)]">
+                  <img src={logoFull} alt="ENVOD KINGDOM Shipping Services LLC" className="h-16 object-contain" />
                 </div>
               </Link>
 
               <p className="text-sm leading-relaxed mb-5 max-w-xs text-white/55">
                 {t(
-                  "Saudi Arabia's trusted partner for Exhibition & Event Logistics, ATA Carnet, Customs Clearance, Project Cargo and Global Freight — backed by 25+ years of regional expertise.",
+                  "Saudi Arabia's trusted partner for Exhibition Logistics, ATA Carnet, Customs Clearance, Project Cargo, Road Freight, and Global Shipping — 25+ years of expertise across Riyadh, Jeddah, Dammam & GCC.",
                   "الشريك الموثوق في المملكة للمعارض والتخليص الجمركي وكارنيه ATA وبضائع المشاريع والشحن العالمي — أكثر من 25 عاماً من الخبرة."
                 )}
               </p>
 
-              <div className="flex flex-wrap gap-2 mb-1">
+              <div className="flex flex-wrap gap-2 mb-4">
                 {["SABER", "ISO 9001", "ATA Carnet", "SFDA"].map((b) => (
                   <span key={b} className="text-[10px] font-bold uppercase tracking-widest bg-secondary/15 text-secondary px-2.5 py-1 rounded-full border border-secondary/25">{b}</span>
                 ))}
@@ -402,13 +401,13 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Quick links + Network */}
+            {/* Industries */}
             <div>
               <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-5 pb-3 border-b border-white/10">
-                {t("Quick Links", "روابط سريعة")}
+                {t("Industries Served", "القطاعات التي نخدمها")}
               </h4>
               <ul className="space-y-2.5 mb-8">
-                {quickLinks.map(([label, href], i) => (
+                {industries.map(([label, href], i) => (
                   <li key={i}>
                     <Link href={href} className="flex items-center gap-1.5 text-xs text-white/50 hover:text-secondary transition-colors duration-200 group">
                       <ChevronRight className="w-3 h-3 text-secondary/40 group-hover:text-secondary shrink-0 transition-colors" />
@@ -418,20 +417,16 @@ export function Footer() {
                 ))}
               </ul>
 
-              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-5 pb-3 border-b border-white/10">
-                {t("Our Global Network", "شبكتنا العالمية")}
+              <h4 className="text-white font-bold text-xs uppercase tracking-[0.2em] mb-4 pb-3 border-b border-white/10">
+                {t("Quick Links", "روابط سريعة")}
               </h4>
               <ul className="space-y-2.5">
-                {offices.map((o, i) => (
-                  <li key={i} className="flex items-center gap-2 text-xs">
-                    <span className="text-base leading-none">{o.flag}</span>
-                    <span className={o.primary ? "text-white font-semibold" : "text-white/50"}>
-                      {o.city}
-                      {o.primary && (
-                        <span className="ml-1.5 text-[9px] bg-secondary/20 text-secondary px-1.5 py-0.5 rounded-full">{t("HQ", "المقر")}</span>
-                      )}
-                    </span>
-                    <span className="text-white/30 text-[10px]">— {o.sub}</span>
+                {quickLinks.map(([label, href], i) => (
+                  <li key={i}>
+                    <Link href={href} className="flex items-center gap-1.5 text-xs text-white/50 hover:text-secondary transition-colors duration-200 group">
+                      <ChevronRight className="w-3 h-3 text-secondary/40 group-hover:text-secondary shrink-0 transition-colors" />
+                      {label}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -478,7 +473,7 @@ export function Footer() {
                 <li className="flex gap-2.5">
                   <Clock className="w-3.5 h-3.5 text-secondary shrink-0 mt-0.5" />
                   <div className="text-white/50">
-                    <p className="text-white font-semibold text-[11px] mb-0.5">{t("Working Hours", "ساعات العمل")}</p>
+                    <p className="text-white font-semibold text-[11px] mb-0.5">{t("Business Hours", "ساعات العمل")}</p>
                     <p>{t("Sun – Thu: 8:00 AM – 6:00 PM", "الأحد – الخميس: 8ص – 6م")}</p>
                     <p>{t("Sat: 9:00 AM – 2:00 PM", "السبت: 9ص – 2م")}</p>
                     <p className="text-secondary font-semibold mt-1">{t("24/7 Tracking & Support", "دعم وتتبع على مدار الساعة")}</p>
@@ -510,6 +505,21 @@ export function Footer() {
           </div>
         </div>
 
+        {/* ── Business Registration Bar ── */}
+        <div className="border-t border-white/8 bg-[#040b16]">
+          <div className="container mx-auto px-4 py-4">
+            <div className={`flex flex-wrap items-center justify-center gap-x-6 gap-y-1.5 text-[10px] text-white/20 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <span>{t("CR No:", "رقم السجل التجاري:")} <span className="text-white/35">1010XXXXXXX</span></span>
+              <span className="text-white/10">·</span>
+              <span>{t("VAT No:", "الرقم الضريبي:")} <span className="text-white/35">3XXXXXXXXXXX003</span></span>
+              <span className="text-white/10">·</span>
+              <span>{t("Saudi Business License:", "الترخيص التجاري السعودي:")} <span className="text-white/35">7XXXXXXXXX</span></span>
+              <span className="text-white/10">·</span>
+              <span>{t("Customs Broker License:", "رخصة التخليص الجمركي:")} <span className="text-white/35">GAZT Licensed</span></span>
+            </div>
+          </div>
+        </div>
+
         {/* ── Bottom Bar ── */}
         <div className="border-t border-white/8 bg-[#050c18]">
           <div className="container mx-auto px-4 py-5">
@@ -524,6 +534,8 @@ export function Footer() {
                 <a href="#" className="hover:text-secondary transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
                 <span className="text-white/15">·</span>
                 <a href="#" className="hover:text-secondary transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
+                <span className="text-white/15">·</span>
+                <a href="/sitemap.xml" className="hover:text-secondary transition-colors">Sitemap</a>
               </div>
             </div>
           </div>
