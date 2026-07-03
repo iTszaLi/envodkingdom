@@ -65,8 +65,9 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 - Primary: `#0A2342` (deep navy)
 - Secondary: `#D62828` (Saudi red)
 - Logo: `attached_assets/image_1780437854819.png` (import via `@assets/` alias)
-- Phone: +966 58 367 1739
-- WhatsApp: +966 50 226 0256
+- Phone / WhatsApp: +966 50 226 0256
+- Fax: +966 11 238 0517
+- P.O. Box: 2383
 - Address: Prince Mansour Bin Abdulaziz Street, Al Malaz District, Riyadh 12831
 
 ## Gotchas

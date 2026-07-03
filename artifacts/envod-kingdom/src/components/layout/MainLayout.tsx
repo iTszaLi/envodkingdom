@@ -3,7 +3,7 @@ import { Link } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import {
   Globe, Menu, X, Clock, Shield, Globe2,
-  MapPin, Phone, Mail, ChevronRight, Award,
+  MapPin, Phone, Printer, Mail, ChevronRight, Award,
 } from "lucide-react";
 import logoIcon from "@assets/image_1780532431289.png";
 import logoFull from "@assets/image_1780437854819.png";
@@ -461,6 +461,7 @@ export function Footer() {
                   <p className="text-white/50 text-[13px] leading-relaxed">
                     {t("Prince Mansour Bin Abdulaziz St.", "شارع الأمير منصور بن عبدالعزيز")}<br />
                     {t("Al Malaz, Riyadh 12831", "حي الملز، الرياض 12831")}<br />
+                    {t("P.O. Box 2383", "ص.ب 2383")}<br />
                     {t("Saudi Arabia", "المملكة العربية السعودية")}
                   </p>
                 </div>
@@ -472,9 +473,19 @@ export function Footer() {
                 </div>
                 <div>
                   <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Phone", "هاتف")}</p>
-                  <a href="tel:+966583671739" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
-                    +966 58 367 1739
+                  <a href="tel:+966502260256" className="text-white/70 text-[13px] hover:text-secondary transition-colors font-medium">
+                    +966 50 226 0256
                   </a>
+                </div>
+              </li>
+
+              <li className="flex gap-3.5">
+                <div className="w-8 h-8 rounded-lg bg-secondary/10 border border-secondary/20 flex items-center justify-center shrink-0">
+                  <Printer className="w-4 h-4 text-secondary" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-[11px] uppercase tracking-wider mb-1">{t("Fax", "فاكس")}</p>
+                  <p className="text-white/70 text-[13px] font-medium">+966 11 238 0517</p>
                 </div>
               </li>
 

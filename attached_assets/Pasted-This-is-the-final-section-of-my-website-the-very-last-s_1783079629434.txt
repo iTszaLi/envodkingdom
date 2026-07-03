@@ -1,0 +1,45 @@
+This is the final section of my website (the very last section visitors see before leaving the site), so I want it to leave a strong, premium, and memorable impression.
+
+Redesign this entire end section to look world-class, modern, and enterprise-level, inspired by Maersk, DP World, DHL, FedEx, Stripe, Apple, and other Fortune 500 companies.
+
+Focus on:
+Making the layout feel premium with better spacing, alignment, and visual hierarchy.
+Improving typography, iconography, and overall readability.
+Enhancing the company information, services, industries, quick links, certifications, and contact section with a more elegant and professional design.
+Redesigning the certification badges and social media icons to look modern and interactive.
+Adding subtle hover effects, smooth micro-animations, and premium transitions throughout the section.
+Improving the background with subtle gradients, textures, or patterns that add depth without being distracting.
+Making the footer feel less like a standard template and more like the closing section of a high-end corporate website.
+Optimizing the entire section for desktop, tablet, and mobile with excellent responsiveness.
+Ensuring perfect spacing, consistency, accessibility, and SEO-friendly HTML structure.
+Keep the ENVOD branding and color palette while elevating the overall design quality to a professional, conversion-focused, and trustworthy finish.
+Global Presence Section
+
+Add a premium "Our Global Network" section that showcases ENVOD's international presence.
+
+Include an elegant, interactive world map (preferably a dark-themed vector map matching the website's design) with animated connection lines linking our operational locations.
+
+Highlight our branches/offices in:
+
+Riyadh
+Dammam
+Jeddah
+Bahrain (Manama)
+UAE (Dubai)
+India (Karnataka)
+
+Use glowing location markers, animated routes, and subtle pulse effects to visually represent our logistics network. When users hover over a location, display a premium tooltip with the office name and region. The map should feel modern and interactive, reinforcing ENVOD's international reach without overwhelming the design.
+
+Add a heading such as:
+
+"Our Global Logistics Network"
+
+with a subtitle like:
+
+"Connecting Saudi Arabia with the GCC and international markets through strategically located offices and trusted logistics operations."
+
+The map should seamlessly blend into the footer design and become one of the strongest visual elements of the website's closing section.
+
+Final Goal
+
+The entire end section should make visitors feel they are dealing with a premium global logistics company, increasing trust, credibility, and the likelihood of inquiries and conversions. It should look polished, elegant, modern, and memorable, leaving a lasting impression after users reach the bottom of the website.

@@ -8,7 +8,7 @@ export const settingsTable = pgTable("settings", {
   companyNameAr: text("company_name_ar").notNull().default("انفود كينجدم لخدمات الشحن ذ.م.م"),
   taglineEn: text("tagline_en"),
   taglineAr: text("tagline_ar"),
-  phone: text("phone").default("+966 58 367 1739"),
+  phone: text("phone").default("+966 50 226 0256"),
   whatsapp: text("whatsapp").default("+966 50 226 0256"),
   email: text("email"),
   address: text("address").default("Prince Mansour Bin Abdulaziz Street, Al Malaz District"),

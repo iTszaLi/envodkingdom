@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useSubmitInquiry } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone, Printer, Mail } from "lucide-react";
 
 export default function Contact() {
   const { t, isRtl } = useLanguage();
@@ -59,7 +59,7 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="text-white font-medium mb-1">{t("Our Office", "مكتبنا")}</h3>
-                  <p className="text-muted-foreground">Prince Mansour Bin Abdulaziz Street, Al Malaz District, Riyadh 12831, Saudi Arabia</p>
+                  <p className="text-muted-foreground">Prince Mansour Bin Abdulaziz Street, Al Malaz District, Riyadh 12831, P.O. Box 2383, Saudi Arabia</p>
                 </div>
               </div>
               
@@ -69,8 +69,17 @@ export default function Contact() {
                 </div>
                 <div>
                   <h3 className="text-white font-medium mb-1">{t("Phone & WhatsApp", "الهاتف والواتساب")}</h3>
-                  <p className="text-muted-foreground">WhatsApp: +966 50 226 0256</p>
-                  <p className="text-muted-foreground">Phone: +966 58 367 1739</p>
+                  <p className="text-muted-foreground">+966 50 226 0256</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 rounded-full bg-card flex items-center justify-center shrink-0 border border-white/10">
+                  <Printer className="text-secondary w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-white font-medium mb-1">{t("Fax", "فاكس")}</h3>
+                  <p className="text-muted-foreground">+966 11 238 0517</p>
                 </div>
               </div>
 
