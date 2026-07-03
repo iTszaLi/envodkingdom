@@ -1,0 +1,240 @@
+The current "Saudi Arabia's Top Companies Trust Us" section looks too basic and repetitive. Although the concept is good, it doesn't create the premium feeling expected from a world-class logistics company.
+
+Completely redesign this section while keeping the dark premium theme.
+
+1. Make it feel like enterprise, not a list of cards
+
+Instead of identical rounded cards in rows, create a premium "Trusted By Industry Leaders" experience.
+
+The section should feel similar to Apple, Stripe, Maersk, DP World, DHL or Fortune 500 websites.
+
+Increase spacing and visual hierarchy.
+
+2. Premium Heading
+
+Replace the current heading with something stronger.
+
+Example:
+
+Trusted by Saudi Arabia's Leading Enterprises
+
+or
+
+Powering Logistics for Saudi Arabia's Largest Businesses
+
+Add a smaller description below:
+
+From mega projects and government contractors to FMCG, healthcare, oil & gas, retail and manufacturing—ENVOD delivers logistics solutions trusted across the Kingdom.
+
+3. Replace Letter Icons
+
+The current square boxes with letters (S, A, M, etc.) look like placeholders.
+
+Instead:
+
+Use the official company logos wherever legally permitted.
+If logos are unavailable, create elegant monochrome logo placeholders with subtle gradients.
+Remove the generic letter icons entirely.
+
+The section should immediately look authentic.
+
+4. Industry Categorization
+
+Instead of random ordering, group companies by industry.
+
+Example:
+
+Oil & Gas
+
+• Saudi Aramco
+• SABIC
+• Sipchem
+
+Healthcare
+
+• Dr. Sulaiman Al Habib
+• Bupa Arabia
+
+Food & Beverage
+
+• Almarai
+• NADEC
+
+Mega Projects
+
+• NEOM
+• Qiddiya
+
+Retail
+
+• Jarir Bookstore
+
+Mining
+
+• Ma'aden
+
+Telecommunications
+
+• STC
+
+This instantly looks more organized.
+
+5. Interactive Hover Animation
+
+Each company card should have premium micro-interactions.
+
+On hover:
+
+• Card slightly lifts
+• Soft glow appears
+• Border animates
+• Logo scales smoothly
+• Background gradient becomes brighter
+• Category color becomes more vibrant
+
+Animation duration:
+
+300–500ms
+
+Use GSAP or Framer Motion.
+
+6. Add Company Statistics
+
+Above or below the companies, add animated statistics.
+
+Examples:
+
+✔ 5000+ Shipments Completed
+
+✔ 100+ Corporate Clients
+
+✔ 24/7 Operations
+
+✔ GCC Coverage
+
+✔ 99% On-Time Delivery
+
+Animate numbers counting upward when the section enters the viewport.
+
+7. Infinite Marquee
+
+Instead of static rows, make the logos move continuously.
+
+Create two rows:
+
+Top row
+
+→ moves left
+
+Bottom row
+
+→ moves right
+
+Movement should be extremely smooth and slow.
+
+Pause on hover.
+
+No visible jump when looping.
+
+8. Add Background Depth
+
+The background currently feels empty.
+
+Enhance it with:
+
+• soft radial gradients
+• subtle grid pattern
+• animated glowing particles
+• faint cargo route lines
+• world map watermark at 5–8% opacity
+• moving light streaks
+
+Keep everything subtle.
+
+9. Glassmorphism Cards
+
+Each logo card should have:
+
+Semi-transparent background
+Soft blur
+Thin border
+Gradient border on hover
+Elegant shadows
+Larger padding
+Consistent height
+
+Cards should feel expensive rather than boxed.
+
+10. Trust Indicators
+
+Below the company logos add a premium trust strip.
+
+Example:
+
+✓ ISO Quality Standards
+
+✓ Customs Clearance Experts
+
+✓ Project Logistics Specialists
+
+✓ Temperature-Controlled Cargo
+
+✓ Dangerous Goods Certified
+
+✓ ATA Carnet Handling
+
+✓ Breakbulk & Oversized Cargo
+
+These should animate into view while scrolling.
+
+11. Add Client Success Message
+
+Below the logos:
+
+Every shipment represents trust. From urgent air freight to complex project cargo, ENVOD supports Saudi Arabia's most demanding supply chains with precision and reliability.
+
+12. Better Colors
+
+Avoid every card having different random colors.
+
+Instead:
+
+Dark charcoal cards
+
+White typography
+
+Accent colors only for categories
+
+Oil & Gas → Orange
+
+Healthcare → Red
+
+Retail → Green
+
+Mining → Gold
+
+Telecom → Purple
+
+Mega Projects → Cyan
+
+Food → Emerald
+
+Keep everything minimal.
+
+13. Better Responsive Design
+
+On mobile:
+
+Show one company card per row or a swipeable carousel.
+Preserve marquee animation with reduced speed.
+Increase touch targets and spacing.
+Keep headings and statistics readable without crowding.
+14. Performance Optimization
+Lazy load company logos.
+Optimize SVGs/images.
+Use CSS transforms for animations.
+Keep animations at 60 FPS.
+Respect prefers-reduced-motion.
+15. Premium Final Result
+
+The final section should immediately communicate that ENVOD is trusted by Saudi Arabia's leading organizations. It should feel modern, premium, highly interactive, and visually balanced, with smooth animations, professional branding, and excellent readability while maintaining fast performance and SEO best practices.
