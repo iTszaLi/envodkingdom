@@ -122,6 +122,26 @@ from = "/services/warehousing"
 to = "/services/warehousing/index.html"
 
 [[services.production.rewrites]]
+from = "/services/white-glove-logistics"
+to = "/services/white-glove-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/services/temperature-controlled-logistics"
+to = "/services/temperature-controlled-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/services/packaging-crating"
+to = "/services/packaging-crating/index.html"
+
+[[services.production.rewrites]]
+from = "/services/express-courier"
+to = "/services/express-courier/index.html"
+
+[[services.production.rewrites]]
+from = "/services/cross-trade-shipping"
+to = "/services/cross-trade-shipping/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/spa.html"
 

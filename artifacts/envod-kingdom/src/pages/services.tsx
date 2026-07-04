@@ -10,6 +10,7 @@ import {
   Heart, UtensilsCrossed, PawPrint,
   Anchor, AlertTriangle, Maximize2, Car, Stamp,
   CheckCircle2, ArrowRight, Globe2, Award, Mail,
+  Gem, Snowflake, Box, Zap,
 } from "lucide-react";
 import { SERVICE_META, SERVICE_CATALOG } from "@/lib/service-data";
 import { SERVICE_IMAGES } from "@/lib/service-images";
@@ -44,6 +45,11 @@ const EXT: Record<number, ServiceExt> = {
   17: { features: ["Wind turbines & transformers", "Specialized trailers & rigging", "Saudi permit management"], featuresAr: ["توربينات الرياح والمحولات", "مقطورات ورافعات متخصصة", "إدارة التصاريح السعودية"], tag: "OOG Specialist", tagAr: "متخصص OOG" },
   18: { features: ["Vehicles, trucks & machinery", "Full Saudi customs clearance", "Major Saudi port access"], featuresAr: ["سيارات وشاحنات وآلات", "تخليص جمركي سعودي كامل", "وصول للموانئ السعودية الرئيسية"], tag: "RoRo", tagAr: "رورو" },
   19: { features: ["24-hour Carnet processing", "80+ country coverage", "Exhibitions, equipment & samples"], featuresAr: ["معالجة الكارنيه خلال 24 ساعة", "تغطية أكثر من 80 دولة", "معارض ومعدات وعينات"], tag: "ENVOD Specialist", tagAr: "متخصص انفود", featured: true },
+  20: { features: ["Trained white glove crews", "Luxury furniture, art & medical gear", "Hotel & villa project delivery"], featuresAr: ["فرق قفاز أبيض مدربة", "أثاث فاخر وفن ومعدات طبية", "تسليم مشاريع الفنادق والفلل"], tag: "Premium", tagAr: "خدمة فاخرة" },
+  21: { features: ["Refrigerated truck fleet", "Frozen & chilled cargo", "Unbroken cold chain monitoring"], featuresAr: ["أسطول شاحنات مبردة", "بضائع مجمدة ومبردة", "مراقبة سلسلة تبريد غير منقطعة"], tag: "Reefer", tagAr: "نقل مبرد" },
+  22: { features: ["ISPM-15 certified wooden crates", "Export & heavy equipment packing", "Fragile cargo protection"], featuresAr: ["صناديق خشبية معتمدة ISPM-15", "تغليف للتصدير والمعدات الثقيلة", "حماية البضائع الهشة"] },
+  23: { features: ["Same-day & next-day delivery", "International express network", "Secure document shipping"], featuresAr: ["توصيل نفس اليوم واليوم التالي", "شبكة بريد دولي سريع", "شحن آمن للمستندات"], tag: "Urgent", tagAr: "عاجل" },
+  24: { features: ["China → UAE / USA direct routing", "Cargo never transits Saudi", "Switch B/L confidentiality"], featuresAr: ["مسارات مباشرة الصين → الإمارات / أمريكا", "البضاعة لا تعبر السعودية", "سرية تبديل بوليصة الشحن"], tag: "B2B", tagAr: "أعمال" },
 };
 
 // ─── Icon resolver ─────────────────────────────────────────────────────────────
@@ -53,6 +59,7 @@ function ServiceIcon({ name, className = "w-7 h-7" }: { name: string; className?
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck, Clock,
     Anchor, AlertTriangle, Maximize2, Car, Stamp,
+    Gem, Snowflake, Box, Zap, Globe2,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} />;

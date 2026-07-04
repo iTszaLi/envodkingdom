@@ -9,6 +9,7 @@ import {
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
   Heart, UtensilsCrossed, PawPrint, Anchor, AlertTriangle, Maximize2,
   Car, Stamp, ChevronDown,
+  Gem, Snowflake, Box, Zap, Globe2,
 } from "lucide-react";
 import { SERVICE_META, SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
 import { SERVICE_IMAGES } from "@/lib/service-images";
@@ -20,6 +21,7 @@ function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; cla
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck,
     Anchor, AlertTriangle, Maximize2, Car, Stamp,
+    Gem, Snowflake, Box, Zap, Globe2,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} style={style} />;

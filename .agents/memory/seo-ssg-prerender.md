@@ -15,6 +15,10 @@ Content routes are prerendered to `dist/public/<route>/index.html` at build time
 
 **Why:** the whole point is max crawlability for no-JS crawlers (Google + AI answer engines); the shell canonical bleed and list drift are the two ways this quietly breaks.
 
+# artifact.toml edits are gated
+
+Direct file edits to `.replit-artifact/artifact.toml` are blocked by the platform — even for the hand-maintained rewrites list. Write the full updated TOML to a sibling temp file in the same `.replit-artifact/` dir (NOT /tmp — different filesystem, rename fails), then call `verifyAndReplaceArtifactToml({tempFilePath, artifactTomlPath})` via code_execution; the temp file is consumed on success.
+
 # JSON-LD takeover
 
 Prerendered JSON-LD `<script>`s are tagged `data-seo-ssg="true"`. On mount `useSeo` removes exactly those nodes and re-adds identical managed copies (`data-seo-managed`) sourced from the same `getSeoForPath`, so there is no duplication or gap. Site-wide `Organization`/`LocalBusiness`/`WebSite` schemas live untagged in the `index.html` template (persist on every page, including the shell), so `#organization`/`#website` `@id` refs always resolve.
