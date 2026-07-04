@@ -50,6 +50,10 @@ from = "/services/air-freight"
 to = "/services/air-freight/index.html"
 
 [[services.production.rewrites]]
+from = "/services/ata-carnet"
+to = "/services/ata-carnet/index.html"
+
+[[services.production.rewrites]]
 from = "/services/breakbulk-shipping"
 to = "/services/breakbulk-shipping/index.html"
 

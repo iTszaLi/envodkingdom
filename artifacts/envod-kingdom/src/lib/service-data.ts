@@ -1,5 +1,6 @@
 import type { Service } from "@workspace/api-client-react";
 import { EXHIBITION_PILLAR } from "./pillar-data/exhibition";
+import { ATA_CARNET_PILLAR } from "./pillar-data/ata-carnet";
 
 export interface SubService {
   name: string;
@@ -767,6 +768,45 @@ export const SERVICE_META: Record<number, ServiceMeta> = {
       { q: "What types of vehicles can be shipped via RoRo?", a: "Any wheeled or tracked vehicle — cars, SUVs, buses, trucks, motorcycles, construction equipment, and agricultural machinery. If it rolls or drives, we can RoRo it.", qAr: "ما أنواع المركبات التي يمكن شحنها بالرورو؟", aAr: "أي مركبة ذات عجلات أو مجزرة — سيارات وحافلات وشاحنات ودراجات نارية ومعدات بناء وزراعية." },
     ],
   },
+  19: {
+    id: 19, slug: "ata-carnet",
+    pillar: ATA_CARNET_PILLAR,
+    gradient: "linear-gradient(135deg,#0a2342 0%,#3a1206 52%,#07101f 100%)",
+    accentHex: "#f59e0b",
+    industries: ["Exhibitions & Events","Broadcast & Media","Oil & Gas","Industrial Manufacturing","Professional Services"],
+    industriesAr: ["المعارض والفعاليات","البث والإعلام","النفط والغاز","التصنيع الصناعي","الخدمات المهنية"],
+    process: [
+      { en: "Eligibility Review", ar: "مراجعة الأهلية" },
+      { en: "General List & Values", ar: "القائمة العامة والقيم" },
+      { en: "Carnet Issuance", ar: "إصدار الكارنيه" },
+      { en: "Export Endorsement", ar: "التصديق عند التصدير" },
+      { en: "Temporary Import", ar: "الاستيراد المؤقت" },
+      { en: "Re-Export & Re-Import", ar: "إعادة التصدير والاستيراد" },
+      { en: "Carnet Discharge", ar: "إبراء الكارنيه" },
+    ],
+    subServices: [
+      { name: "ATA Carnet Issuance", nameAr: "إصدار كارنيه ATA", desc: "Fast issuance of new ATA Carnets — typically within 24 hours.", descAr: "إصدار سريع لكارنيهات ATA الجديدة — عادةً خلال 24 ساعة." },
+      { name: "Exhibition Goods Carnet", nameAr: "كارنيه بضائع المعارض", desc: "Carnets for stands, displays, samples and demo units at trade shows.", descAr: "كارنيهات للأجنحة والمعروضات والعينات ووحدات العرض في المعارض." },
+      { name: "Professional Equipment Carnet", nameAr: "كارنيه المعدات المهنية", desc: "Temporary admission of broadcast, film, survey, medical and test gear.", descAr: "قبول مؤقت لمعدات البث والتصوير والمساحة والطب والاختبار." },
+      { name: "Commercial Samples Carnet", nameAr: "كارنيه العينات التجارية", desc: "Duty-free movement of product samples shown to buyers before an order.", descAr: "نقل معفى من الرسوم لعينات المنتجات المعروضة على المشترين قبل الطلب." },
+      { name: "Customs Endorsement Handling", nameAr: "معالجة التصديق الجمركي", desc: "In-person endorsement at export, import, re-export and re-import.", descAr: "تصديق شخصي عند التصدير والاستيراد وإعادة التصدير وإعادة الاستيراد." },
+      { name: "Carnet Discharge & Closure", nameAr: "إبراء وإغلاق الكارنيه", desc: "Discharge tracking so the Carnet is closed cleanly with no claims.", descAr: "متابعة الإبراء لإغلاق الكارنيه بشكل سليم دون أي مطالبات." },
+      { name: "Replacement & Extension Support", nameAr: "دعم الاستبدال والتمديد", desc: "Replacement Carnets and validity guidance when plans change.", descAr: "كارنيهات بديلة وإرشاد بشأن الصلاحية عند تغيّر الخطط." },
+      { name: "Integrated Freight & Clearance", nameAr: "شحن وتخليص متكامل", desc: "Air, sea and road freight bundled with the Carnet and customs handling.", descAr: "شحن جوي وبحري وبري مدمج مع الكارنيه والمناولة الجمركية." },
+    ],
+    whyEnvod: [
+      { en: "24-hour ATA Carnet processing for time-critical cargo", ar: "معالجة كارنيه ATA خلال 24 ساعة للبضائع الحسّاسة للوقت" },
+      { en: "One team for the document, the freight and customs endorsements", ar: "فريق واحد للمستند والشحن والتصديقات الجمركية" },
+      { en: "Accepted across 80+ countries in the ATA Carnet system", ar: "مقبول في أكثر من 80 دولة ضمن نظام كارنيه ATA" },
+      { en: "Deep Saudi Customs relationships and temporary-import know-how", ar: "علاقات عميقة مع الجمارك السعودية وخبرة في الاستيراد المؤقت" },
+      { en: "Discharge tracking to close every Carnet with zero claims", ar: "متابعة الإبراء لإغلاق كل كارنيه دون أي مطالبات" },
+    ],
+    faq: [
+      { q: "What is an ATA Carnet?", a: "An ATA Carnet is an international customs document — often called the \"passport for goods\" — that lets you import goods temporarily into a country duty-free and tax-free for up to one year, as long as the same goods are re-exported unchanged. It replaces separate temporary-import bonds at each border.", qAr: "ما هو كارنيه ATA؟", aAr: "كارنيه ATA مستند جمركي دولي — يُسمى غالباً «جواز سفر البضائع» — يتيح استيراد البضائع مؤقتاً إلى بلدٍ معفاة من الرسوم والضرائب لمدة تصل إلى عام، طالما أُعيد تصدير البضائع نفسها دون تغيير. ويحل محل كفالات الاستيراد المؤقت المنفصلة عند كل حدود." },
+      { q: "How quickly can ENVOD process an ATA Carnet?", a: "For eligible goods with a complete general list, we typically process ATA Carnets within 24 hours so your shipment stays on schedule.", qAr: "ما مدى سرعة إنفود في معالجة كارنيه ATA؟", aAr: "للبضائع المؤهلة مع قائمة عامة كاملة، نعالج كارنيهات ATA عادةً خلال 24 ساعة لتبقى شحنتك في موعدها." },
+      { q: "What goods can travel on an ATA Carnet?", a: "Three broad categories: exhibition and event goods, professional equipment, and commercial samples. It does not cover consumables, giveaways, or anything that will be sold or left behind — those follow standard import clearance.", qAr: "ما البضائع التي يمكن نقلها بكارنيه ATA؟", aAr: "ثلاث فئات عامة: بضائع المعارض والفعاليات، والمعدات المهنية، والعينات التجارية. ولا يغطي المواد الاستهلاكية أو الهدايا أو ما سيُباع أو يُترك — فتلك تخضع للتخليص المعتاد." },
+    ],
+  },
 };
 
 export const SLUG_TO_ID: Record<string, number> = Object.fromEntries(
@@ -802,6 +842,7 @@ export const SERVICE_CATALOG: Service[] = [
   { id: 16, name: "Dangerous Goods (DG Cargo)", nameAr: "البضائع الخطرة (شحن DG)", description: "IMO & IATA compliant transportation of hazardous chemicals, flammable goods and temperature-sensitive dangerous goods. Certified DG handling with safe packaging and documentation.", descriptionAr: "نقل متوافق مع IMO وIATA للمواد الكيميائية الخطرة والسلع القابلة للاشتعال والبضائع الخطرة الحساسة للحرارة. مناولة DG معتمدة مع التغليف الآمن والتوثيق.", icon: "AlertTriangle", category: "specialized", sortOrder: 16, isActive: true },
   { id: 17, name: "Oversized / Out-of-Gauge (OOG) Cargo", nameAr: "البضائع الضخمة وخارج القياس (OOG)", description: "Heavy lift and oversized cargo specialists — wind turbine components, transformers, industrial project cargo. Route planning, crane & rigging services and specialized trailers.", descriptionAr: "متخصصون في رفع وشحن البضائع الضخمة — مكونات توربينات الرياح والمحولات وبضائع المشاريع الصناعية. تخطيط المسارات وخدمات الرافعات والمقطورات المتخصصة.", icon: "Maximize2", category: "specialized", sortOrder: 17, isActive: true },
   { id: 18, name: "RoRo Shipping", nameAr: "الشحن الدحرجي (رورو)", description: "Roll-on/roll-off shipping for vehicles, machinery, and wheeled cargo — direct port access at major Saudi ports.", descriptionAr: "خدمة الشحن الدحرجي للسيارات والآلات والبضائع ذات العجلات — وصول مباشر للموانئ السعودية الرئيسية.", icon: "Car", category: "specialized", sortOrder: 18, isActive: true },
+  { id: 19, name: "ATA Carnet Processing", nameAr: "معالجة كارنيه ATA", description: "The international customs passport for temporary duty-free admission of exhibition goods, professional equipment and commercial samples — processed in 24 hours across 80+ countries.", descriptionAr: "جواز السفر الجمركي الدولي للقبول المؤقت المعفى من الرسوم لبضائع المعارض والمعدات المهنية والعينات التجارية — يُعالج خلال 24 ساعة في أكثر من 80 دولة.", icon: "Stamp", category: "specialized", sortOrder: 19, isActive: true },
 ];
 
 export function buildMailto(serviceName: string, subServiceName: string): string {

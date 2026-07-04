@@ -8,7 +8,7 @@ import {
   Ship, Plane, Truck, Package, ShieldCheck, Clock, FileCheck,
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
   Heart, UtensilsCrossed, PawPrint,
-  Anchor, AlertTriangle, Maximize2, Car,
+  Anchor, AlertTriangle, Maximize2, Car, Stamp,
   CheckCircle2, ArrowRight, Globe2, Award, Mail,
 } from "lucide-react";
 import { SERVICE_META, SERVICE_CATALOG } from "@/lib/service-data";
@@ -42,6 +42,7 @@ const EXT: Record<number, ServiceExt> = {
   16: { features: ["IMO & IATA compliant", "All 9 DG classes", "Safe packaging & certified docs"], featuresAr: ["متوافق مع IMO وIATA", "جميع الفئات التسع للبضائع الخطرة", "تغليف آمن وتوثيق معتمد"], tag: "DG Certified", tagAr: "معتمد DG" },
   17: { features: ["Wind turbines & transformers", "Specialized trailers & rigging", "Saudi permit management"], featuresAr: ["توربينات الرياح والمحولات", "مقطورات ورافعات متخصصة", "إدارة التصاريح السعودية"], tag: "OOG Specialist", tagAr: "متخصص OOG" },
   18: { features: ["Vehicles, trucks & machinery", "Full Saudi customs clearance", "Major Saudi port access"], featuresAr: ["سيارات وشاحنات وآلات", "تخليص جمركي سعودي كامل", "وصول للموانئ السعودية الرئيسية"], tag: "RoRo", tagAr: "رورو" },
+  19: { features: ["24-hour Carnet processing", "80+ country coverage", "Exhibitions, equipment & samples"], featuresAr: ["معالجة الكارنيه خلال 24 ساعة", "تغطية أكثر من 80 دولة", "معارض ومعدات وعينات"], tag: "ENVOD Specialist", tagAr: "متخصص انفود", featured: true },
 };
 
 // ─── Icon resolver ─────────────────────────────────────────────────────────────
@@ -50,7 +51,7 @@ function ServiceIcon({ name, className = "w-7 h-7" }: { name: string; className?
     Ship, Plane, Truck, Package, Warehouse, FileCheck, GitBranch,
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck, Clock,
-    Anchor, AlertTriangle, Maximize2, Car,
+    Anchor, AlertTriangle, Maximize2, Car, Stamp,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} />;
@@ -340,7 +341,14 @@ export default function Services() {
   const { data: servicesData } = useListServices();
   const [activeTab, setActiveTab] = useState<Tab>("all");
 
-  const services = servicesData ?? SERVICE_CATALOG;
+  // Merge in catalog-only services (e.g. ATA Carnet) that the live API may not
+  // yet return, so every service in the catalog still gets a card.
+  const services = servicesData
+    ? [
+        ...servicesData,
+        ...SERVICE_CATALOG.filter((c) => !servicesData.some((s) => s.id === c.id)),
+      ]
+    : SERVICE_CATALOG;
   const spotlight = services.filter((s) => EXT[s.id]?.spotlight);
   const nonSpotlight = services.filter((s) => !EXT[s.id]?.spotlight);
   const totalCount = services.length;

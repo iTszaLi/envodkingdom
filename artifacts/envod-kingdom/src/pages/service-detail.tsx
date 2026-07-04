@@ -8,7 +8,7 @@ import {
   Ship, Plane, Truck, Package, ShieldCheck, FileCheck,
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
   Heart, UtensilsCrossed, PawPrint, Anchor, AlertTriangle, Maximize2,
-  ChevronDown,
+  Car, Stamp, ChevronDown,
 } from "lucide-react";
 import { SERVICE_META, SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
 import PillarSections from "@/components/service-pillar/PillarSections";
@@ -18,7 +18,7 @@ function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; cla
     Ship, Plane, Truck, Package, Warehouse, FileCheck, GitBranch,
     Container: Package, MapPin, ShoppingCart, Calendar: Star,
     Heart, UtensilsCrossed, PawPrint, ShieldCheck,
-    Anchor, AlertTriangle, Maximize2,
+    Anchor, AlertTriangle, Maximize2, Car, Stamp,
   };
   const Icon = map[name] ?? Package;
   return <Icon className={className} style={style} />;
@@ -61,7 +61,12 @@ export default function ServiceDetail() {
 
   const serviceId = SLUG_TO_ID[slug ?? ""] ?? null;
   const meta = serviceId ? SERVICE_META[serviceId] : null;
-  const service = services?.find(s => s.id === serviceId);
+  // Prefer the live API record, but fall back to the static catalog so
+  // catalog-only services (e.g. ATA Carnet) still render after the API
+  // (which may not yet include them) has hydrated.
+  const service =
+    services?.find((s) => s.id === serviceId) ??
+    SERVICE_CATALOG.find((s) => s.id === serviceId);
 
   if (!service || !meta) {
     return (
