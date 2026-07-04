@@ -6,11 +6,17 @@ import { motion } from "framer-motion";
 import { GlobalNetworkMap } from "@/components/GlobalNetworkMap";
 import {
   Globe, Menu, X, Clock, Shield, Globe2,
-  MapPin, Phone, Printer, Mail, ChevronRight, Award, ArrowUpRight,
-  ShieldCheck, BadgeCheck, Leaf, FileCheck, type LucideIcon,
+  MapPin, Phone, Printer, Mail, ChevronRight, ArrowUpRight,
 } from "lucide-react";
 import logoIcon from "@assets/image_1780532431289.png";
 import logoFull from "@assets/image_1780437854819.png";
+import logoJctrans from "@assets/logo_jctrans.webp";
+import logoCooperative from "@assets/logo_cooperative.webp";
+import logoWca from "@assets/logo_wca.webp";
+import logoFiata from "@assets/logo_fiata.webp";
+import logoPln from "@assets/logo_pln.webp";
+import logoIconLn from "@assets/logo_iconln.webp";
+import logoGla from "@assets/logo_gla.webp";
 import { Button } from "@/components/ui/button";
 import { QuoteModal } from "@/components/QuoteModal";
 
@@ -357,21 +363,16 @@ function HeadOfficeMiniMap() {
   );
 }
 
-/* ─────────────────────────── Cert Badge ─────────────────────────── */
-function CertBadge({ icon: Icon, name, sub }: { icon: LucideIcon; name: string; sub?: string }) {
-  return (
-    <div className="relative group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] hover:border-secondary/40 hover:bg-white/[0.04] transition-all duration-500 cursor-default shadow-lg hover:shadow-[0_10px_30px_-10px_rgba(214,40,40,0.25)] hover:-translate-y-1">
-      <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="flex h-full flex-col items-center justify-center gap-2.5 px-4 py-6 relative z-10 text-center">
-        <div className="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center group-hover:border-secondary/30 group-hover:bg-secondary/10 transition-colors duration-500">
-          <Icon className="w-5 h-5 text-white/50 group-hover:text-secondary transition-colors duration-500" />
-        </div>
-        <span className="text-white font-bold text-[12.5px] tracking-wide leading-none">{name}</span>
-        {sub && <span className="text-white/40 text-[9px] font-semibold tracking-[0.18em] uppercase">{sub}</span>}
-      </div>
-    </div>
-  );
-}
+/* ─────────────────────────── Membership Logos ─────────────────────────── */
+const MEMBERSHIPS: { name: string; logo: string; height: string }[] = [
+  { name: "JCtrans",                            logo: logoJctrans,     height: "h-6 sm:h-7" },
+  { name: "The Cooperative Logistics Network",  logo: logoCooperative, height: "h-11 sm:h-14" },
+  { name: "WCA Worldwide",                      logo: logoWca,         height: "h-9 sm:h-11" },
+  { name: "FIATA",                              logo: logoFiata,       height: "h-11 sm:h-14" },
+  { name: "Planet Logistics Network",           logo: logoPln,         height: "h-8 sm:h-10" },
+  { name: "ICON Logistics Network",             logo: logoIconLn,      height: "h-9 sm:h-11" },
+  { name: "GLA — Global Logistics Alliance",    logo: logoGla,         height: "h-8 sm:h-10" },
+];
 
 /* ─────────────────────────── CTA Strip ─────────────────────────── */
 function CTAStrip() {
@@ -438,16 +439,6 @@ export function Footer() {
     [t("Gallery", "المعرض"), "/gallery"],
     [t("Track Shipment", "تتبع الشحنة"), "/track"],
     [t("Contact", "اتصل بنا"), "/contact"],
-  ];
-
-  const certs: { icon: LucideIcon; name: string; sub: string }[] = [
-    { icon: ShieldCheck, name: "SABER",      sub: t("Saudi", "سعودي") },
-    { icon: BadgeCheck,  name: "SFDA",       sub: t("Certified", "معتمد") },
-    { icon: FileCheck,   name: "ATA Carnet", sub: t("Member", "عضو") },
-    { icon: BadgeCheck,  name: "IEC",        sub: t("Certified", "معتمد") },
-    { icon: Award,       name: "ISO 9001",   sub: t("Quality", "الجودة") },
-    { icon: Leaf,        name: "ISO 14001",  sub: t("Environment", "البيئة") },
-    { icon: ShieldCheck, name: "ISO 45001",  sub: t("Safety", "السلامة") },
   ];
 
   const containerVariants = {
@@ -661,24 +652,31 @@ export function Footer() {
         </motion.div>
       </div>
 
-      {/* ── Certifications Bar ── */}
+      {/* ── Proud Member Of ── */}
       <div className="border-t border-white/[0.04] bg-[#0a1526]/50 relative z-10">
-        <div className="container mx-auto px-6 py-12">
-          <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-8">
-            {t("Certifications & Compliance", "الشهادات والامتثال")}
+        <div className="container mx-auto px-6 py-14">
+          <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-white/30 mb-9">
+            {t("Proud Member Of", "عضو فخور في")}
           </p>
-          <motion.div 
-            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4"
-            initial="hidden"
-            whileInView="visible"
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-50px" }}
-            variants={containerVariants}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="mx-auto max-w-6xl rounded-3xl bg-white/[0.97] border border-white/10 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.5)] px-6 sm:px-10 lg:px-14 py-9 sm:py-11"
           >
-            {certs.map((c) => (
-              <motion.div key={c.name} variants={itemVariants} className="h-full">
-                <CertBadge {...c} />
-              </motion.div>
-            ))}
+            <div className="flex flex-wrap items-center justify-center gap-x-10 sm:gap-x-14 lg:gap-x-16 gap-y-8" dir="ltr">
+              {MEMBERSHIPS.map((m) => (
+                <img
+                  key={m.name}
+                  src={m.logo}
+                  alt={m.name}
+                  title={m.name}
+                  loading="lazy"
+                  className={`${m.height} w-auto object-contain transition-all duration-300 ease-out hover:scale-105 hover:drop-shadow-[0_8px_20px_rgba(10,35,66,0.28)]`}
+                />
+              ))}
+            </div>
           </motion.div>
         </div>
       </div>
