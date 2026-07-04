@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useRef, type MouseEvent } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
-import { CheckCircle2, ArrowRight, ChevronRight } from "lucide-react";
+import { CheckCircle2, ArrowRight, ChevronRight, Cpu, Building2, LandPlot, Construction, UtensilsCrossed, Sofa, BadgeCheck } from "lucide-react";
 import { Link } from "wouter";
 
 const SERVICES_GROUP = [
@@ -18,13 +18,24 @@ const CAPABILITIES_GROUP = [
 ];
 
 const EVENTS = [
-  { name: "LEAP", sub: "Riyadh" },
-  { name: "Saudi Build", sub: "Riyadh" },
-  { name: "Cityscape", sub: "Global" },
-  { name: "Big 5", sub: "Construct Saudi" },
-  { name: "Saudi Food Show", sub: "Riyadh" },
-  { name: "INDEX Saudi", sub: "Jeddah" },
+  { name: "LEAP",                  year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: Cpu },
+  { name: "Saudi Build",           year: "2024", city: "Riyadh", cityAr: "الرياض", Icon: Building2 },
+  { name: "Cityscape Global",      year: "2024", city: "Riyadh", cityAr: "الرياض", Icon: LandPlot },
+  { name: "Big 5 Construct Saudi", year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: Construction },
+  { name: "Saudi Food Show",       year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: UtensilsCrossed },
+  { name: "INDEX Saudi",           year: "2024", city: "Jeddah", cityAr: "جدة",     Icon: Sofa },
 ];
+
+const EVENTS_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Major Saudi & GCC exhibitions served by ENVOD KINGDOM SHIPPING SERVICES LLC",
+  itemListElement: EVENTS.map((e, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    name: `${e.name} ${e.year} — ${e.city}, Saudi Arabia`,
+  })),
+};
 
 const TIMELINE = [
   { en: "Consultation",     ar: "الاستشارة",       num: "01" },
@@ -64,6 +75,83 @@ function CategoryList({ items, label, labelAr, isRtl }: { items: typeof SERVICES
         ))}
       </ul>
     </div>
+  );
+}
+
+function EventCard({ event, index, isRtl }: { event: (typeof EVENTS)[number]; index: number; isRtl: boolean }) {
+  const { Icon } = event;
+
+  const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+    e.currentTarget.style.setProperty("--my", `${e.clientY - rect.top}px`);
+  };
+
+  const tooltip = isRtl
+    ? `نجحت انفود في إدارة لوجستيات المعارض لـ ${event.name}.`
+    : `ENVOD successfully managed exhibition logistics for ${event.name}.`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 28 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ delay: index * 0.07, duration: 0.55, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+      onMouseMove={handleMouseMove}
+      className="group relative h-full"
+    >
+      {/* Card body (clips its own glow/shimmer) */}
+      <div
+        className="relative h-full flex flex-col items-center text-center rounded-[20px] p-5 md:p-6 overflow-hidden border border-white/10 transition-all duration-[350ms] ease-out will-change-transform group-hover:-translate-y-1.5 group-hover:border-secondary/40 group-hover:shadow-[0_22px_55px_-14px_rgba(214,40,40,0.32)]"
+        style={{
+          background:
+            "linear-gradient(160deg, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0.018) 45%, rgba(2,13,28,0.35) 100%)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+        }}
+      >
+        {/* Mouse-follow light reflection */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          style={{ background: "radial-gradient(240px circle at var(--mx, 50%) var(--my, 0%), rgba(214,40,40,0.18), transparent 62%)" }}
+        />
+        {/* Shimmer sweep on hover */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[20px]">
+          <div className="absolute -top-1/2 left-0 h-[200%] w-1/3 rotate-12 -translate-x-[250%] group-hover:translate-x-[420%] bg-gradient-to-r from-transparent via-white/12 to-transparent transition-transform duration-[900ms] ease-out" />
+        </div>
+        {/* Top border accent on hover */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+        {/* Logo mark tile */}
+        <div
+          className="relative mb-4 w-16 h-16 rounded-2xl flex items-center justify-center border border-white/10 transition-transform duration-[350ms] ease-out group-hover:scale-110"
+          style={{ background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.10), rgba(2,13,28,0.35))" }}
+        >
+          <Icon className="w-7 h-7 text-white/80 group-hover:text-secondary transition-colors duration-300" strokeWidth={1.6} aria-hidden="true" />
+        </div>
+
+        {/* Name + year + city */}
+        <h4 className="text-white font-black text-[14px] leading-tight tracking-tight">{event.name}</h4>
+        <p className="text-secondary text-sm font-bold mt-1">{event.year}</p>
+        <p className="text-white/40 text-[10px] tracking-wider uppercase mt-1">{isRtl ? event.cityAr : event.city}</p>
+
+        {/* Trust badge */}
+        <div className="mt-auto pt-4">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-secondary/25 bg-secondary/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-secondary/90">
+            <BadgeCheck className="w-3.5 h-3.5" aria-hidden="true" />
+            {isRtl ? "تم التنفيذ" : "Delivered"}
+          </span>
+        </div>
+      </div>
+
+      {/* Tooltip (sibling of card so it escapes the clip) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 -translate-x-1/2 bottom-full mb-2.5 w-max max-w-[220px] rounded-lg border border-white/10 bg-[#020d1c] px-3 py-2 text-[11px] leading-snug text-white/85 opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-xl z-20"
+      >
+        {tooltip}
+      </div>
+    </motion.div>
   );
 }
 
@@ -228,34 +316,37 @@ export function ExhibitionSection() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          TRUSTED AT — Events marquee
+          TRUSTED AT — Proven track record (premium event cards)
       ══════════════════════════════════════════════════════════ */}
-      <div className="border-t border-white/6 py-12">
+      <div className="border-t border-white/6 py-16 md:py-20">
         <div className="container mx-auto px-6 md:px-8">
-          <motion.p
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className={`text-white/30 text-[10px] font-bold tracking-[0.4em] uppercase mb-8 ${isRtl ? "text-right" : "text-center"}`}
+            className={`mb-12 ${isRtl ? "text-right" : "text-center"}`}
           >
-            {t("TRUSTED AT MAJOR SAUDI & GCC EVENTS", "موثوق به في كبرى الفعاليات السعودية والخليجية")}
-          </motion.p>
-          <div className={`flex flex-wrap items-center justify-center gap-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3">
+              {t("PROVEN TRACK RECORD", "سجل حافل بالإنجازات")}
+            </p>
+            <h3 className="text-2xl md:text-3xl font-black text-white">
+              {t("Trusted at Major Saudi & GCC Events", "موثوق به في كبرى الفعاليات السعودية والخليجية")}
+            </h3>
+            <p className={`text-white/45 text-sm mt-3 max-w-xl leading-relaxed ${isRtl ? "ml-auto" : "mx-auto"}`}>
+              {t(
+                "Official logistics support successfully delivered for the Kingdom's landmark exhibitions.",
+                "دعم لوجستي رسمي تم تنفيذه بنجاح لأبرز معارض المملكة.",
+              )}
+            </p>
+          </motion.div>
+
+          <div className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-5 items-stretch ${isRtl ? "direction-rtl" : ""}`}>
             {EVENTS.map((event, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                whileHover={{ y: -2, borderColor: "rgba(214,40,40,0.35)" }}
-                className="flex flex-col items-center px-6 py-3.5 rounded-2xl border border-white/10 bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-300 cursor-default min-w-[110px]"
-              >
-                <span className="text-white font-black text-base tracking-tight">{event.name}</span>
-                <span className="text-white/35 text-[10px] tracking-wider mt-0.5">{event.sub}</span>
-              </motion.div>
+              <EventCard key={event.name} event={event} index={i} isRtl={isRtl} />
             ))}
           </div>
+
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(EVENTS_SCHEMA) }} />
         </div>
       </div>
 
