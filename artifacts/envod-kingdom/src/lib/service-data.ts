@@ -1,10 +1,56 @@
 import type { Service } from "@workspace/api-client-react";
+import { EXHIBITION_PILLAR } from "./pillar-data/exhibition";
 
 export interface SubService {
   name: string;
   nameAr: string;
   desc: string;
   descAr: string;
+}
+
+export interface BiText {
+  en: string;
+  ar: string;
+}
+
+export interface PillarSectionData {
+  id: string;
+  heading: BiText;
+  paragraphs: BiText[];
+  bullets?: BiText[];
+}
+
+export interface PillarVenue {
+  name: string;
+  nameAr: string;
+  city: string;
+  cityAr: string;
+}
+
+export interface PillarEvent {
+  name: string;
+  sector: string;
+  sectorAr: string;
+  city: string;
+  cityAr: string;
+}
+
+export interface PillarRelatedLink {
+  label: string;
+  labelAr: string;
+  href: string;
+}
+
+/** Optional long-form, crawler-friendly content that promotes a service page to
+ *  an SEO "pillar" page. Rendered as plain semantic HTML by PillarSections. */
+export interface ServicePillar {
+  seoTitle?: string;
+  seoDescription?: string;
+  intro: BiText[];
+  sections: PillarSectionData[];
+  venues: PillarVenue[];
+  majorEvents: PillarEvent[];
+  relatedLinks: PillarRelatedLink[];
 }
 
 export interface ServiceMeta {
@@ -18,6 +64,7 @@ export interface ServiceMeta {
   subServices: SubService[];
   whyEnvod: { en: string; ar: string }[];
   faq: { q: string; a: string; qAr: string; aAr: string }[];
+  pillar?: ServicePillar;
 }
 
 export const SERVICE_META: Record<number, ServiceMeta> = {
@@ -430,6 +477,7 @@ export const SERVICE_META: Record<number, ServiceMeta> = {
   },
   11: {
     id: 11, slug: "exhibition-logistics",
+    pillar: EXHIBITION_PILLAR,
     gradient: "linear-gradient(135deg,#1a0508 0%,#2d080e 50%,#0e0304 100%)",
     accentHex: "#ef4444",
     industries: ["Technology","Construction","Healthcare","Energy","Defense","Food & Agriculture"],
@@ -469,6 +517,13 @@ export const SERVICE_META: Record<number, ServiceMeta> = {
     faq: [
       { q: "What is an ATA Carnet?", a: "An ATA Carnet is an international customs document that allows temporary import and export of goods without paying customs duties. It's ideal for exhibition materials, professional equipment, and trade samples.", qAr: "ما هو كارنيه ATA؟", aAr: "كارنيه ATA هو مستند جمركي دولي يتيح الاستيراد والتصدير المؤقت للبضائع دون دفع رسوم جمركية." },
       { q: "How far in advance should I book exhibition logistics?", a: "We recommend booking 4–6 weeks before your event. For major exhibitions like LEAP or Cityscape, 8 weeks is ideal to secure the best rates and availability.", qAr: "كم قبل حجز لوجستيات المعارض؟", aAr: "نوصي بالحجز قبل 4-6 أسابيع. للمعارض الكبرى كـ LEAP وCityscape، 8 أسابيع هي المثالية." },
+      { q: "Which Saudi exhibition venues do you deliver to?", a: "We deliver nationwide to every major venue, including the Riyadh International Convention & Exhibition Center (RICEC), Riyadh Front, Jeddah Superdome, the Jeddah Center for Forums & Events, and Dhahran Expo — plus hotel and conference venues across the Kingdom.", qAr: "إلى أي أماكن معارض في المملكة تُسلّمون؟", aAr: "نُسلّم على مستوى المملكة إلى كل مكان رئيسي، بما في ذلك مركز الرياض الدولي للمؤتمرات والمعارض، وواجهة الرياض، وقبة جدة، ومركز جدة للمنتديات والفعاليات، وظهران إكسبو — إضافة إلى فنادق ومراكز مؤتمرات في مختلف أنحاء المملكة." },
+      { q: "Do you handle on-site setup and dismantling at the stand?", a: "Yes. Our on-site team takes delivery at the venue, moves cargo to your stand, and assists with unpacking, positioning, empty-crate storage, and post-event dismantling and repacking.", qAr: "هل تتولّون التركيب والتفكيك في الجناح؟", aAr: "نعم. يستلم فريقنا الميداني الشحنة في المكان، وينقلها إلى جناحك، ويساعد في فك التغليف والتموضع وتخزين الصناديق الفارغة والتفكيك وإعادة التغليف بعد الفعالية." },
+      { q: "Can you arrange temporary import without an ATA Carnet?", a: "Yes. When an ATA Carnet is not available in the country of origin, we arrange temporary-import clearance directly through Saudi Customs, including the required guarantees and re-export documentation.", qAr: "هل يمكنكم ترتيب الاستيراد المؤقت دون كارنيه ATA؟", aAr: "نعم. عندما لا يتوفّر كارنيه ATA في بلد المنشأ، نُرتّب التخليص للاستيراد المؤقت مباشرة عبر الجمارك السعودية، بما في ذلك الضمانات المطلوبة ووثائق إعادة التصدير." },
+      { q: "Which major exhibitions has ENVOD supported?", a: "We have handled logistics for exhibitors at leading Saudi events including LEAP, Cityscape Global, Big 5 Construct Saudi, Saudi Build, INDEX and the Global Health Exhibition, among many others.", qAr: "ما أبرز المعارض التي دعمتها إنفود؟", aAr: "تولّينا لوجستيات العارضين في أبرز الفعاليات السعودية، ومنها LEAP وCityscape Global وBig 5 وSaudi Build وINDEX ومعرض الصحة العالمي، وغيرها الكثير." },
+      { q: "Do you manage the return shipment of exhibition materials after the event?", a: "Yes. Return and re-export are part of our standard exhibition service — we collect from your stand, repack, complete the customs re-export, and ship your materials back to origin or on to your next show.", qAr: "هل تديرون شحن إعادة مواد المعرض بعد الحدث؟", aAr: "نعم. الإعادة وإعادة التصدير جزء من خدمتنا القياسية للمعارض — نجمع من جناحك، ونعيد التغليف، ونُنجز إعادة التصدير الجمركية، ونشحن موادك إلى المنشأ أو إلى معرضك التالي." },
+      { q: "How much does exhibition logistics cost?", a: "Cost depends on the volume and weight of your cargo, the transport mode, the origin, and how much on-site support you need. Share your equipment list and event dates and we'll send a detailed, no-obligation quote — usually within a few hours.", qAr: "كم تكلفة لوجستيات المعارض؟", aAr: "تعتمد التكلفة على حجم شحنتك ووزنها، ووسيلة النقل، وبلد المنشأ، وحجم الدعم الميداني المطلوب. أرسل لنا قائمة معداتك وتواريخ فعاليتك وسنرسل عرض سعر مفصلاً دون التزام — عادةً خلال ساعات." },
+      { q: "Can you ship urgent exhibition cargo by air?", a: "Yes. For last-minute or time-critical shipments we arrange express air freight with prioritised customs clearance so your materials reach the stand before build-up closes.", qAr: "هل يمكنكم شحن بضائع المعارض العاجلة جواً؟", aAr: "نعم. للشحنات اللحظية أو الحسّاسة للوقت نُرتّب شحناً جوياً سريعاً مع تخليص جمركي ذي أولوية حتى تصل موادك إلى الجناح قبل انتهاء فترة التجهيز." },
     ],
   },
   12: {

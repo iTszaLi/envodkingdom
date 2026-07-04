@@ -188,6 +188,7 @@ function serviceSeo(id: number): SeoConfig {
   const slug = ID_TO_SLUG[id];
   const svc = SERVICE_CATALOG.find((s) => s.id === id)!;
   const meta = SERVICE_META[id];
+  const pillar = meta?.pillar;
   const path = `/services/${slug}`;
 
   const jsonLd: Array<Record<string, unknown>> = [
@@ -195,7 +196,7 @@ function serviceSeo(id: number): SeoConfig {
       "@context": "https://schema.org",
       "@type": "Service",
       name: svc.name,
-      description: svc.description,
+      description: pillar?.seoDescription ?? svc.description,
       serviceType: svc.category,
       areaServed: "Saudi Arabia",
       provider: { "@id": ORG_ID },
@@ -221,8 +222,8 @@ function serviceSeo(id: number): SeoConfig {
   }
 
   return {
-    title: `${svc.name} in Saudi Arabia | ENVOD KINGDOM`,
-    description: svc.description,
+    title: pillar?.seoTitle ?? `${svc.name} in Saudi Arabia | ENVOD KINGDOM`,
+    description: pillar?.seoDescription ?? svc.description,
     canonicalPath: path,
     image: OG_IMAGE,
     jsonLd,

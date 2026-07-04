@@ -19,6 +19,16 @@ Content routes are prerendered to `dist/public/<route>/index.html` at build time
 
 Prerendered JSON-LD `<script>`s are tagged `data-seo-ssg="true"`. On mount `useSeo` removes exactly those nodes and re-adds identical managed copies (`data-seo-managed`) sourced from the same `getSeoForPath`, so there is no duplication or gap. Site-wide `Organization`/`LocalBusiness`/`WebSite` schemas live untagged in the `index.html` template (persist on every page, including the shell), so `#organization`/`#website` `@id` refs always resolve.
 
+# framer-motion hides content from the prerender
+
+Two common framer-motion patterns silently keep content out of the SSG HTML (`renderToString` captures the *initial* render):
+- `initial={{ opacity: 0 }}` (+ `whileInView`/`animate`) — the element serializes with inline `style="opacity:0"`, so it's in the DOM but visually hidden until JS reveals it. Fine for decorative sections; **bad for the page's ranking payload**.
+- `<AnimatePresence>{open && <motion.div/>}` conditional mount — collapsed content is **absent entirely** from the prerendered HTML.
+
+**Why:** the goal is no-JS crawlers + AI answer engines. If FAQ answers are only mounted on click, a `FAQPage`/`Question` schema referencing them is a schema-vs-visible-content mismatch (Google requires FAQ answer text present on the page).
+
+**How to apply:** any SEO-bearing collapsible (FAQ accordions, tabs) must render its content **always** in the DOM and collapse via CSS, not conditional mount. Use the grid-rows trick: outer `class="grid" style={{gridTemplateRows: open ? '1fr' : '0fr'}}` → inner `div.overflow-hidden` → content. Keep only transforms/rotation (chevron) in framer-motion. Long-form SEO prose (the exhibition "pillar" sections) is rendered as plain `h2/p/ul` with **no** motion wrapper for the same reason.
+
 # Homepage H1
 
 The home hero titles are `<h2>` baked into a cinematic scroll-video (`ScrollAnimSection`), so the page had no `<h1>`. A single `sr-only` bilingual `<h1>` is added at the top of `home.tsx` for crawlers/screen readers — a legitimate a11y pattern, NOT the old low-contrast keyword block (that was deleted).

@@ -1,5 +1,5 @@
 import { useParams, Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { useListServices } from "@workspace/api-client-react";
@@ -11,6 +11,7 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { SERVICE_META, SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
+import PillarSections from "@/components/service-pillar/PillarSections";
 
 function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; className?: string; style?: React.CSSProperties }) {
   const map: Record<string, React.ElementType> = {
@@ -29,6 +30,7 @@ function FAQItem({ q, a, qAr, aAr, isRtl }: { q: string; a: string; qAr: string;
     <div className="border border-white/10 rounded-xl overflow-hidden">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className={`w-full flex items-center justify-between gap-4 px-6 py-4 text-left hover:bg-white/[0.03] transition-colors ${isRtl ? "flex-row-reverse text-right" : ""}`}
       >
         <span className="text-white font-semibold text-sm leading-snug">{isRtl ? qAr : q}</span>
@@ -36,21 +38,17 @@ function FAQItem({ q, a, qAr, aAr, isRtl }: { q: string; a: string; qAr: string;
           <ChevronDown className="w-4 h-4 text-secondary shrink-0" />
         </motion.div>
       </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
-            className="overflow-hidden"
-          >
-            <div className={`px-6 pb-5 text-white/55 text-sm leading-relaxed border-t border-white/8 pt-4 ${isRtl ? "text-right" : ""}`}>
-              {isRtl ? aAr : a}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Answer stays in the DOM (crawlable / matches FAQPage schema); collapsed via CSS grid rows */}
+      <div
+        className="grid transition-[grid-template-rows] duration-300 ease-out"
+        style={{ gridTemplateRows: open ? "1fr" : "0fr" }}
+      >
+        <div className="overflow-hidden">
+          <div className={`px-6 pb-5 text-white/55 text-sm leading-relaxed border-t border-white/8 pt-4 ${isRtl ? "text-right" : ""}`}>
+            {isRtl ? aAr : a}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -171,6 +169,11 @@ export default function ServiceDetail() {
           </motion.div>
         </div>
       </div>
+
+      {/* ── Pillar (long-form SEO content, plain HTML for crawlers) ── */}
+      {meta.pillar && (
+        <PillarSections pillar={meta.pillar} isRtl={isRtl} accentHex={meta.accentHex} />
+      )}
 
       {/* ── Sub-Services Grid ── */}
       <section className="py-20 container mx-auto px-4">
@@ -354,6 +357,29 @@ export default function ServiceDetail() {
                 >
                   <FAQItem {...item} isRtl={isRtl} />
                 </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── Related Services (pillar internal links) ── */}
+      {meta.pillar && meta.pillar.relatedLinks.length > 0 && (
+        <section className="py-14 border-t border-white/6">
+          <div className={`container mx-auto px-4 max-w-5xl ${isRtl ? "text-right" : ""}`} dir={isRtl ? "rtl" : "ltr"}>
+            <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-5">
+              {t("RELATED SERVICES", "خدمات ذات صلة")}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {meta.pillar.relatedLinks.map((l, i) => (
+                <Link
+                  key={i}
+                  href={l.href}
+                  className={`group flex items-center justify-between gap-2 rounded-xl border border-white/8 bg-white/[0.03] px-4 py-3.5 hover:bg-white/[0.06] transition-colors ${isRtl ? "flex-row-reverse" : ""}`}
+                >
+                  <span className="text-white/75 text-sm font-semibold">{isRtl ? l.labelAr : l.label}</span>
+                  <ArrowRight className={`w-3.5 h-3.5 text-white/30 group-hover:text-white/70 transition-colors ${isRtl ? "rotate-180" : ""}`} />
+                </Link>
               ))}
             </div>
           </div>
