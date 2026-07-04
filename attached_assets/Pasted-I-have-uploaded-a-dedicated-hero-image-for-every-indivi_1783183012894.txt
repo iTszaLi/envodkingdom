@@ -1,0 +1,155 @@
+I have uploaded a dedicated hero image for every individual logistics service. I want you to integrate these images throughout the website in a clean, premium, enterprise-grade manner.
+
+Service order (VERY IMPORTANT)
+
+Please map the uploaded images to the services in this exact order:
+
+Exhibition & Event Logistics
+ATA Carnet Processing
+Customs Clearance
+Project Cargo Logistics
+Ocean Freight
+Air Freight
+GCC Transportation
+Warehousing & Distribution
+Freight Forwarding
+Breakbulk Shipping
+Oversized / Out-of-Gauge (OOG) Cargo
+Medical & Pharma Logistics
+
+Ensure each uploaded image is assigned to its correct service only.
+
+PART 1 — Service Cards
+
+On the Services page, every service card should use its corresponding uploaded image as a premium background.
+
+Do NOT simply place the image behind the text.
+
+Instead:
+
+Use the uploaded image as the full background.
+Add a professional dark overlay (approximately 60–70% opacity).
+Add a subtle gradient from bottom to top for better readability.
+Slightly increase contrast and brightness where necessary.
+Do not over-blur the images.
+Preserve image quality.
+Crop intelligently so the important subject stays visible.
+
+The following content must remain perfectly readable:
+
+Service icon
+Service title
+Service description
+Bullet points
+"Explore Service" button
+Specialty badge
+
+Text readability is the highest priority.
+
+PART 2 — Card Hover Effects
+
+When hovering over a service card:
+
+Background image slowly zooms (scale 1.05)
+Overlay becomes slightly lighter
+Card lifts upward slightly
+Shadow becomes deeper
+Border receives a subtle glow using the website accent color
+Cursor changes appropriately
+
+Animation should feel smooth, premium and modern.
+
+No flashy effects.
+
+PART 3 — Service Page Hero Banner
+
+When a user clicks on any service (or Explore Service), that service's uploaded image should automatically become the hero background at the top of the corresponding service page.
+
+For example:
+
+Exhibition & Event Logistics page → Exhibition image
+ATA Carnet page → ATA Carnet image
+Customs Clearance page → Customs image
+Project Cargo page → Project Cargo image
+Ocean Freight page → Ocean Freight image
+Air Freight page → Air Freight image
+GCC Transportation page → GCC image
+Warehousing page → Warehouse image
+Freight Forwarding page → Freight Forwarding image
+Breakbulk Shipping page → Breakbulk image
+Oversized Cargo page → Oversized Cargo image
+Medical & Pharma page → Medical/Pharma image
+
+The hero image should appear behind the page heading.
+
+Example:
+
+--------------------------------------------------
+|                                                |
+|     Background Image (uploaded image)          |
+|                                                |
+|     Exhibition & Event Logistics               |
+|     Short description                          |
+|                                                |
+|     Request Quote   WhatsApp                   |
+|                                                |
+--------------------------------------------------
+PART 4 — Hero Background Styling
+
+The hero banner should look premium.
+
+Requirements:
+
+Full-width background image
+Height between 450px and 650px
+Dark gradient overlay for readability
+White typography
+Preserve image quality
+Responsive cropping
+No stretching
+No pixelation
+Background should cover the section perfectly
+
+The title and buttons should remain highly readable on every image.
+
+PART 5 — Performance
+
+Optimize all images:
+
+Lazy load service card images
+Preload hero images only when needed
+Use GPU-accelerated animations
+Prevent layout shifts
+Maintain fast loading and excellent Lighthouse performance
+PART 6 — Responsive Design
+
+Ensure the implementation works perfectly on:
+
+Desktop
+Laptop
+Tablet
+Mobile
+
+Images should crop intelligently on smaller screens while keeping the primary subject visible.
+
+PART 7 — Keep Existing Layout
+
+Do NOT redesign or change the current layout.
+
+Keep exactly the same:
+
+Card sizes
+Typography
+Icons
+Buttons
+Text
+Spacing
+Service descriptions
+Explore Service buttons
+Overall design language
+
+The only enhancement should be the addition of the uploaded images as elegant backgrounds and hero banners.
+
+Goal
+
+The final result should feel comparable to the websites of DP World, DHL, Maersk, Kuehne+Nagel, DSV, and CEVA Logistics—clean, premium, modern, and corporate, with high-quality photography that enhances the design without reducing readability.

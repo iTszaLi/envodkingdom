@@ -15,3 +15,4 @@
 - [Test DB hand-maintained schema](test-db-hand-maintained-schema.md) — api-server vitest builds Postgres from hardcoded CREATE_SQL in testDb.ts (not drizzle); mirror any column add there, and restart the API workflow (builds once, no watch) after lib/db edits
 - [Claims-accuracy / SEO copy policy](claims-accuracy-policy.md) — banned superlatives/guarantees, mandated hedged customs/transit sentences, factual exceptions to keep; edit EN+AR together
 - [Site schema locations & primary phone](schema-and-phone.md) — JSON-LD lives in 2 places (static Org/LocalBusiness/WebSite in index.html + dynamic per-page in seo-config.ts); primary phone +966 50 226 0256 must match across both and the visible site
+- [Asset image optimization](asset-image-optimization.md) — Vite `@assets` imports emit raw bytes (no auto-compress); pre-encode photo uploads to WebP (`magick`, not sharp) before importing

@@ -11,6 +11,7 @@ import {
   Car, Stamp, ChevronDown,
 } from "lucide-react";
 import { SERVICE_META, SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
+import { SERVICE_IMAGES } from "@/lib/service-images";
 import PillarSections from "@/components/service-pillar/PillarSections";
 
 function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; className?: string; style?: React.CSSProperties }) {
@@ -81,21 +82,37 @@ export default function ServiceDetail() {
 
   const serviceName = isRtl ? service.nameAr : service.name;
   const serviceDesc = isRtl ? service.descriptionAr : service.description;
+  const heroImage = serviceId ? SERVICE_IMAGES[serviceId] : undefined;
 
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       {/* ── Cinematic Hero ── */}
       <div
-        className="relative pt-24 pb-20 overflow-hidden"
+        className={`relative pt-24 pb-20 overflow-hidden ${heroImage ? "min-h-[460px] md:min-h-[560px] flex items-center" : ""}`}
         style={{ background: meta.gradient }}
       >
+        {/* Dedicated service hero photo (eager — above the fold) */}
+        {heroImage && (
+          <div className="absolute inset-0 z-0" aria-hidden="true">
+            <img
+              src={heroImage}
+              alt=""
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-[#060c14]/55" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#060c14] via-[#08111f]/78 to-[#08111f]/40" />
+          </div>
+        )}
         {/* Grid overlay */}
-        <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
+        <div className="absolute inset-0 z-[1] opacity-[0.04] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
         {/* Glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none" style={{ background: `radial-gradient(ellipse, ${meta.accentHex}18 0%, transparent 70%)` }} />
-        <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 z-[1] w-[600px] h-[300px] pointer-events-none" style={{ background: `radial-gradient(ellipse, ${meta.accentHex}18 0%, transparent 70%)` }} />
+        <div className="absolute inset-x-0 bottom-0 z-[1] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className={`container mx-auto px-4 relative z-10 ${isRtl ? "text-right" : ""}`}>
+        <div className={`container mx-auto px-4 relative z-10 w-full ${isRtl ? "text-right" : ""}`}>
           {/* Breadcrumb */}
           <motion.nav
             initial={{ opacity: 0 }}

@@ -12,6 +12,7 @@ import {
   CheckCircle2, ArrowRight, Globe2, Award, Mail,
 } from "lucide-react";
 import { SERVICE_META, SERVICE_CATALOG } from "@/lib/service-data";
+import { SERVICE_IMAGES } from "@/lib/service-images";
 
 // ─── Per-service features ─────────────────────────────────────────────────────
 interface ServiceExt {
@@ -57,6 +58,35 @@ function ServiceIcon({ name, className = "w-7 h-7" }: { name: string; className?
   return <Icon className={className} />;
 }
 
+// ─── Card background media (photo + readability overlays) ──────────────────────
+// Renders a service's dedicated hero photo as a full-card background with a dark
+// overlay (~60%) and a bottom-to-top gradient so all foreground content stays
+// readable. On hover the photo zooms, the overlay lightens, and an accent-tinted
+// inner glow appears. Returns null (keeping the gradient banner) when no image.
+function CardMedia({ image, accent }: { image?: string; accent: string }) {
+  if (!image) return null;
+  return (
+    <div className="absolute inset-0 z-0 overflow-hidden" aria-hidden="true">
+      <img
+        src={image}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        className="absolute inset-0 h-full w-full object-cover will-change-transform transition-transform duration-[900ms] ease-out group-hover:scale-105"
+      />
+      {/* Base dark overlay (~60%), lightens on hover */}
+      <div className="absolute inset-0 bg-[#060c14]/60 transition-opacity duration-500 group-hover:opacity-75" />
+      {/* Bottom-to-top gradient keeps title/description/bullets readable */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#060c14] via-[#060c14]/80 to-[#060c14]/25" />
+      {/* Accent inner glow on hover */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ boxShadow: `inset 0 0 42px ${accent}30` }}
+      />
+    </div>
+  );
+}
+
 // ─── Premium card (standard) ───────────────────────────────────────────────────
 function PremiumCard({ service, index, isRtl }: { service: Service; index: number; isRtl: boolean }) {
   const { t } = useLanguage();
@@ -68,6 +98,7 @@ function PremiumCard({ service, index, isRtl }: { service: Service; index: numbe
   const slug = meta?.slug ?? "";
   const gradient = meta?.gradient ?? "linear-gradient(135deg,#0a1a2e 0%,#0d2038 100%)";
   const accent = meta?.accentHex ?? "#D62828";
+  const image = SERVICE_IMAGES[service.id];
 
   return (
     <motion.div
@@ -80,20 +111,26 @@ function PremiumCard({ service, index, isRtl }: { service: Service; index: numbe
       <motion.div
         whileHover={{ y: -6 }}
         transition={{ type: "spring", stiffness: 300, damping: 24 }}
-        className="group h-full rounded-[20px] overflow-hidden border border-white/8 hover:border-white/18 flex flex-col transition-all duration-300"
-        style={{ background: "#080f1a", boxShadow: "0 4px 24px rgba(0,0,0,0.3)" }}
+        className="group relative h-full rounded-[20px] overflow-hidden border border-white/8 hover:border-white/18 flex flex-col transition-all duration-300 shadow-[0_4px_24px_rgba(0,0,0,0.30)] hover:shadow-[0_20px_50px_rgba(0,0,0,0.55)]"
+        style={{ background: "#080f1a" }}
       >
-        {/* ── Gradient banner ── */}
+        <CardMedia image={image} accent={accent} />
+
+        {/* ── Banner (dedicated photo shows through when present) ── */}
         <div
-          className="relative h-32 flex items-center justify-center overflow-hidden flex-shrink-0"
-          style={{ background: gradient }}
+          className="relative z-10 h-32 flex items-center justify-center overflow-hidden flex-shrink-0"
+          style={image ? undefined : { background: gradient }}
         >
-          {/* Noise texture overlay */}
-          <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundSize: "128px 128px" }} />
-          {/* Radial accent */}
-          <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 70% at 50% 60%, ${accent}22 0%, transparent 70%)` }} />
-          {/* Animated border glow on hover */}
-          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ boxShadow: `inset 0 0 30px ${accent}25` }} />
+          {!image && (
+            <>
+              {/* Noise texture overlay */}
+              <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")", backgroundSize: "128px 128px" }} />
+              {/* Radial accent */}
+              <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 70% at 50% 60%, ${accent}22 0%, transparent 70%)` }} />
+              {/* Animated border glow on hover */}
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" style={{ boxShadow: `inset 0 0 30px ${accent}25` }} />
+            </>
+          )}
 
           {/* Icon */}
           <motion.div
@@ -117,7 +154,7 @@ function PremiumCard({ service, index, isRtl }: { service: Service; index: numbe
         </div>
 
         {/* ── Card body ── */}
-        <div className={`flex flex-col flex-1 p-5 ${isRtl ? "text-right" : ""}`}>
+        <div className={`relative z-10 flex flex-col flex-1 p-5 ${isRtl ? "text-right" : ""}`}>
           <h3 className="font-black text-white text-[15px] leading-snug mb-2">{name}</h3>
           <p className="text-white/45 text-xs leading-relaxed mb-4 flex-shrink-0 line-clamp-2">{desc}</p>
 
@@ -167,6 +204,7 @@ function FeaturedCard({ service, index, isRtl }: { service: Service; index: numb
   const slug = meta?.slug ?? "";
   const gradient = meta?.gradient ?? "linear-gradient(135deg,#0a1a2e 0%,#0d2038 100%)";
   const accent = meta?.accentHex ?? "#D62828";
+  const image = SERVICE_IMAGES[service.id];
 
   return (
     <motion.div
@@ -179,20 +217,26 @@ function FeaturedCard({ service, index, isRtl }: { service: Service; index: numb
       <motion.div
         whileHover={{ y: -5 }}
         transition={{ type: "spring", stiffness: 280, damping: 22 }}
-        className="group relative rounded-[22px] overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300"
-        style={{ background: "#080f1a", boxShadow: "0 6px 32px rgba(0,0,0,0.35)" }}
+        className="group relative rounded-[22px] overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-300 shadow-[0_6px_32px_rgba(0,0,0,0.35)] hover:shadow-[0_22px_55px_rgba(0,0,0,0.55)]"
+        style={{ background: "#080f1a" }}
       >
-        {/* Top accent bar */}
-        <div className="absolute inset-x-0 top-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(90deg, transparent, ${accent}90, transparent)` }} />
+        <CardMedia image={image} accent={accent} />
 
-        <div className={`grid grid-cols-1 sm:grid-cols-2 gap-0 ${isRtl ? "" : ""}`}>
-          {/* Left: Banner */}
+        {/* Top accent bar */}
+        <div className="absolute inset-x-0 top-0 z-10 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ background: `linear-gradient(90deg, transparent, ${accent}90, transparent)` }} />
+
+        <div className={`relative z-10 grid grid-cols-1 sm:grid-cols-2 gap-0 ${isRtl ? "" : ""}`}>
+          {/* Left: Banner (dedicated photo shows through when present) */}
           <div
             className="relative min-h-[200px] flex items-center justify-center overflow-hidden"
-            style={{ background: gradient }}
+            style={image ? undefined : { background: gradient }}
           >
-            <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 80% 80% at 50% 50%, ${accent}22 0%, transparent 70%)` }} />
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "32px 32px" }} />
+            {!image && (
+              <>
+                <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 80% 80% at 50% 50%, ${accent}22 0%, transparent 70%)` }} />
+                <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "32px 32px" }} />
+              </>
+            )}
 
             <div className="relative z-10 flex flex-col items-center gap-4">
               <motion.div
@@ -214,8 +258,9 @@ function FeaturedCard({ service, index, isRtl }: { service: Service; index: numb
           </div>
 
           {/* Right: Content */}
-          <div className={`p-7 flex flex-col justify-between ${isRtl ? "text-right" : ""}`}>
-            <div>
+          <div className={`relative p-7 flex flex-col justify-between ${isRtl ? "text-right" : ""}`}>
+            {image && <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-l rtl:bg-gradient-to-r from-[#060c14]/88 via-[#060c14]/55 to-[#060c14]/10" aria-hidden="true" />}
+            <div className="relative z-10">
               <h3 className="font-black text-white text-xl md:text-2xl leading-tight mb-2">{name}</h3>
               <p className="text-white/50 text-sm leading-relaxed mb-5">{desc}</p>
               <ul className="space-y-2.5 mb-6">
@@ -227,7 +272,7 @@ function FeaturedCard({ service, index, isRtl }: { service: Service; index: numb
                 ))}
               </ul>
             </div>
-            <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+            <div className={`relative z-10 flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
               <Link
                 href={`/services/${slug}`}
                 className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white transition-all hover:opacity-90 shadow-lg ${isRtl ? "flex-row-reverse" : ""}`}
@@ -260,6 +305,7 @@ function SpotlightCard({ service, isRtl }: { service: Service; isRtl: boolean })
   const name = isRtl ? service.nameAr : service.name;
   const desc = isRtl ? service.descriptionAr : service.description;
   const slug = meta?.slug ?? "";
+  const image = SERVICE_IMAGES[service.id];
 
   return (
     <motion.div
@@ -267,13 +313,15 @@ function SpotlightCard({ service, isRtl }: { service: Service; isRtl: boolean })
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] as [number,number,number,number] }}
-      className="relative rounded-3xl overflow-hidden border border-secondary/25 hover:border-secondary/40 transition-all duration-300"
-      style={{ background: "linear-gradient(135deg, rgba(214,40,40,0.07) 0%, rgba(10,35,66,0.55) 100%)" }}
+      className="group relative rounded-3xl overflow-hidden border border-secondary/25 hover:border-secondary/40 transition-all duration-300"
+      style={image ? { background: "#060c14" } : { background: "linear-gradient(135deg, rgba(214,40,40,0.07) 0%, rgba(10,35,66,0.55) 100%)" }}
     >
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 55% at 25% 40%, rgba(214,40,40,0.09) 0%, transparent 70%)" }} />
-      <div className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
+      <CardMedia image={image} accent="#D62828" />
 
-      <div className={`grid grid-cols-1 md:grid-cols-2 ${isRtl ? "" : ""}`}>
+      <div className="absolute inset-0 z-[1] pointer-events-none" style={{ background: "radial-gradient(ellipse 55% 55% at 25% 40%, rgba(214,40,40,0.09) 0%, transparent 70%)" }} />
+      <div className="absolute inset-x-0 top-0 z-[1] h-0.5 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
+
+      <div className={`relative z-10 grid grid-cols-1 md:grid-cols-2 ${isRtl ? "" : ""}`}>
         <div className={`p-8 md:p-12 ${isRtl ? "text-right" : ""}`}>
           <div className={`flex items-center gap-3 mb-6 ${isRtl ? "flex-row-reverse" : ""}`}>
             <div className="w-14 h-14 rounded-2xl bg-secondary/15 border border-secondary/30 flex items-center justify-center shrink-0">
