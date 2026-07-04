@@ -17,3 +17,4 @@
 - [Site schema locations & primary phone](schema-and-phone.md) — JSON-LD lives in 2 places (static in index.html + per-page in seo-config.ts); primary phone must match both and the visible site
 - [Asset image optimization](asset-image-optimization.md) — Vite `@assets` imports emit raw bytes (no auto-compress); pre-encode photo uploads to WebP (`magick`, not sharp) before importing
 - [RTL flex-row-reverse](rtl-flex-reverse.md) — isRtl flex-row-reverse under dir=rtl UN-mirrors rows; anchor absolute decorations (timeline lines) to the visual side; verify with AR screenshot
+- [Seamless marquee + RTL](marquee-seamless-rtl.md) — no flex gap on translateX marquee tracks (per-card margin instead) or the loop snaps; pin rows wrapper dir="ltr" under Arabic RTL

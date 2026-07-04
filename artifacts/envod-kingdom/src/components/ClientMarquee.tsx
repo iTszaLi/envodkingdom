@@ -3,24 +3,31 @@ import { useListClients } from "@workspace/api-client-react";
 import type { Client } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import { motion, useInView } from "framer-motion";
-import { CheckCircle2, Package, Building2, Award, Clock, Globe2 } from "lucide-react";
+import { CheckCircle2, Package, Building2, Award, Clock, Globe2, Flame, Radio, UtensilsCrossed, HeartPulse, Factory, Cog, HardHat, Briefcase, Truck, Sparkles, Trophy, Car, Plane, Landmark } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
 /* ─────────────────────────── Data ─────────────────────────── */
 const FALLBACK_CLIENTS: Client[] = [
-  { id: 1,  name: "Saudi Aramco",          industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 1,  isActive: true },
-  { id: 2,  name: "SABIC",                 industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 2,  isActive: true },
-  { id: 3,  name: "Sipchem",               industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 3,  isActive: true },
-  { id: 4,  name: "STC",                   industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 4,  isActive: true },
-  { id: 5,  name: "Almarai",               industry: "Food & Beverage",    logoUrl: null, website: null, sortOrder: 5,  isActive: true },
-  { id: 6,  name: "NADEC",                 industry: "Food & Beverage",    logoUrl: null, website: null, sortOrder: 6,  isActive: true },
-  { id: 7,  name: "Ma'aden",               industry: "Mining",             logoUrl: null, website: null, sortOrder: 7,  isActive: true },
-  { id: 8,  name: "Dr. Sulaiman Al Habib", industry: "Healthcare",         logoUrl: null, website: null, sortOrder: 8,  isActive: true },
-  { id: 9,  name: "Bupa Arabia",           industry: "Healthcare",         logoUrl: null, website: null, sortOrder: 9,  isActive: true },
-  { id: 10, name: "NEOM",                  industry: "Mega Projects",      logoUrl: null, website: null, sortOrder: 10, isActive: true },
-  { id: 11, name: "Qiddiya",               industry: "Mega Projects",      logoUrl: null, website: null, sortOrder: 11, isActive: true },
-  { id: 12, name: "Jarir Bookstore",        industry: "Retail",             logoUrl: null, website: null, sortOrder: 12, isActive: true },
-  { id: 13, name: "Saudi Electricity",      industry: "Energy",             logoUrl: null, website: null, sortOrder: 13, isActive: true },
-  { id: 14, name: "Olayan Group",           industry: "Conglomerate",       logoUrl: null, website: null, sortOrder: 14, isActive: true },
+  { id: 1,  name: "STC",                       industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 1,  isActive: true },
+  { id: 2,  name: "Saudi Aramco",              industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 2,  isActive: true },
+  { id: 3,  name: "DSV",                       industry: "Logistics",          logoUrl: null, website: null, sortOrder: 3,  isActive: true },
+  { id: 4,  name: "Katerra",                   industry: "Construction",       logoUrl: null, website: null, sortOrder: 4,  isActive: true },
+  { id: 5,  name: "Operation Medical Est.",    industry: "Healthcare",         logoUrl: null, website: null, sortOrder: 5,  isActive: true },
+  { id: 6,  name: "Olayan Group",              industry: "Conglomerate",       logoUrl: null, website: null, sortOrder: 6,  isActive: true },
+  { id: 7,  name: "Watania",                   industry: "Food & Beverage",    logoUrl: null, website: null, sortOrder: 7,  isActive: true },
+  { id: 8,  name: "DB Schenker",               industry: "Logistics",          logoUrl: null, website: null, sortOrder: 8,  isActive: true },
+  { id: 9,  name: "Porsche",                   industry: "Automotive",         logoUrl: null, website: null, sortOrder: 9,  isActive: true },
+  { id: 10, name: "AAF International",         industry: "Manufacturing",      logoUrl: null, website: null, sortOrder: 10, isActive: true },
+  { id: 11, name: "Mobily",                    industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 11, isActive: true },
+  { id: 12, name: "SABIC",                     industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 12, isActive: true },
+  { id: 13, name: "Golf Saudi",                industry: "Sports",             logoUrl: null, website: null, sortOrder: 13, isActive: true },
+  { id: 14, name: "Arabian Trade House",       industry: "Trading",            logoUrl: null, website: null, sortOrder: 14, isActive: true },
+  { id: 15, name: "Medical Solutions Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 15, isActive: true },
+  { id: 16, name: "The Boulevard Riyadh",      industry: "Entertainment",      logoUrl: null, website: null, sortOrder: 16, isActive: true },
+  { id: 17, name: "BMTC",                      industry: "Industrial",         logoUrl: null, website: null, sortOrder: 17, isActive: true },
+  { id: 18, name: "Saudi Gulf",                industry: "Aviation",           logoUrl: null, website: null, sortOrder: 18, isActive: true },
+  { id: 19, name: "Al Redwan Medical Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 19, isActive: true },
+  { id: 20, name: "Sulinda",                   industry: "Trading",            logoUrl: null, website: null, sortOrder: 20, isActive: true },
 ];
 
 /* ─────────────────────────── Palette ─────────────────────────── */
@@ -34,6 +41,15 @@ const PALETTE: Record<string, { accent: string; glow: string; tag: string; ring:
   "Retail":             { accent: "#84cc16", glow: "rgba(132,204,22,0.15)",  tag: "text-lime-400",    ring: "rgba(132,204,22,0.25)" },
   "Energy":             { accent: "#3b82f6", glow: "rgba(59,130,246,0.15)",  tag: "text-blue-400",    ring: "rgba(59,130,246,0.25)" },
   "Conglomerate":       { accent: "#8b5cf6", glow: "rgba(139,92,246,0.15)",  tag: "text-violet-400",  ring: "rgba(139,92,246,0.25)" },
+  "Logistics":          { accent: "#3b82f6", glow: "rgba(59,130,246,0.15)",  tag: "text-blue-400",    ring: "rgba(59,130,246,0.25)" },
+  "Construction":       { accent: "#f59e0b", glow: "rgba(245,158,11,0.15)",  tag: "text-amber-400",   ring: "rgba(245,158,11,0.25)" },
+  "Manufacturing":      { accent: "#38bdf8", glow: "rgba(56,189,248,0.15)",  tag: "text-sky-400",     ring: "rgba(56,189,248,0.25)" },
+  "Industrial":         { accent: "#eab308", glow: "rgba(234,179,8,0.15)",   tag: "text-yellow-400",  ring: "rgba(234,179,8,0.25)"  },
+  "Trading":            { accent: "#14b8a6", glow: "rgba(20,184,166,0.15)",  tag: "text-teal-400",    ring: "rgba(20,184,166,0.25)" },
+  "Entertainment":      { accent: "#ec4899", glow: "rgba(236,72,153,0.15)",  tag: "text-pink-400",    ring: "rgba(236,72,153,0.25)" },
+  "Sports":             { accent: "#84cc16", glow: "rgba(132,204,22,0.15)",  tag: "text-lime-400",    ring: "rgba(132,204,22,0.25)" },
+  "Automotive":         { accent: "#f43f5e", glow: "rgba(244,63,94,0.15)",   tag: "text-rose-400",    ring: "rgba(244,63,94,0.25)"  },
+  "Aviation":           { accent: "#06b6d4", glow: "rgba(6,182,212,0.15)",   tag: "text-cyan-400",    ring: "rgba(6,182,212,0.25)"  },
 };
 const DEFAULT_PALETTE = { accent: "#D62828", glow: "rgba(214,40,40,0.15)", tag: "text-secondary", ring: "rgba(214,40,40,0.25)" };
 
@@ -63,38 +79,45 @@ function AnimCounter({ to, suffix = "" }: { to: number; suffix?: string }) {
 }
 
 /* ─────────────────────────── Industry mark (no letter icon) ─────────────────────────── */
+const INDUSTRY_ICONS: Record<string, LucideIcon> = {
+  "Oil & Gas":          Flame,
+  "Telecommunications": Radio,
+  "Food & Beverage":    UtensilsCrossed,
+  "Healthcare":         HeartPulse,
+  "Conglomerate":       Building2,
+  "Manufacturing":      Factory,
+  "Industrial":         Cog,
+  "Construction":       HardHat,
+  "Trading":            Briefcase,
+  "Logistics":          Truck,
+  "Entertainment":      Sparkles,
+  "Sports":             Trophy,
+  "Automotive":         Car,
+  "Aviation":           Plane,
+  "Mega Projects":      Landmark,
+};
+
 function IndustryMark({ industry }: { industry: string | null | undefined }) {
   const p = getPalette(industry);
-  const shapes: Record<string, string> = {
-    "Oil & Gas":          "M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z",
-    "Telecommunications": "M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 20C7.59 20 4 16.41 4 12C4 7.59 7.59 4 12 4C16.41 4 20 7.59 20 12C20 16.41 16.41 20 12 20Z",
-    "Food & Beverage":    "M7 2v11h3v9l7-12h-4l4-8z",
-    "Mining":             "M12 2L2 19h20L12 2z",
-    "Healthcare":         "M12 2a10 10 0 100 20A10 10 0 0012 2zm1 14h-2v-4H7v-2h4V6h2v4h4v2h-4v4z",
-    "Mega Projects":      "M3 3h18v18H3V3zm2 2v14h14V5H5z",
-    "Retail":             "M19 6h-2c0-2.76-2.24-5-5-5S7 3.24 7 6H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-7-3c1.66 0 3 1.34 3 3H9c0-1.66 1.34-3 3-3z",
-    "Energy":             "M7 2v11h3v9l7-12h-4l4-8z",
-  };
-  const d = shapes[industry ?? ""] ?? "M12 2L2 19h20L12 2z";
+  const Icon = INDUSTRY_ICONS[industry ?? ""] ?? Package;
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill={p.accent} style={{ filter: `drop-shadow(0 0 4px ${p.glow})` }}>
-      <path d={d} />
-    </svg>
+    <Icon
+      size={17}
+      strokeWidth={2.2}
+      style={{ color: p.accent, filter: `drop-shadow(0 0 4px ${p.glow})` }}
+      aria-hidden="true"
+    />
   );
 }
 
 /* ─────────────────────────── Glass card ─────────────────────────── */
-function ClientCard({ client, paused }: { client: Client; paused: boolean }) {
+function ClientCard({ client }: { client: Client }) {
   const p = getPalette(client.industry);
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.02 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
-      className="flex-none relative group cursor-default select-none"
-      style={{
-        minWidth: 220,
-        animationPlayState: paused ? "paused" : "running",
-      }}
+      className="cm-card flex-none relative group cursor-default select-none min-w-[185px] sm:min-w-[220px] mr-3"
     >
       {/* Hover glow ring */}
       <div
@@ -152,13 +175,15 @@ function MarqueeTrack({ clients, reverse = false, paused }: { clients: Client[];
   return (
     <div className="flex overflow-hidden" style={{ WebkitMaskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)", maskImage: "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)" }}>
       <div
-        className="flex gap-3 shrink-0 will-change-transform"
+        className="flex shrink-0 will-change-transform"
         style={{
           animation: `cm-scroll ${duration}s linear infinite ${reverse ? "reverse" : ""}`,
           animationPlayState: paused ? "paused" : "running",
+          backfaceVisibility: "hidden",
+          transform: "translateZ(0)",
         }}
       >
-        {tripled.map((c, i) => <ClientCard key={`${c.id}-${i}`} client={c} paused={paused} />)}
+        {tripled.map((c, i) => <ClientCard key={`${c.id}-${i}`} client={c} />)}
       </div>
     </div>
   );
@@ -291,7 +316,10 @@ export function ClientMarquee() {
       </div>
 
       {/* ── Marquee rows ── */}
+      {/* dir="ltr" pins both tracks to the left edge under Arabic RTL — the rows
+          already scroll in both physical directions, so nothing is mirrored away. */}
       <div
+        dir="ltr"
         className="flex flex-col gap-3 py-2 relative z-10"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
@@ -341,8 +369,17 @@ export function ClientMarquee() {
 
       <style>{`
         @keyframes cm-scroll {
-          from { transform: translateX(0); }
-          to   { transform: translateX(-33.333%); }
+          from { transform: translateX(0) translateZ(0); }
+          to   { transform: translateX(-33.3333%) translateZ(0); }
+        }
+        .cm-card {
+          filter: saturate(0.55) brightness(0.92);
+          opacity: 0.88;
+          transition: filter 0.35s ease, opacity 0.35s ease;
+        }
+        .cm-card:hover {
+          filter: saturate(1) brightness(1);
+          opacity: 1;
         }
         @keyframes light-streak {
           0%   { transform: translateX(-100%); opacity: 0; }
