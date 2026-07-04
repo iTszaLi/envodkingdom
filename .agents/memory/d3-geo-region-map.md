@@ -23,3 +23,7 @@ projection.fitExtent([[pad,pad],[W-pad,H-pad]], REGION_BOUNDS as never);
 
 ## Map orientation vs RTL
 Pin the map canvas `dir="ltr"` even in Arabic/RTL — geography must not mirror. Let only the tooltips/labels follow `isRtl`.
+
+## Enterprise design intent (static-by-default)
+GlobalNetworkMap is intentionally an enterprise/Fortune-500 look (Maersk/DHL/DP World). Do NOT re-add gaming/marketing motion: no flying plane/ship emoji, route particles, marker ping/float, sweeping beams, floating blobs, ambient particles, or zoom-on-click. Rule: routes are thin + static at rest; they brighten + do ONE slow pulse only while the connected office is hovered/selected. Markers are plain dots (HQ red+label, branches white). A side info panel (crossfades, defaults to Riyadh) shows each office's Nearest Logistics Gateway(s) + Services. Office cards hover → highlight that office on the map.
+**Why:** user explicitly asked for a minimal, professional redesign and rejected the prior animated version.
