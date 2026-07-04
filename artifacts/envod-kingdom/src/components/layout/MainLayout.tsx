@@ -41,6 +41,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
   const navLinks = [
     { href: "/", en: "Home", ar: "الرئيسية" },
     { href: "/services", en: "Services", ar: "خدماتنا" },
+    { href: "/industries", en: "Industries", ar: "القطاعات" },
     { href: "/track", en: "Track", ar: "تتبع الشحنة" },
     { href: "/about", en: "About", ar: "عن الشركة" },
     { href: "/gallery", en: "Gallery", ar: "المعرض" },
@@ -421,11 +422,13 @@ export function Footer() {
   ];
 
   const industries: [string, string][] = [
-    [t("Oil & Gas", "النفط والغاز"), "/services"],
-    [t("Healthcare", "الرعاية الصحية"), "/services"],
-    [t("Construction", "البناء والإنشاء"), "/services"],
-    [t("Food & Beverage", "الغذاء والمشروبات"), "/services"],
-    [t("Automotive", "السيارات"), "/services"],
+    [t("Automotive", "السيارات"), "/industries/automotive-logistics"],
+    [t("Construction", "البناء والإنشاء"), "/industries/construction-logistics"],
+    [t("Retail", "تجارة التجزئة"), "/industries/retail-logistics"],
+    [t("Electronics", "الإلكترونيات"), "/industries/electronics-logistics"],
+    [t("Government", "القطاع الحكومي"), "/industries/government-logistics"],
+    [t("Vision 2030", "رؤية 2030"), "/vision-2030"],
+    [t("All Industries", "جميع القطاعات"), "/industries"],
   ];
 
   const quickLinks: [string, string][] = [

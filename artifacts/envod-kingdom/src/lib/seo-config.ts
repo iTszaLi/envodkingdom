@@ -1,5 +1,7 @@
 import type { SeoConfig } from "./seo";
 import { SERVICE_CATALOG, SERVICE_META, SLUG_TO_ID, ID_TO_SLUG } from "./service-data";
+import { INDUSTRY_META, INDUSTRY_BY_SLUG } from "./industry-data";
+import { VISION_SEO, VISION_FAQ } from "./vision-data";
 
 /** Canonical production origin. Single source of truth for absolute URLs. */
 export const SITE_URL = "https://www.envodkingdom.net";
@@ -90,9 +92,12 @@ export const CONTENT_ROUTES: string[] = [
   "/about",
   "/gallery",
   "/contact",
+  "/industries",
+  "/vision-2030",
   ...SERVICE_CATALOG.map((s) => `/services/${ID_TO_SLUG[s.id]}`).filter(
     (p) => !p.endsWith("/undefined"),
   ),
+  ...INDUSTRY_META.map((i) => `/industries/${i.slug}`),
 ];
 
 const STATIC: Record<string, SeoConfig> = {
@@ -186,6 +191,63 @@ const STATIC: Record<string, SeoConfig> = {
       ]),
     ],
   },
+  "/industries": {
+    title: "Industries We Serve — Logistics by Sector in Saudi Arabia | ENVOD KINGDOM",
+    description:
+      "Industry-specific logistics across Saudi Arabia — automotive, construction, retail, fashion, electronics, aerospace, hospitality, furniture, chemical, telecom, and government-sector supply chains.",
+    canonicalPath: "/industries",
+    image: OG_IMAGE,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        name: "Industries Served by ENVOD KINGDOM",
+        itemListElement: INDUSTRY_META.map((ind, i) => ({
+          "@type": "Service",
+          position: i + 1,
+          name: ind.nameEn,
+          description: ind.shortEn,
+          serviceType: ind.nameEn,
+          areaServed: "Saudi Arabia",
+          provider: { "@id": ORG_ID },
+          url: toAbsolute(`/industries/${ind.slug}`),
+        })),
+      },
+      breadcrumb([
+        { name: "Home", path: "/" },
+        { name: "Industries", path: "/industries" },
+      ]),
+    ],
+  },
+  "/vision-2030": {
+    title: VISION_SEO.title,
+    description: VISION_SEO.description,
+    canonicalPath: "/vision-2030",
+    image: OG_IMAGE,
+    jsonLd: [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "Vision 2030 Logistics Support — ENVOD KINGDOM",
+        url: toAbsolute("/vision-2030"),
+        description: VISION_SEO.description,
+        isPartOf: { "@id": `${SITE_URL}/#website` },
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: VISION_FAQ.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      breadcrumb([
+        { name: "Home", path: "/" },
+        { name: "Vision 2030", path: "/vision-2030" },
+      ]),
+    ],
+  },
   // Client-only route (not prerendered / not in the sitemap) — still gets a
   // proper self-referential title/canonical for shared links and JS crawlers.
   "/track": {
@@ -264,6 +326,49 @@ function serviceSeo(id: number): SeoConfig {
   };
 }
 
+function industrySeo(slug: string): SeoConfig {
+  const ind = INDUSTRY_BY_SLUG[slug]!;
+  const path = `/industries/${slug}`;
+
+  const jsonLd: Array<Record<string, unknown>> = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: ind.nameEn,
+      description: ind.seoDescription,
+      serviceType: ind.nameEn,
+      areaServed: "Saudi Arabia",
+      provider: { "@id": ORG_ID },
+      url: toAbsolute(path),
+    },
+    breadcrumb([
+      { name: "Home", path: "/" },
+      { name: "Industries", path: "/industries" },
+      { name: ind.nameEn, path },
+    ]),
+  ];
+
+  if (ind.faq.length) {
+    jsonLd.push({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: ind.faq.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    });
+  }
+
+  return {
+    title: ind.seoTitle,
+    description: ind.seoDescription,
+    canonicalPath: path,
+    image: OG_IMAGE,
+    jsonLd,
+  };
+}
+
 /** Resolve the SEO config for any route. Falls back to the home config. */
 export function getSeoForPath(rawPath: string): SeoConfig {
   const path = normalizeRoutePath(rawPath);
@@ -272,6 +377,10 @@ export function getSeoForPath(rawPath: string): SeoConfig {
   if (m) {
     const id = SLUG_TO_ID[m[1]];
     if (id) return serviceSeo(id);
+  }
+  const mi = path.match(/^\/industries\/([^/]+)$/);
+  if (mi && INDUSTRY_BY_SLUG[mi[1]]) {
+    return industrySeo(mi[1]);
   }
   return defaultSeo(path);
 }

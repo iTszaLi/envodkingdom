@@ -15,6 +15,9 @@ import Contact from "@/pages/contact";
 import About from "@/pages/about";
 import Gallery from "@/pages/gallery/index";
 import ServiceDetail from "@/pages/service-detail";
+import Industries from "@/pages/industries";
+import IndustryDetail from "@/pages/industry-detail";
+import Vision2030 from "@/pages/vision-2030";
 
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin/dashboard";
@@ -68,6 +71,15 @@ function Router() {
       </Route>
       <Route path="/services/:slug">
         <MainLayout><ServiceDetail /></MainLayout>
+      </Route>
+      <Route path="/industries">
+        <MainLayout><Industries /></MainLayout>
+      </Route>
+      <Route path="/industries/:slug">
+        <MainLayout><IndustryDetail /></MainLayout>
+      </Route>
+      <Route path="/vision-2030">
+        <MainLayout><Vision2030 /></MainLayout>
       </Route>
       <Route path="/about">
         <MainLayout><About /></MainLayout>

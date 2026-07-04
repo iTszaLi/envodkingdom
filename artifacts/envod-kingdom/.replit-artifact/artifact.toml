@@ -142,6 +142,58 @@ from = "/services/cross-trade-shipping"
 to = "/services/cross-trade-shipping/index.html"
 
 [[services.production.rewrites]]
+from = "/industries"
+to = "/industries/index.html"
+
+[[services.production.rewrites]]
+from = "/vision-2030"
+to = "/vision-2030/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/automotive-logistics"
+to = "/industries/automotive-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/construction-logistics"
+to = "/industries/construction-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/retail-logistics"
+to = "/industries/retail-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/fashion-logistics"
+to = "/industries/fashion-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/electronics-logistics"
+to = "/industries/electronics-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/aerospace-logistics"
+to = "/industries/aerospace-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/hospitality-logistics"
+to = "/industries/hospitality-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/furniture-logistics"
+to = "/industries/furniture-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/chemical-logistics"
+to = "/industries/chemical-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/telecommunications-logistics"
+to = "/industries/telecommunications-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/industries/government-logistics"
+to = "/industries/government-logistics/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/spa.html"
 

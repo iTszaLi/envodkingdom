@@ -16,6 +16,7 @@ interface Industry {
   descAr: string;
   tagEn?: string;
   tagAr?: string;
+  href?: string;
 }
 
 const INDUSTRIES: Industry[] = [
@@ -71,6 +72,7 @@ const INDUSTRIES: Industry[] = [
     ar: "السيارات",
     descEn: "RoRo vehicle shipping, spare parts logistics, automotive plant supply and dealer deliveries.",
     descAr: "شحن مركبات RoRo ولوجستيات قطع الغيار وتوريد مصانع السيارات.",
+    href: "/industries/automotive-logistics",
   },
   {
     icon: Building2,
@@ -80,6 +82,7 @@ const INDUSTRIES: Industry[] = [
     ar: "البناء والإنشاء",
     descEn: "Steel, cement, machinery, Vision 2030 project supplies and oversized construction equipment movement.",
     descAr: "الصلب والإسمنت والآلات وإمدادات مشاريع رؤية 2030 والمعدات الضخمة.",
+    href: "/industries/construction-logistics",
   },
   {
     icon: Gem,
@@ -98,6 +101,7 @@ const INDUSTRIES: Industry[] = [
     ar: "تجارة التجزئة",
     descEn: "LCL consolidation, distribution center replenishment, retail import customs and last-mile delivery.",
     descAr: "تجميع LCL وتجديد مراكز التوزيع وتخليص استيراد التجزئة والتوصيل الأخير.",
+    href: "/industries/retail-logistics",
   },
   {
     icon: Landmark,
@@ -212,6 +216,8 @@ export function IndustriesSection() {
             const name   = isRtl ? ind.ar    : ind.en;
             const desc   = isRtl ? ind.descAr : ind.descEn;
             const tag    = isRtl ? ind.tagAr  : ind.tagEn;
+            const CardTag: React.ElementType = ind.href ? Link : "div";
+            const cardProps = ind.href ? { href: ind.href } : {};
 
             return (
               <motion.div
@@ -221,9 +227,10 @@ export function IndustriesSection() {
                 transition={{ type: "spring", stiffness: 280, damping: 20 }}
                 className="group relative"
               >
-                <div
+                <CardTag
+                  {...cardProps}
                   className={`
-                    relative flex flex-col items-center text-center p-5 rounded-2xl cursor-default
+                    relative flex flex-col items-center text-center p-5 rounded-2xl ${ind.href ? "cursor-pointer" : "cursor-default"}
                     bg-white border border-[#E2E8F0] hover:border-secondary/30
                     shadow-sm hover:shadow-md
                     transition-all duration-300 h-full
@@ -253,7 +260,7 @@ export function IndustriesSection() {
                   <p className="text-[10px] leading-relaxed transition-colors duration-300" style={{ color: "#94A3B8" }}>
                     {desc}
                   </p>
-                </div>
+                </CardTag>
               </motion.div>
             );
           })}
