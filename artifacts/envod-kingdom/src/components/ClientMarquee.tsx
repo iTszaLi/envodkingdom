@@ -3,8 +3,53 @@ import { useListClients } from "@workspace/api-client-react";
 import type { Client } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import { motion, useInView } from "framer-motion";
-import { CheckCircle2, Package, Building2, Award, Clock, Globe2, Flame, Radio, UtensilsCrossed, HeartPulse, Factory, Cog, HardHat, Briefcase, Truck, Sparkles, Trophy, Car, Plane, Landmark } from "lucide-react";
+import { CheckCircle2, Package, Building2, Award, Clock, Globe2, Flame, Radio, UtensilsCrossed, HeartPulse, Factory, Cog, HardHat, Briefcase, Truck, Sparkles, Trophy, Car, Plane, Landmark, Store } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
+
+import stcLogo from "@assets/logo_stc.webp";
+import aramcoLogo from "@assets/logo_aramco.webp";
+import dsvLogo from "@assets/logo_dsv.webp";
+import katerraLogo from "@assets/logo_katerra.webp";
+import coopMedicalLogo from "@assets/logo_coop_medical.webp";
+import olayanLogo from "@assets/logo_olayan.webp";
+import wataniaLogo from "@assets/logo_watania.webp";
+import schenkerLogo from "@assets/logo_schenker.webp";
+import porscheLogo from "@assets/logo_porsche.webp";
+import aafLogo from "@assets/logo_aaf.webp";
+import mobilyLogo from "@assets/logo_mobily.webp";
+import sabicLogo from "@assets/logo_sabic.webp";
+import golfSaudiLogo from "@assets/logo_golfsaudi.webp";
+import athLogo from "@assets/logo_ath.webp";
+import mssLogo from "@assets/logo_mss.webp";
+import boulevardLogo from "@assets/logo_boulevard.webp";
+import bmtcLogo from "@assets/logo_bmtc.webp";
+import alredwanLogo from "@assets/logo_alredwan.webp";
+import sulindaLogo from "@assets/logo_sulinda.webp";
+import cityflowerLogo from "@assets/logo_cityflower.webp";
+
+/* ─────────────────────────── Client logos (keyed by client name) ─────────────────────────── */
+const CLIENT_LOGOS: Record<string, string> = {
+  "STC":                        stcLogo,
+  "Saudi Aramco":               aramcoLogo,
+  "DSV":                        dsvLogo,
+  "Katerra":                    katerraLogo,
+  "Operation Medical Est.":     coopMedicalLogo,
+  "Olayan Group":               olayanLogo,
+  "Watania":                    wataniaLogo,
+  "DB Schenker":                schenkerLogo,
+  "Porsche":                    porscheLogo,
+  "AAF International":          aafLogo,
+  "Mobily":                     mobilyLogo,
+  "SABIC":                      sabicLogo,
+  "Golf Saudi":                 golfSaudiLogo,
+  "Arabian Trade House":        athLogo,
+  "Medical Solutions Services": mssLogo,
+  "The Boulevard Riyadh":       boulevardLogo,
+  "BMTC":                       bmtcLogo,
+  "Al Redwan Medical Services": alredwanLogo,
+  "Sulinda":                    sulindaLogo,
+  "City Flower":                cityflowerLogo,
+};
 
 /* ─────────────────────────── Data ─────────────────────────── */
 const FALLBACK_CLIENTS: Client[] = [
@@ -28,6 +73,7 @@ const FALLBACK_CLIENTS: Client[] = [
   { id: 18, name: "Saudi Gulf",                industry: "Aviation",           logoUrl: null, website: null, sortOrder: 18, isActive: true },
   { id: 19, name: "Al Redwan Medical Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 19, isActive: true },
   { id: 20, name: "Sulinda",                   industry: "Trading",            logoUrl: null, website: null, sortOrder: 20, isActive: true },
+  { id: 21, name: "City Flower",               industry: "Retail",             logoUrl: null, website: null, sortOrder: 21, isActive: true },
 ];
 
 /* ─────────────────────────── Palette ─────────────────────────── */
@@ -95,6 +141,7 @@ const INDUSTRY_ICONS: Record<string, LucideIcon> = {
   "Automotive":         Car,
   "Aviation":           Plane,
   "Mega Projects":      Landmark,
+  "Retail":             Store,
 };
 
 function IndustryMark({ industry }: { industry: string | null | undefined }) {
@@ -113,6 +160,7 @@ function IndustryMark({ industry }: { industry: string | null | undefined }) {
 /* ─────────────────────────── Glass card ─────────────────────────── */
 function ClientCard({ client }: { client: Client }) {
   const p = getPalette(client.industry);
+  const logo = client.logoUrl || CLIENT_LOGOS[client.name];
   return (
     <motion.div
       whileHover={{ y: -4, scale: 1.02 }}
@@ -144,13 +192,27 @@ function ClientCard({ client }: { client: Client }) {
           (e.currentTarget as HTMLElement).style.boxShadow = "none";
         }}
       >
-        {/* Industry icon */}
-        <div
-          className="flex-none w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
-          style={{ background: `${p.glow}`, border: `1px solid ${p.ring}` }}
-        >
-          <IndustryMark industry={client.industry} />
-        </div>
+        {/* Logo tile (falls back to industry icon) */}
+        {logo ? (
+          <div
+            className="flex-none w-[62px] h-11 rounded-lg bg-white flex items-center justify-center px-1.5 transition-transform duration-300 group-hover:scale-105"
+            style={{ border: `1px solid ${p.ring}` }}
+          >
+            <img
+              src={logo}
+              alt={client.name}
+              loading="lazy"
+              className="max-h-8 max-w-full object-contain"
+            />
+          </div>
+        ) : (
+          <div
+            className="flex-none w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+            style={{ background: `${p.glow}`, border: `1px solid ${p.ring}` }}
+          >
+            <IndustryMark industry={client.industry} />
+          </div>
+        )}
 
         {/* Text */}
         <div className="min-w-0">
