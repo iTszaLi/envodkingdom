@@ -1,3 +1,5 @@
+import type { Service } from "@workspace/api-client-react";
+
 export interface SubService {
   name: string;
   nameAr: string;
@@ -715,6 +717,37 @@ export const SERVICE_META: Record<number, ServiceMeta> = {
 export const SLUG_TO_ID: Record<string, number> = Object.fromEntries(
   Object.values(SERVICE_META).map((m) => [m.slug, m.id])
 );
+
+export const ID_TO_SLUG: Record<number, string> = Object.fromEntries(
+  Object.values(SERVICE_META).map((m) => [m.id, m.slug])
+);
+
+/**
+ * Local snapshot of the service catalog (mirrors the DB `services` table).
+ * Used as the SSR/prerender source and as the first-render fallback before the
+ * API resolves, so content pages render full text for crawlers. The live API
+ * (`useListServices`) overrides this after hydration when available.
+ */
+export const SERVICE_CATALOG: Service[] = [
+  { id: 1, name: "Ocean Freight", nameAr: "الشحن البحري", description: "FCL and LCL sea freight solutions connecting Saudi Arabia to all major global ports.", descriptionAr: "حلول الشحن البحري FCL وLCL تربط المملكة العربية السعودية بجميع الموانئ العالمية الرئيسية.", icon: "Ship", category: "core", sortOrder: 1, isActive: true },
+  { id: 2, name: "Air Freight", nameAr: "الشحن الجوي", description: "Expedited air cargo services connecting Saudi Arabia to 50+ countries with guaranteed transit times.", descriptionAr: "خدمات شحن جوي سريع تربط المملكة بأكثر من 50 دولة بأوقات عبور مضمونة.", icon: "Plane", category: "core", sortOrder: 2, isActive: true },
+  { id: 3, name: "GCC Transportation", nameAr: "النقل الخليجي", description: "Road freight across all GCC countries with FTL, LTL and dedicated fleet solutions.", descriptionAr: "شحن بري عبر جميع دول الخليج بحمولات كاملة وجزئية وأساطيل مخصصة.", icon: "Truck", category: "core", sortOrder: 3, isActive: true },
+  { id: 4, name: "Customs Clearance", nameAr: "التخليص الجمركي", description: "Expert Saudi customs clearance with 24-hour guarantee, SABER, SFDA, and ATA Carnet support.", descriptionAr: "تخليص جمركي سعودي خبير بضمان 24 ساعة ودعم سابر وهيئة الغذاء والدواء وكارنيه ATA.", icon: "ShieldCheck", category: "core", sortOrder: 4, isActive: true },
+  { id: 5, name: "Warehousing & Distribution", nameAr: "التخزين والتوزيع", description: "Bonded warehousing with inventory management, pick & pack, and temperature-controlled zones.", descriptionAr: "مستودعات جمركية مع إدارة المخزون والتجميع والتغليف ومناطق مبردة.", icon: "Warehouse", category: "core", sortOrder: 5, isActive: true },
+  { id: 6, name: "Freight Forwarding", nameAr: "الشحن المتكامل", description: "End-to-end freight forwarding with multi-modal solutions and full documentation handling.", descriptionAr: "شحن متكامل من البداية للنهاية بحلول متعددة الوسائط ومعالجة الوثائق الكاملة.", icon: "FileCheck", category: "core", sortOrder: 6, isActive: true },
+  { id: 7, name: "Supply Chain Management", nameAr: "إدارة سلسلة التوريد", description: "Comprehensive supply chain optimization with vendor management, last-mile delivery and ERP integration.", descriptionAr: "تحسين شامل لسلسلة التوريد مع إدارة الموردين والتوصيل الأخير وتكامل ERP.", icon: "GitBranch", category: "core", sortOrder: 7, isActive: true },
+  { id: 8, name: "Project Cargo Logistics", nameAr: "لوجستيات بضائع المشاريع", description: "Handling oversized and complex cargo movements for oil & gas, industrial and infrastructure projects.", descriptionAr: "مناولة الشحنات الضخمة والمعقدة لمشاريع النفط والغاز والصناعة والبنية التحتية.", icon: "Package", category: "specialized", sortOrder: 8, isActive: true },
+  { id: 9, name: "House Moving & Relocation", nameAr: "نقل المنازل والانتقال", description: "Residential and corporate relocation services with full packing, customs and door-to-door delivery.", descriptionAr: "خدمات النقل السكني والمؤسسي مع التغليف الكامل والتخليص الجمركي والتسليم من باب لباب.", icon: "MapPin", category: "specialized", sortOrder: 9, isActive: true },
+  { id: 10, name: "E-commerce Logistics", nameAr: "لوجستيات التجارة الإلكترونية", description: "Last-mile delivery, fulfillment centers, returns management and e-commerce platform integration.", descriptionAr: "توصيل المرحلة الأخيرة ومراكز الوفاء وإدارة المرتجعات وتكامل منصات التجارة الإلكترونية.", icon: "ShoppingCart", category: "specialized", sortOrder: 10, isActive: true },
+  { id: 11, name: "Exhibition & Event Logistics", nameAr: "لوجستيات المعارض والفعاليات", description: "Specialized transportation for exhibitions, trade shows and major international events with ATA Carnet support.", descriptionAr: "نقل متخصص للمعارض والمؤتمرات والفعاليات الدولية مع دعم كارنيه ATA.", icon: "Star", category: "specialized", sortOrder: 11, isActive: true },
+  { id: 12, name: "Medical & Pharma Logistics", nameAr: "اللوجستيات الطبية والصيدلانية", description: "Cold chain management for pharmaceuticals with SFDA-cleared shipments and hospital delivery.", descriptionAr: "إدارة سلسلة التبريد للأدوية مع شحنات مخلصة من هيئة الغذاء والدواء وتوصيل للمستشفيات.", icon: "Heart", category: "specialized", sortOrder: 12, isActive: true },
+  { id: 13, name: "Food & FMCG Logistics", nameAr: "لوجستيات الغذاء والسلع الاستهلاكية", description: "Temperature-controlled food logistics with SFDA clearance, halal certification and supermarket distribution.", descriptionAr: "لوجستيات غذائية بدرجات حرارة مضبوطة مع تخليص هيئة الغذاء والدواء وشهادة الحلال والتوزيع.", icon: "UtensilsCrossed", category: "specialized", sortOrder: 13, isActive: true },
+  { id: 14, name: "Pet & Animal Import", nameAr: "استيراد الحيوانات الأليفة", description: "SFDA veterinary import, live animal transport with health certificates and quarantine coordination.", descriptionAr: "استيراد بيطري من هيئة الغذاء والدواء ونقل الحيوانات الحية مع شهادات صحة وتنسيق الحجر الصحي.", icon: "PawPrint", category: "specialized", sortOrder: 14, isActive: true },
+  { id: 15, name: "Breakbulk Shipping", nameAr: "الشحن المنفصل (بريك بالك)", description: "Non-containerized cargo solutions for heavy machinery, steel structures, industrial equipment and construction materials. Port-to-port breakbulk logistics with full documentation.", descriptionAr: "حلول شحن البضائع غير الحاوية للآلات الثقيلة والهياكل الفولاذية والمعدات الصناعية ومواد البناء. لوجستيات بريك بالك من ميناء إلى ميناء مع توثيق كامل.", icon: "Anchor", category: "specialized", sortOrder: 15, isActive: true },
+  { id: 16, name: "Dangerous Goods (DG Cargo)", nameAr: "البضائع الخطرة (شحن DG)", description: "IMO & IATA compliant transportation of hazardous chemicals, flammable goods and temperature-sensitive dangerous goods. Certified DG handling with safe packaging and documentation.", descriptionAr: "نقل متوافق مع IMO وIATA للمواد الكيميائية الخطرة والسلع القابلة للاشتعال والبضائع الخطرة الحساسة للحرارة. مناولة DG معتمدة مع التغليف الآمن والتوثيق.", icon: "AlertTriangle", category: "specialized", sortOrder: 16, isActive: true },
+  { id: 17, name: "Oversized / Out-of-Gauge (OOG) Cargo", nameAr: "البضائع الضخمة وخارج القياس (OOG)", description: "Heavy lift and oversized cargo specialists — wind turbine components, transformers, industrial project cargo. Route planning, crane & rigging services and specialized trailers.", descriptionAr: "متخصصون في رفع وشحن البضائع الضخمة — مكونات توربينات الرياح والمحولات وبضائع المشاريع الصناعية. تخطيط المسارات وخدمات الرافعات والمقطورات المتخصصة.", icon: "Maximize2", category: "specialized", sortOrder: 17, isActive: true },
+  { id: 18, name: "RoRo Shipping", nameAr: "الشحن الدحرجي (رورو)", description: "Roll-on/roll-off shipping for vehicles, machinery, and wheeled cargo — direct port access at major Saudi ports.", descriptionAr: "خدمة الشحن الدحرجي للسيارات والآلات والبضائع ذات العجلات — وصول مباشر للموانئ السعودية الرئيسية.", icon: "Car", category: "specialized", sortOrder: 18, isActive: true },
+];
 
 export function buildMailto(serviceName: string, subServiceName: string): string {
   const subject = encodeURIComponent(`Inquiry: ${serviceName} — ${subServiceName}`);

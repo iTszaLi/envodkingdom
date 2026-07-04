@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { LanguageProvider } from "@/lib/language-context";
 import { MainLayout } from "@/components/layout/MainLayout";
-import { initScrollEngine, destroyScrollEngine, scrollToTop } from "@/lib/scroll-engine";
+import { SeoManager } from "@/components/SeoManager";
 
 import Home from "@/pages/home";
 import Track from "@/pages/track";
@@ -27,7 +27,13 @@ const queryClient = new QueryClient();
 function ScrollToTop() {
   const [location] = useLocation();
   useEffect(() => {
-    scrollToTop(true);
+    let cancelled = false;
+    void import("@/lib/scroll-engine").then((m) => {
+      if (!cancelled) m.scrollToTop(true);
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [location]);
   return null;
 }
@@ -81,11 +87,15 @@ function Router() {
   );
 }
 
-function App() {
+function App({ ssrPath }: { ssrPath?: string }) {
   useEffect(() => {
-    const lenis = initScrollEngine();
+    let destroy: (() => void) | undefined;
+    void import("@/lib/scroll-engine").then((m) => {
+      m.initScrollEngine();
+      destroy = m.destroyScrollEngine;
+    });
     return () => {
-      destroyScrollEngine();
+      destroy?.();
     };
   }, []);
 
@@ -93,8 +103,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <LanguageProvider>
         <TooltipProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")} ssrPath={ssrPath}>
             <ScrollToTop />
+            <SeoManager />
             <Router />
           </WouterRouter>
           <Toaster />

@@ -22,9 +22,104 @@ build = [ "pnpm", "--filter", "@workspace/envod-kingdom", "run", "build" ]
 publicDir = "artifacts/envod-kingdom/dist/public"
 serve = "static"
 
+# Prerendered (SSG) content routes: clean URL -> directory index.html.
+# Replit static serving does NOT auto-resolve /foo -> /foo/index.html, so each
+# prerendered route needs an explicit rewrite. Physical files (assets, images,
+# media, logos) are served directly via shadowing. Rules are processed in order,
+# so these exact routes MUST precede the SPA catch-all below.
+# NOTE: keep this list in sync with CONTENT_ROUTES in src/lib/seo-config.ts.
+
+[[services.production.rewrites]]
+from = "/services"
+to = "/services/index.html"
+
+[[services.production.rewrites]]
+from = "/about"
+to = "/about/index.html"
+
+[[services.production.rewrites]]
+from = "/gallery"
+to = "/gallery/index.html"
+
+[[services.production.rewrites]]
+from = "/contact"
+to = "/contact/index.html"
+
+[[services.production.rewrites]]
+from = "/services/air-freight"
+to = "/services/air-freight/index.html"
+
+[[services.production.rewrites]]
+from = "/services/breakbulk-shipping"
+to = "/services/breakbulk-shipping/index.html"
+
+[[services.production.rewrites]]
+from = "/services/customs-clearance"
+to = "/services/customs-clearance/index.html"
+
+[[services.production.rewrites]]
+from = "/services/dangerous-goods"
+to = "/services/dangerous-goods/index.html"
+
+[[services.production.rewrites]]
+from = "/services/ecommerce-logistics"
+to = "/services/ecommerce-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/services/exhibition-logistics"
+to = "/services/exhibition-logistics/index.html"
+
+[[services.production.rewrites]]
+from = "/services/food-fmcg"
+to = "/services/food-fmcg/index.html"
+
+[[services.production.rewrites]]
+from = "/services/freight-forwarding"
+to = "/services/freight-forwarding/index.html"
+
+[[services.production.rewrites]]
+from = "/services/gcc-transportation"
+to = "/services/gcc-transportation/index.html"
+
+[[services.production.rewrites]]
+from = "/services/medical-pharma"
+to = "/services/medical-pharma/index.html"
+
+[[services.production.rewrites]]
+from = "/services/ocean-freight"
+to = "/services/ocean-freight/index.html"
+
+[[services.production.rewrites]]
+from = "/services/oog-cargo"
+to = "/services/oog-cargo/index.html"
+
+[[services.production.rewrites]]
+from = "/services/pet-animal-import"
+to = "/services/pet-animal-import/index.html"
+
+[[services.production.rewrites]]
+from = "/services/project-cargo"
+to = "/services/project-cargo/index.html"
+
+[[services.production.rewrites]]
+from = "/services/relocation"
+to = "/services/relocation/index.html"
+
+[[services.production.rewrites]]
+from = "/services/roro-shipping"
+to = "/services/roro-shipping/index.html"
+
+[[services.production.rewrites]]
+from = "/services/supply-chain"
+to = "/services/supply-chain/index.html"
+
+[[services.production.rewrites]]
+from = "/services/warehousing"
+to = "/services/warehousing/index.html"
+
 [[services.production.rewrites]]
 from = "/*"
-to = "/index.html"
+to = "/spa.html"
 
 [services.env]
 PORT = "25184"

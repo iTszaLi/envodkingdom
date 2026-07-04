@@ -4,9 +4,9 @@ description: Architecture decisions, sharp edges, and conventions for the ENVOD 
 ---
 
 ## Auth
-- SHA256 password hashing with literal salt string `"envod_salt_2024"` — NOT bcrypt
+- SHA256 password hashing with a hardcoded (non-random) salt string — NOT bcrypt
 - Session stored via express-session; `adminId` written to `req.session`
-- Default admin: username `admin`, password `Envod@2024!`
+- Admin credentials live in `replit.md` (never store credentials in memory files)
 
 ## DB quirks
 - `weight` column is `numeric()` in Drizzle — PostgreSQL returns it as a string. Zod infers it as `number`. Always coerce: `String(parsed.data.weight)` before inserting/updating shipments.

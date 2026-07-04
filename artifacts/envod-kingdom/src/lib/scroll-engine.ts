@@ -2,12 +2,17 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 
-gsap.registerPlugin(ScrollTrigger);
-
 let lenis: Lenis | null = null;
+let pluginRegistered = false;
+let tickerCallback: ((time: number) => void) | null = null;
 
 export function initScrollEngine() {
   if (lenis) return lenis;
+
+  if (!pluginRegistered) {
+    gsap.registerPlugin(ScrollTrigger);
+    pluginRegistered = true;
+  }
 
   lenis = new Lenis({
     lerp: 0.08,
@@ -16,9 +21,10 @@ export function initScrollEngine() {
 
   lenis.on("scroll", ScrollTrigger.update);
 
-  gsap.ticker.add((time) => {
-    lenis!.raf(time * 1000);
-  });
+  tickerCallback = (time: number) => {
+    lenis?.raf(time * 1000);
+  };
+  gsap.ticker.add(tickerCallback);
 
   gsap.ticker.lagSmoothing(0);
 
@@ -26,6 +32,10 @@ export function initScrollEngine() {
 }
 
 export function destroyScrollEngine() {
+  if (tickerCallback) {
+    gsap.ticker.remove(tickerCallback);
+    tickerCallback = null;
+  }
   if (lenis) {
     lenis.destroy();
     lenis = null;

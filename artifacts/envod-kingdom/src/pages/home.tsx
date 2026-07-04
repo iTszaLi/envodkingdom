@@ -17,7 +17,6 @@ import { IndustriesSection } from "@/components/IndustriesSection";
 import { TrustSection } from "@/components/TrustSection";
 import { PremiumCTA } from "@/components/PremiumCTA";
 import { FAQSection } from "@/components/FAQSection";
-import { SEOContent } from "@/components/SEOContent";
 
 const craneChapters: AnimChapter[] = [
   {
@@ -90,6 +89,15 @@ export default function Home() {
 
   return (
     <div className="w-full">
+
+      {/* Primary page heading — visually handled by the cinematic hero below,
+          exposed here for crawlers and screen readers (single H1). */}
+      <h1 className="sr-only">
+        {t(
+          "ENVOD KINGDOM Shipping Services LLC — Logistics, Customs Clearance & Freight Forwarding in Saudi Arabia and the GCC",
+          "إنفود كينغدوم لخدمات الشحن — الخدمات اللوجستية والتخليص الجمركي والشحن في المملكة العربية السعودية ودول الخليج",
+        )}
+      </h1>
 
       {/* ── Scroll-Driven Animation Sections (Autoplay) ── */}
       <ScrollAnimSection
@@ -234,8 +242,6 @@ export default function Home() {
       {/* ── FAQ ── */}
       <FAQSection />
 
-      {/* ── SEO Content (semantic, indexable) ── */}
-      <SEOContent />
     </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   Heart, UtensilsCrossed, PawPrint, Anchor, AlertTriangle, Maximize2,
   ChevronDown,
 } from "lucide-react";
-import { SERVICE_META, SLUG_TO_ID, buildMailto } from "@/lib/service-data";
+import { SERVICE_META, SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
 
 function ServiceIcon({ name, className = "w-8 h-8", style }: { name: string; className?: string; style?: React.CSSProperties }) {
   const map: Record<string, React.ElementType> = {
@@ -58,7 +58,8 @@ function FAQItem({ q, a, qAr, aAr, isRtl }: { q: string; a: string; qAr: string;
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { t, isRtl } = useLanguage();
-  const { data: services } = useListServices();
+  const { data: servicesData } = useListServices();
+  const services = servicesData ?? SERVICE_CATALOG;
 
   const serviceId = SLUG_TO_ID[slug ?? ""] ?? null;
   const meta = serviceId ? SERVICE_META[serviceId] : null;
@@ -80,21 +81,6 @@ export default function ServiceDetail() {
 
   return (
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
-      {/* JSON-LD Service Schema */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        "@context": "https://schema.org",
-        "@type": "Service",
-        "name": service.name,
-        "description": service.description,
-        "provider": {
-          "@type": "LocalBusiness",
-          "name": "ENVOD KINGDOM SHIPPING SERVICES LLC",
-          "address": { "@type": "PostalAddress", "addressLocality": "Riyadh", "addressCountry": "SA" }
-        },
-        "serviceType": service.category,
-        "areaServed": "Saudi Arabia",
-      })}} />
-
       {/* ── Cinematic Hero ── */}
       <div
         className="relative pt-24 pb-20 overflow-hidden"

@@ -11,7 +11,7 @@ import {
   Anchor, AlertTriangle, Maximize2, Car,
   CheckCircle2, ArrowRight, Globe2, Award, Mail,
 } from "lucide-react";
-import { SERVICE_META } from "@/lib/service-data";
+import { SERVICE_META, SERVICE_CATALOG } from "@/lib/service-data";
 
 // ─── Per-service features ─────────────────────────────────────────────────────
 interface ServiceExt {
@@ -340,7 +340,7 @@ export default function Services() {
   const { data: servicesData } = useListServices();
   const [activeTab, setActiveTab] = useState<Tab>("all");
 
-  const services = servicesData ?? [];
+  const services = servicesData ?? SERVICE_CATALOG;
   const spotlight = services.filter((s) => EXT[s.id]?.spotlight);
   const nonSpotlight = services.filter((s) => !EXT[s.id]?.spotlight);
   const totalCount = services.length;

@@ -4,7 +4,8 @@ import { Camera, Images, ArrowRight, MapPin, Calendar } from "lucide-react";
 import { useListGallery } from "@workspace/api-client-react";
 import type { GalleryItem } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
-import { useSeo } from "@/lib/seo";
+import { useJsonLd } from "@/lib/seo";
+import { SITE_URL } from "@/lib/seo-config";
 import {
   buildSrcSet,
   defaultSrc,
@@ -186,32 +187,13 @@ export default function Gallery() {
 
   const monthGroups = useMemo(() => groupByMonth(items).slice(0, 3), [items]);
 
-  const ogImage = items.length ? largestSrc(items[0]) : undefined;
-
+  // Page-level title/description/canonical + breadcrumb come from SeoManager
+  // (getSeoForPath). Here we only contribute the dynamic, gallery-specific
+  // structured data (WebPage + ImageGallery) that a static config can't build.
   const jsonLd = useMemo<Array<Record<string, unknown>>>(() => {
-    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const origin = SITE_URL;
     const pageUrl = `${origin}${import.meta.env.BASE_URL}gallery`.replace(/([^:]\/)\/+/g, "$1");
     const blocks: Array<Record<string, unknown>> = [
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        name: "ENVOD KINGDOM SHIPPING SERVICES LLC",
-        url: origin,
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        name: "ENVOD KINGDOM SHIPPING SERVICES LLC",
-        url: origin,
-        telephone: "+966 50 226 0256",
-        address: {
-          "@type": "PostalAddress",
-          streetAddress: "Prince Mansour Bin Abdulaziz Street, Al Malaz District",
-          addressLocality: "Riyadh",
-          postalCode: "12831",
-          addressCountry: "SA",
-        },
-      },
       {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -219,14 +201,6 @@ export default function Gallery() {
         url: pageUrl,
         description:
           "A visual showcase of ENVOD KINGDOM's real logistics operations: customs clearance, exhibitions, project cargo, warehousing, and freight forwarding across Saudi Arabia and the GCC.",
-      },
-      {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: origin },
-          { "@type": "ListItem", position: 2, name: "Gallery", item: pageUrl },
-        ],
       },
     ];
 
@@ -250,15 +224,7 @@ export default function Gallery() {
     return blocks;
   }, [items]);
 
-  useSeo({
-    title: "Operations Gallery — ENVOD KINGDOM Shipping Services LLC",
-    description:
-      "Explore ENVOD KINGDOM's logistics operations in pictures — customs clearance, exhibition logistics, project cargo, warehousing, and freight forwarding across Saudi Arabia and the GCC.",
-    canonicalPath: `${import.meta.env.BASE_URL}gallery`.replace(/\/+/g, "/"),
-    image: ogImage ? `${window.location.origin}${ogImage}` : undefined,
-    imageAlt: items.length ? items[0].title : undefined,
-    jsonLd,
-  });
+  useJsonLd(jsonLd);
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="bg-[#050c18] min-h-screen">
