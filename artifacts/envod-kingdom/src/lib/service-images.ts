@@ -21,6 +21,11 @@ import dangerousGoods from "@assets/image_1783197745221.webp";
 import oog from "@assets/image_1783176354422.webp";
 import roro from "@assets/image_1783198399466.webp";
 import ataCarnet from "@assets/image_1783173712084.webp";
+import whiteGlove from "@assets/service_white_glove_1783201001.webp";
+import tempControlled from "@assets/service_temp_controlled_1783201002.webp";
+import packagingCrating from "@assets/service_packaging_1783201003.webp";
+import expressCourier from "@assets/service_courier_1783201004.webp";
+import crossTrade from "@assets/service_cross_trade_1783201005.webp";
 
 /** Service id → dedicated hero image URL. */
 export const SERVICE_IMAGES: Record<number, string> = {
@@ -43,4 +48,9 @@ export const SERVICE_IMAGES: Record<number, string> = {
   17: oog, // Oversized / OOG Cargo
   18: roro, // RoRo Shipping
   19: ataCarnet, // ATA Carnet Processing
+  20: whiteGlove, // White Glove Logistics
+  21: tempControlled, // Temperature Controlled Logistics
+  22: packagingCrating, // Packaging & Crating Services
+  23: expressCourier, // Express Courier Logistics
+  24: crossTrade, // Cross Trade Shipping
 };

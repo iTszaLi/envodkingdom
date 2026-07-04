@@ -12,6 +12,36 @@ uri = "file://artifacts/envod-kingdom/src/assets/blog-2.png"
 type = "image"
 title = "logistics truck convoy night"
 
+[[generated]]
+id = "KXq8LZpbwW7-5qgo3Y8hC"
+uri = "file://attached_assets/generated_images/white_glove_daytime_ksa.png"
+type = "image"
+title = "white glove delivery villa"
+
+[[generated]]
+id = "TXH4dkvoxa_amclw0uanD"
+uri = "file://attached_assets/generated_images/reefer_truck_daytime_ksa.png"
+type = "image"
+title = "reefer truck desert highway"
+
+[[generated]]
+id = "TWle7_Eyq4w-FkV-qSpCx"
+uri = "file://attached_assets/generated_images/packaging_crating_daytime_ksa.png"
+type = "image"
+title = "wooden crates workshop daylight"
+
+[[generated]]
+id = "3IvMr3x3Q9O7WLkjaKPGn"
+uri = "file://attached_assets/generated_images/express_courier_daytime_ksa.png"
+type = "image"
+title = "courier van Riyadh street"
+
+[[generated]]
+id = "lAaeUKcfm81KE6ZJhvLJs"
+uri = "file://attached_assets/generated_images/cross_trade_daytime_ksa.png"
+type = "image"
+title = "white container seaport daylight"
+
 [[outputs]]
 id = "IXbb7xlRB48mk8-4P8nOo"
 uri = "file://attached_assets/stock_images/envod_operations_1.jpg"

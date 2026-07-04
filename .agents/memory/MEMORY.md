@@ -12,6 +12,7 @@
 - [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — absolute dropdowns overflowing a backdrop-blur header vanish on iOS Safari (fine in Chromium); portal to body as fixed opaque panel with measured top offset
 - [drizzle-orm peer variants](drizzle-peer-variant.md) — an optional driver peer (e.g. PGlite) forks drizzle-orm per package; all drizzle+@workspace/db consumers must share the same peer or typecheck breaks on "shouldInlineParams"
 - [Trust walls & third-party branding](trust-wall-third-party-branding.md) — don't scrape third-party event logos (use sector-icon marks); don't emit Event JSON-LD for events you don't own (use name-only ItemList)
+- [Branded service imagery](branded-service-imagery.md) — AI scene with prompted blank white panel + multiply-composite the real logo PNG; direct logo prompts produce garbled text
 - [Test DB hand-maintained schema](test-db-hand-maintained-schema.md) — api-server vitest builds Postgres from hardcoded CREATE_SQL in testDb.ts (not drizzle); mirror any column add there, and restart the API workflow (builds once, no watch) after lib/db edits
 - [Claims-accuracy / SEO copy policy](claims-accuracy-policy.md) — banned superlatives/guarantees, mandated hedged customs/transit sentences, factual exceptions to keep; edit EN+AR together
 - [Site schema locations & primary phone](schema-and-phone.md) — JSON-LD lives in 2 places (static Org/LocalBusiness/WebSite in index.html + dynamic per-page in seo-config.ts); primary phone +966 50 226 0256 must match across both and the visible site
