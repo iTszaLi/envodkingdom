@@ -51,6 +51,38 @@ function servicesItemList(): Record<string, unknown> {
   };
 }
 
+/**
+ * The organisation's OfferCatalog of every service. Emitted as an Organization
+ * node carrying `hasOfferCatalog` and keyed with the shared ORG_ID, so JSON-LD
+ * @id graph-merging attaches the catalog to the static Organization node in
+ * index.html (the canonical Organization → OfferCatalog linkage) rather than
+ * leaving an orphan node. Built from SERVICE_CATALOG so it stays in lockstep
+ * with the live service list (no hand-maintained duplication).
+ */
+function offerCatalog(): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "@id": ORG_ID,
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "ENVOD KINGDOM Logistics & Freight Services",
+      itemListElement: SERVICE_CATALOG.map((s) => ({
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: s.name,
+          description: s.description,
+          serviceType: s.category,
+          areaServed: "Saudi Arabia",
+          provider: { "@id": ORG_ID },
+          url: toAbsolute(`/services/${ID_TO_SLUG[s.id]}`),
+        },
+      })),
+    },
+  };
+}
+
 /** Every content route that gets a statically prerendered HTML file. */
 export const CONTENT_ROUTES: string[] = [
   "/",
@@ -82,6 +114,7 @@ const STATIC: Record<string, SeoConfig> = {
         isPartOf: { "@id": `${SITE_URL}/#website` },
       },
       servicesItemList(),
+      offerCatalog(),
       breadcrumb([{ name: "Home", path: "/" }]),
     ],
   },
@@ -93,6 +126,7 @@ const STATIC: Record<string, SeoConfig> = {
     image: OG_IMAGE,
     jsonLd: [
       servicesItemList(),
+      offerCatalog(),
       breadcrumb([
         { name: "Home", path: "/" },
         { name: "Services", path: "/services" },
