@@ -4,9 +4,14 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Search, Clock, Shield, Globe2, CheckCircle2, ArrowRight,
-} from "lucide-react";
+import { Search } from "lucide-react";
+import dhlLogo from "@assets/logo_dhl.webp";
+import fedexLogo from "@assets/logo_fedex.webp";
+import aramexLogo from "@assets/logo_aramex.webp";
+import dsvLogo from "@assets/logo_dsv.webp";
+import cevaLogo from "@assets/logo_ceva.webp";
+import schenkerLogo from "@assets/logo_schenker.webp";
+
 import { ScrollAnimSection, type AnimChapter } from "@/components/ScrollAnimSection";
 import { StatsCounter } from "@/components/StatsCounter";
 import { ClientMarquee } from "@/components/ClientMarquee";
@@ -17,6 +22,94 @@ import { IndustriesSection } from "@/components/IndustriesSection";
 import { TrustSection } from "@/components/TrustSection";
 import { PremiumCTA } from "@/components/PremiumCTA";
 import { FAQSection } from "@/components/FAQSection";
+
+const LOGISTICS_LEADERS = [
+  { name: "DHL",            logo: dhlLogo },
+  { name: "FedEx",          logo: fedexLogo },
+  { name: "Aramex",         logo: aramexLogo },
+  { name: "DSV",            logo: dsvLogo },
+  { name: "CEVA Logistics", logo: cevaLogo },
+  { name: "DB Schenker",    logo: schenkerLogo },
+];
+
+function LogisticsLeadersSection() {
+  const { t } = useLanguage();
+  return (
+    <section className="py-32 relative overflow-hidden" style={{ background: "#FFFFFF" }}>
+      {/* Subtle decoration */}
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none opacity-[0.03]"
+        style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
+      <div className="container mx-auto px-4 relative z-10">
+        <div className="text-center mb-14">
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3"
+          >
+            {t("SERVING GLOBAL LOGISTICS NETWORKS", "نخدم شبكات اللوجستيات العالمية")}
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-black"
+            style={{ color: "#0A2342" }}
+          >
+            {t("Customs Clearance & Delivery for", "التخليص الجمركي والتوصيل")}
+            <span className="text-secondary"> {t("Global Logistics Leaders", "لكبرى شركات اللوجستيات العالمية")}</span>
+          </motion.h2>
+        </div>
+
+        {/* Logo showcase */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 max-w-5xl mx-auto">
+          {LOGISTICS_LEADERS.map(({ name, logo }, i) => (
+            <motion.div
+              key={name}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ delay: i * 0.07, duration: 0.5 }}
+              whileHover={{ y: -5, boxShadow: "0 16px 40px -8px rgba(10,35,66,0.14)" }}
+              className="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm hover:border-secondary/30 transition-all group cursor-default flex items-center justify-center h-28 px-6"
+            >
+              <img
+                src={logo}
+                alt={name}
+                loading="lazy"
+                className="max-h-14 w-full object-contain rounded-md [filter:grayscale(0.35)] opacity-90 group-hover:[filter:grayscale(0)] group-hover:opacity-100 transition-[filter,opacity] duration-300"
+              />
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Description */}
+        <motion.p
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.15 }}
+          className="text-center max-w-3xl mx-auto mt-12 text-[15px] leading-relaxed"
+          style={{ color: "#475569" }}
+        >
+          {t(
+            "We provide professional customs clearance and nationwide delivery services for leading international freight forwarders, courier companies, and logistics providers operating in Saudi Arabia. Our team ensures fast customs processing, compliant documentation, and reliable transportation from ports and airports to final destinations across the Kingdom.",
+            "نقدم خدمات احترافية في التخليص الجمركي والتوصيل داخل المملكة لكبرى شركات الشحن الدولي وشركات البريد السريع ومزودي الخدمات اللوجستية العاملين في المملكة العربية السعودية. يحرص فريقنا على إنجاز الإجراءات الجمركية بسرعة، وإعداد مستندات متوافقة مع الأنظمة، وتوفير نقل موثوق من الموانئ والمطارات إلى الوجهات النهائية في مختلف أنحاء المملكة.",
+          )}
+        </motion.p>
+
+        {/* Identification-only disclaimer */}
+        <p className="text-center text-[11px] mt-5 max-w-2xl mx-auto" style={{ color: "#94A3B8" }}>
+          {t(
+            "Company logos are shown for identification purposes only and do not imply partnership, endorsement, or exclusivity.",
+            "تُعرض شعارات الشركات لأغراض التعريف فقط ولا تعني أي شراكة رسمية أو تأييد أو حصرية.",
+          )}
+        </p>
+      </div>
+    </section>
+  );
+}
 
 const craneChapters: AnimChapter[] = [
   {
@@ -171,64 +264,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Why ENVOD — 8 Pillars ── */}
-      <section className="py-32 relative overflow-hidden" style={{ background: "#FFFFFF" }}>
-        {/* Subtle decoration */}
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] pointer-events-none opacity-[0.03]"
-          style={{ background: "radial-gradient(circle, #0A2342 0%, transparent 70%)" }} />
-        <div className="container mx-auto px-4 relative z-10">
-          <div className={`text-center mb-16 ${isRtl ? "rtl" : ""}`}>
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3"
-            >
-              {t("WHY ENVOD KINGDOM", "لماذا انفود كينجدم")}
-            </motion.p>
-            <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="text-3xl md:text-5xl font-black"
-              style={{ color: "#0A2342" }}
-            >
-              {t("Saudi Arabia's", "الشريك")}
-              <span className="text-secondary"> {t("Premium Logistics Partner", "اللوجستي الأول في المملكة")}</span>
-            </motion.h2>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
-              { icon: Clock,        stat: "24hr",  en: "Customs Clearance",          ar: "تخليص جمركي" },
-              { icon: Globe2,       stat: "50+",   en: "Countries Served",            ar: "دولة نخدمها" },
-              { icon: Shield,       stat: "SABER", en: "SFDA Certified",              ar: "معتمد سابر وهيئة الغذاء" },
-              { icon: CheckCircle2, stat: "25+",   en: "Years Experience",            ar: "عاماً من الخبرة" },
-              { icon: CheckCircle2, stat: "99.8%", en: "On-Time Delivery",            ar: "نسبة التسليم في الموعد" },
-              { icon: Globe2,       stat: "GCC",   en: "Wide Coverage",              ar: "تغطية خليجية شاملة" },
-              { icon: Shield,       stat: "ATA",   en: "Carnet Specialists",          ar: "متخصصو كارنيه" },
-              { icon: CheckCircle2, stat: "EXH",   en: "Exhibition Logistics Experts", ar: "خبراء لوجستيات المعارض" },
-            ].map(({ icon: Icon, stat, en, ar }, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
-                transition={{ delay: (i % 4) * 0.08, duration: 0.5 }}
-                whileHover={{ y: -5, boxShadow: "0 16px 40px -8px rgba(10,35,66,0.12)" }}
-                className={`bg-white rounded-2xl p-6 border border-[#E2E8F0] shadow-sm hover:border-secondary/30 transition-all group cursor-default ${isRtl ? "text-right" : ""}`}
-              >
-                <div className="w-10 h-10 rounded-xl bg-secondary/8 flex items-center justify-center mb-4 group-hover:bg-secondary/15 transition-colors">
-                  <Icon className="w-5 h-5 text-secondary" />
-                </div>
-                <div className="text-2xl font-black text-secondary mb-1">{stat}</div>
-                <div className="text-sm font-semibold" style={{ color: "#1A202C" }}>{isRtl ? ar : en}</div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* ── Customs Clearance & Delivery for Global Logistics Leaders ── */}
+      <LogisticsLeadersSection />
 
       {/* ── Industries We Serve ── */}
       <IndustriesSection />
