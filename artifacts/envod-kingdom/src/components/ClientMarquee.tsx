@@ -3,7 +3,7 @@ import { useListClients } from "@workspace/api-client-react";
 import type { Client } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import { motion, useInView } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Package, Building2, Award, Clock, Globe2 } from "lucide-react";
 
 /* ─────────────────────────── Data ─────────────────────────── */
 const FALLBACK_CLIENTS: Client[] = [
@@ -166,11 +166,11 @@ function MarqueeTrack({ clients, reverse = false, paused }: { clients: Client[];
 
 /* ─────────────────────────── Stats strip ─────────────────────────── */
 const STATS = [
-  { to: 5000, suffix: "+", label: "Shipments Completed",  labelAr: "شحنة مكتملة"      },
-  { to: 100,  suffix: "+", label: "Corporate Clients",    labelAr: "عميل مؤسسي"        },
-  { to: 25,   suffix: "+", label: "Years of Excellence",  labelAr: "عاماً من التميز"   },
-  { to: 99,   suffix: "%", label: "On-Time Delivery",     labelAr: "دقة في التسليم"    },
-  { to: 50,   suffix: "+", label: "Countries Served",     labelAr: "دولة نخدمها"       },
+  { icon: Package,   to: 5000, suffix: "+", label: "Shipments Completed",  labelAr: "شحنة مكتملة"      },
+  { icon: Building2, to: 100,  suffix: "+", label: "Corporate Clients",    labelAr: "عميل مؤسسي"        },
+  { icon: Award,     to: 25,   suffix: "+", label: "Years of Excellence",  labelAr: "عاماً من التميز"   },
+  { icon: Clock,     to: 99,   suffix: "%", label: "On-Time Delivery",     labelAr: "دقة في التسليم"    },
+  { icon: Globe2,    to: 50,   suffix: "+", label: "Countries Served",     labelAr: "دولة نخدمها"       },
 ];
 
 /* ─────────────────────────── Trust strip ─────────────────────────── */
@@ -238,12 +238,18 @@ export function ClientMarquee() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.07 }}
-              className={`flex flex-col ${isRtl ? "items-end" : "items-start"} gap-1 px-5 py-4 rounded-2xl border border-white/[0.06] bg-white/[0.03]`}
+              whileHover={{ y: -3 }}
+              className={`group flex flex-col ${isRtl ? "items-end" : "items-start"} gap-2.5 px-5 py-5 rounded-2xl border border-white/[0.06] bg-white/[0.03] backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.25)] transition-all duration-300 hover:border-secondary/30 hover:bg-white/[0.055] hover:shadow-[0_10px_34px_rgba(214,40,40,0.12)]`}
             >
-              <span className="text-2xl font-black text-white tracking-tight leading-none">
-                <AnimCounter to={s.to} suffix={s.suffix} />
-              </span>
-              <span className="text-[11px] text-white/40 font-semibold uppercase tracking-widest leading-tight">
+              <div className={`flex items-center gap-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+                <div className="w-9 h-9 rounded-lg bg-secondary/10 border border-secondary/15 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:bg-secondary/20 group-hover:scale-110">
+                  <s.icon className="w-4.5 h-4.5 text-secondary" aria-hidden="true" />
+                </div>
+                <span className="text-[26px] font-black text-white tracking-tight leading-none">
+                  <AnimCounter to={s.to} suffix={s.suffix} />
+                </span>
+              </div>
+              <span className="text-[11px] text-white/50 font-semibold uppercase tracking-widest leading-tight group-hover:text-white/70 transition-colors">
                 {isRtl ? s.labelAr : s.label}
               </span>
             </motion.div>
