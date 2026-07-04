@@ -1,8 +1,21 @@
 import { useRef, type MouseEvent } from "react";
 import { motion, useInView } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
-import { CheckCircle2, ArrowRight, ChevronRight, Cpu, Building2, LandPlot, Construction, UtensilsCrossed, Sofa, BadgeCheck } from "lucide-react";
+import { CheckCircle2, ArrowRight, ChevronRight, BadgeCheck } from "lucide-react";
 import { Link } from "wouter";
+
+import logoLeap from "@assets/image_1783126648923.png";
+import logoWorldDefense from "@assets/image_1783126675624.png";
+import logoPlasticsPetrochem from "@assets/image_1783126624254.png";
+import logoSaudiFood from "@assets/image_1783126766781.png";
+import logoCityscape from "@assets/image_1783126855621.png";
+import logoBig5 from "@assets/image_1783126714478.png";
+import logoGlobalHealth from "@assets/image_1783126803493.png";
+import logoBookFair from "@assets/image_1783126985787.png";
+import logoSaudiBuild from "@assets/image_1783126930810.png";
+import logoIndex from "@assets/image_1783126737093.png";
+import logoSaudiAg from "@assets/image_1783126483702.png";
+import logoFabex from "@assets/image_1783126783660.png";
 
 const SERVICES_GROUP = [
   { en: "ATA Carnet",         ar: "كارنيه ATA" },
@@ -18,12 +31,18 @@ const CAPABILITIES_GROUP = [
 ];
 
 const EVENTS = [
-  { name: "LEAP",                  year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: Cpu },
-  { name: "Saudi Build",           year: "2024", city: "Riyadh", cityAr: "الرياض", Icon: Building2 },
-  { name: "Cityscape Global",      year: "2024", city: "Riyadh", cityAr: "الرياض", Icon: LandPlot },
-  { name: "Big 5 Construct Saudi", year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: Construction },
-  { name: "Saudi Food Show",       year: "2025", city: "Riyadh", cityAr: "الرياض", Icon: UtensilsCrossed },
-  { name: "INDEX Saudi",           year: "2024", city: "Jeddah", cityAr: "جدة",     Icon: Sofa },
+  { name: "LEAP",                       year: "2026", city: "Riyadh", cityAr: "الرياض", logo: logoLeap },
+  { name: "World Defense Show",         year: "2026", city: "Riyadh", cityAr: "الرياض", logo: logoWorldDefense },
+  { name: "Saudi Plastics & Petrochem", year: "2026", city: "Riyadh", cityAr: "الرياض", logo: logoPlasticsPetrochem },
+  { name: "Saudi Food Show",            year: "2026", city: "Riyadh", cityAr: "الرياض", logo: logoSaudiFood },
+  { name: "Cityscape Global",           year: "2025", city: "Riyadh", cityAr: "الرياض", logo: logoCityscape },
+  { name: "Big 5 Construct Saudi",      year: "2025", city: "Riyadh", cityAr: "الرياض", logo: logoBig5 },
+  { name: "Global Health Exhibition",   year: "2025", city: "Riyadh", cityAr: "الرياض", logo: logoGlobalHealth },
+  { name: "Riyadh Int'l Book Fair",     year: "2025", city: "Riyadh", cityAr: "الرياض", logo: logoBookFair },
+  { name: "Saudi Build",                year: "2024", city: "Riyadh", cityAr: "الرياض", logo: logoSaudiBuild },
+  { name: "INDEX Saudi Arabia",         year: "2024", city: "Riyadh", cityAr: "الرياض", logo: logoIndex },
+  { name: "Saudi Agriculture",          year: "2024", city: "Riyadh", cityAr: "الرياض", logo: logoSaudiAg },
+  { name: "FABEX Saudi Arabia",         year: "2024", city: "Jeddah", cityAr: "جدة",     logo: logoFabex },
 ];
 
 const EVENTS_SCHEMA = {
@@ -79,8 +98,6 @@ function CategoryList({ items, label, labelAr, isRtl }: { items: typeof SERVICES
 }
 
 function EventCard({ event, index, isRtl }: { event: (typeof EVENTS)[number]; index: number; isRtl: boolean }) {
-  const { Icon } = event;
-
   const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     e.currentTarget.style.setProperty("--mx", `${e.clientX - rect.left}px`);
@@ -122,16 +139,19 @@ function EventCard({ event, index, isRtl }: { event: (typeof EVENTS)[number]; in
         {/* Top border accent on hover */}
         <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-secondary/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Logo mark tile */}
-        <div
-          className="relative mb-4 w-16 h-16 rounded-2xl flex items-center justify-center border border-white/10 transition-transform duration-[350ms] ease-out group-hover:scale-110"
-          style={{ background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.10), rgba(2,13,28,0.35))" }}
-        >
-          <Icon className="w-7 h-7 text-white/80 group-hover:text-secondary transition-colors duration-300" strokeWidth={1.6} aria-hidden="true" />
+        {/* Logo chip — white background for universal legibility across brand marks */}
+        <div className="relative mb-4 w-full h-16 md:h-[72px] rounded-xl bg-white flex items-center justify-center px-3.5 py-2.5 shadow-sm ring-1 ring-black/5 overflow-hidden transition-transform duration-[350ms] ease-out will-change-transform group-hover:scale-[1.04]">
+          <img
+            src={event.logo}
+            alt={`${event.name} logo`}
+            loading="lazy"
+            decoding="async"
+            className="max-h-full max-w-full w-auto object-contain"
+          />
         </div>
 
         {/* Name + year + city */}
-        <h4 className="text-white font-black text-[14px] leading-tight tracking-tight">{event.name}</h4>
+        <h4 className="text-white font-black text-[13px] leading-tight tracking-tight">{event.name}</h4>
         <p className="text-secondary text-sm font-bold mt-1">{event.year}</p>
         <p className="text-white/40 text-[10px] tracking-wider uppercase mt-1">{isRtl ? event.cityAr : event.city}</p>
 
@@ -340,7 +360,7 @@ export function ExhibitionSection() {
             </p>
           </motion.div>
 
-          <div className={`grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 md:gap-5 items-stretch ${isRtl ? "direction-rtl" : ""}`}>
+          <div className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-5 items-stretch ${isRtl ? "direction-rtl" : ""}`}>
             {EVENTS.map((event, i) => (
               <EventCard key={event.name} event={event} index={i} isRtl={isRtl} />
             ))}

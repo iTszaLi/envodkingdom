@@ -6,16 +6,21 @@ description: How to build "trusted by / events served" sections when real third-
 # Trust walls & third-party branding
 
 ## Third-party event/client logos
-Do NOT scrape real event/exhibition logos for "trusted by" walls. Image search for named
+Do NOT **scrape** real event/exhibition logos for "trusted by" walls. Image search for named
 Saudi/GCC events (LEAP, Saudi Build, Big 5 Construct Saudi, INDEX Saudi, etc.) returns
 mostly wrong/generic/low-res assets (Saudi flags, Aramco, landmark icons, unrelated "Leap"
 companies); only a couple (Cityscape Global, Saudi Food Show) had plausible hits, from
 third-party logo repos with trademark risk.
 
-**Rule:** use a consistent sector-icon logo-mark system (uniform tiles, one lucide icon per
-sector) instead — honest, enterprise-grade, and visually consistent. Build the card to accept
-a real `<img>` logo later if the client supplies files they have rights to.
-**Why:** mismatched/wrong scraped logos look worse than no logo and carry trademark exposure.
+**Rule:** the sanctioned path is **client-supplied logo files** — the ENVOD trust-wall now
+renders real logos the client provided (imported via the `@assets` alias). Only when no
+client files exist, fall back to a consistent sector-icon logo-mark system (uniform tiles,
+one lucide icon per sector) — never scraped logos.
+**Why:** mismatched/wrong scraped logos look worse than no logo and carry trademark exposure;
+client-provided assets are legitimate and preferred.
+**Rendering:** place each logo on a WHITE rounded chip (`bg-white`, `object-contain`) so dark/
+transparent wordmarks stay legible on the dark card. Downscale heavy PNGs (these came in at
+285–414KB) to ~600px before shipping — they render in a ~72px chip.
 
 ## JSON-LD for third-party entities
 Do NOT emit `@type: "Event"` structured data for third-party past events the site does not
