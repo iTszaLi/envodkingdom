@@ -15,7 +15,7 @@ import type { ServicePillar } from "../service-data";
 export const EXHIBITION_PILLAR: ServicePillar = {
   seoTitle: "Exhibition Logistics Company in Saudi Arabia | ENVOD KINGDOM",
   seoDescription:
-    "Saudi Arabia's specialist exhibition & trade-show logistics company — ATA Carnet in 24 hours, on-site handling, temporary import and event freight forwarding to every major venue nationwide.",
+    "Saudi Arabia's specialist exhibition & trade-show logistics company — ATA Carnet typically within 24 hours, on-site handling, temporary import and event freight forwarding to every major venue nationwide.",
 
   intro: [
     {
@@ -88,17 +88,17 @@ export const EXHIBITION_PILLAR: ServicePillar = {
     {
       id: "ata-carnet-temporary-import",
       heading: {
-        en: "ATA Carnet & temporary import — cleared in 24 hours",
-        ar: "كارنيه ATA والاستيراد المؤقت — تخليص خلال 24 ساعة",
+        en: "ATA Carnet & temporary import — typically cleared within 24 hours",
+        ar: "كارنيه ATA والاستيراد المؤقت — تخليص عادةً خلال 24 ساعة",
       },
       paragraphs: [
         {
-          en: "The ATA Carnet is the fastest, cleanest way to bring exhibition goods into Saudi Arabia temporarily. It replaces multiple customs declarations with a single internationally recognised document, removes the need to pay import duties or deposits up front, and guarantees a straightforward re-export once the event is over.",
-          ar: "كارنيه ATA هو الطريقة الأسرع والأوضح لإدخال بضائع المعارض إلى المملكة بصفة مؤقتة. فهو يستبدل عدة إقرارات جمركية بمستند واحد معترف به دولياً، ويُلغي الحاجة إلى دفع رسوم استيراد أو تأمينات مقدماً، ويضمن إعادة تصدير سلسة بعد انتهاء الفعالية.",
+          en: "The ATA Carnet is one of the fastest and simplest ways to bring exhibition goods into Saudi Arabia temporarily. It replaces multiple customs declarations with a single internationally recognised document, removes the need to pay import duties or deposits up front, and enables a straightforward re-export once the event is over.",
+          ar: "كارنيه ATA من أسرع وأبسط الطرق لإدخال بضائع المعارض إلى المملكة بصفة مؤقتة. فهو يستبدل عدة إقرارات جمركية بمستند واحد معترف به دولياً، ويُلغي الحاجة إلى دفع رسوم استيراد أو تأمينات مقدماً، ويتيح إعادة تصدير سلسة بعد انتهاء الفعالية.",
         },
         {
-          en: "ENVOD offers ATA Carnet processing in as little as 24 hours — among the fastest turnaround in the Kingdom — and we also arrange temporary-import clearance directly through Saudi Customs when a Carnet is not available in the country of origin. Our team checks every line of your equipment list against the Carnet so nothing is held or penalised on arrival or return.",
-          ar: "تُوفّر إنفود معالجة كارنيه ATA في غضون 24 ساعة — من الأسرع في المملكة — كما نُرتّب التخليص للاستيراد المؤقت مباشرة عبر الجمارك السعودية عندما لا يتوفّر الكارنيه في بلد المنشأ. ويُطابق فريقنا كل بند في قائمة معداتك مع الكارنيه حتى لا يُحتجز أي صنف أو يخضع لغرامة عند الوصول أو الإعادة.",
+          en: "ENVOD offers ATA Carnet processing typically within 24 hours, and we also arrange temporary-import clearance directly through Saudi Customs when a Carnet is not available in the country of origin. Our team checks every line of your equipment list against the Carnet so nothing is held or penalised on arrival or return.",
+          ar: "تُوفّر إنفود معالجة كارنيه ATA عادةً خلال 24 ساعة، كما نُرتّب التخليص للاستيراد المؤقت مباشرة عبر الجمارك السعودية عندما لا يتوفّر الكارنيه في بلد المنشأ. ويُطابق فريقنا كل بند في قائمة معداتك مع الكارنيه حتى لا يُحتجز أي صنف أو يخضع لغرامة عند الوصول أو الإعادة.",
         },
       ],
     },
@@ -137,8 +137,8 @@ export const EXHIBITION_PILLAR: ServicePillar = {
           ar: "أكثر من 25 عاماً في دعم أكبر معارض وفعاليات المملكة",
         },
         {
-          en: "ATA Carnet processing in as little as 24 hours",
-          ar: "معالجة كارنيه ATA في غضون 24 ساعة",
+          en: "ATA Carnet processing typically within 24 hours",
+          ar: "معالجة كارنيه ATA عادةً خلال 24 ساعة",
         },
         {
           en: "Nationwide coverage — Riyadh, Jeddah, Dammam and every major venue",

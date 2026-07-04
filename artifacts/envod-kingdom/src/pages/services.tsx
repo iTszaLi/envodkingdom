@@ -27,7 +27,7 @@ const EXT: Record<number, ServiceExt> = {
   1:  { features: ["FCL & LCL options", "Global port coverage", "Ro-Ro & break bulk"], featuresAr: ["خيارات FCL وLCL", "تغطية الموانئ العالمية", "شحن رورو والبضائع السائبة"] },
   2:  { features: ["Express & charter flights", "50+ country network", "Pharma & perishables"], featuresAr: ["رحلات سريعة ومستأجرة", "شبكة 50+ دولة", "الأدوية والبضائع القابلة للتلف"] },
   3:  { features: ["FTL & LTL options", "All 6 GCC countries", "Cross-border customs"], featuresAr: ["حمولات كاملة وجزئية", "جميع دول الخليج الست", "تخليص جمركي عبر الحدود"] },
-  4:  { features: ["24-hour clearance guarantee", "SABER, SFDA & ATA Carnet", "Saudi Customs broker"], featuresAr: ["ضمان التخليص في 24 ساعة", "سابر وهيئة الغذاء وكارنيه ATA", "وسيط جمارك سعودي معتمد"], tag: "24hr Guarantee", tagAr: "ضمان 24 ساعة", featured: true },
+  4:  { features: ["Customs clearance often within 24 hours", "SABER, SFDA & ATA Carnet", "Saudi Customs broker"], featuresAr: ["تخليص جمركي غالباً خلال 24 ساعة", "سابر وهيئة الغذاء وكارنيه ATA", "وسيط جمارك سعودي معتمد"], tag: "Fast Clearance", tagAr: "تخليص سريع", featured: true },
   5:  { features: ["Bonded warehousing", "Pick & pack + fulfillment", "24/7 security & CCTV"], featuresAr: ["مستودعات جمركية", "تجميع وتغليف وتوزيع", "أمن وكاميرات على مدار الساعة"] },
   6:  { features: ["Door-to-door coordination", "Multi-modal solutions", "Real-time cargo tracking"], featuresAr: ["تنسيق من الباب للباب", "حلول متعددة الوسائط", "تتبع الشحن في الوقت الفعلي"] },
   7:  { features: ["Supply chain optimization", "ERP integration", "Vendor & last-mile management"], featuresAr: ["تحسين سلسلة التوريد", "تكامل مع أنظمة ERP", "إدارة الموردين والمرحلة الأخيرة"] },

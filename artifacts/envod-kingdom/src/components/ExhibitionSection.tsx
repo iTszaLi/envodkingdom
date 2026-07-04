@@ -404,8 +404,8 @@ export function ExhibitionSection() {
               className="text-white/58 text-base leading-[1.9] mb-10 max-w-lg"
             >
               {t(
-                "ENVOD KINGDOM has more than 25 years of experience supporting exhibitions, trade shows, sporting events, and international conferences across Saudi Arabia and the GCC — with ATA Carnet processing recognised as the fastest in the Kingdom.",
-                "تمتلك انفود كينجدم أكثر من 25 عاماً من الخبرة في دعم المعارض والمؤتمرات والفعاليات الرياضية والأحداث الدولية عبر المملكة والخليج، مع معالجة كارنيه ATA المعترف بها كالأسرع في المملكة.",
+                "ENVOD KINGDOM has more than 25 years of experience supporting exhibitions, trade shows, sporting events, and international conferences across Saudi Arabia and the GCC — with ATA Carnet processing typically completed within 24 hours.",
+                "تمتلك انفود كينجدم أكثر من 25 عاماً من الخبرة في دعم المعارض والمؤتمرات والفعاليات الرياضية والأحداث الدولية عبر المملكة والخليج، مع معالجة كارنيه ATA التي تكتمل عادةً خلال 24 ساعة.",
               )}
             </motion.p>
 

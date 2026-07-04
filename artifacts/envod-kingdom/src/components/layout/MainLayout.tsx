@@ -54,7 +54,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
           <div className={`flex items-center justify-center gap-6 text-xs font-semibold flex-wrap ${isRtl ? "flex-row-reverse" : ""}`}>
             <span className={`flex items-center gap-1.5 text-secondary ${isRtl ? "flex-row-reverse" : ""}`}>
               <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-              {t("CUSTOMS CLEARANCE UNDER 24 HOURS", "التخليص الجمركي خلال 24 ساعة")}
+              {t("CUSTOMS CLEARANCE OFTEN WITHIN 24 HOURS", "التخليص الجمركي غالباً خلال 24 ساعة")}
             </span>
             <span className="text-white/20 hidden sm:block">|</span>
             <span className={`flex items-center gap-1.5 text-white/60 ${isRtl ? "flex-row-reverse" : ""}`}>

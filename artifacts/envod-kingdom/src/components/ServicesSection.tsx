@@ -34,12 +34,12 @@ const HERO_FEATURES: Record<number, { en: string[]; ar: string[] }> = {
     ar: ["كارنيه ATA والاستيراد المؤقت", "التسليم داخل الجناح", "أكثر من 500 فعالية منسقة"],
   },
   19: {
-    en: ["24-hour Carnet processing", "80+ country coverage", "Exhibitions, equipment & samples"],
-    ar: ["معالجة الكارنيه خلال 24 ساعة", "تغطية أكثر من 80 دولة", "معارض ومعدات وعينات"],
+    en: ["Carnet processing often within 24 hours", "80+ country coverage", "Exhibitions, equipment & samples"],
+    ar: ["معالجة الكارنيه غالباً خلال 24 ساعة", "تغطية أكثر من 80 دولة", "معارض ومعدات وعينات"],
   },
   4: {
-    en: ["24-hour clearance guarantee", "SABER, SFDA & CITC approvals", "All commodity types"],
-    ar: ["ضمان التخليص خلال 24 ساعة", "موافقات سابر وSFDA وهيئة الاتصالات", "جميع أنواع البضائع"],
+    en: ["Customs clearance often within 24 hours", "SABER, SFDA & CITC approvals", "All commodity types"],
+    ar: ["تخليص جمركي غالباً خلال 24 ساعة", "موافقات سابر وSFDA وهيئة الاتصالات", "جميع أنواع البضائع"],
   },
 };
 

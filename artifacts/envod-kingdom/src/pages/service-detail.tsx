@@ -175,6 +175,27 @@ export default function ServiceDetail() {
         </div>
       </div>
 
+      {/* ── Overview (definition-led, entity-dense SEO/GEO body — crawlable static HTML) ── */}
+      {meta.overview && meta.overview.length > 0 && (
+        <section className="border-t border-white/6 py-16" aria-labelledby="service-overview-heading">
+          <div className={`container mx-auto px-4 max-w-3xl ${isRtl ? "text-right" : ""}`}>
+            <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3">
+              {t("OVERVIEW", "نظرة عامة")}
+            </p>
+            <h2 id="service-overview-heading" className="text-2xl md:text-3xl font-black text-white mb-6">
+              {t(`What is ${serviceName}?`, `نبذة عن ${serviceName}`)}
+            </h2>
+            <div className="space-y-4">
+              {meta.overview.map((p, i) => (
+                <p key={i} className="text-white/60 text-base leading-relaxed">
+                  {isRtl ? p.ar : p.en}
+                </p>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* ── Pillar (long-form SEO content, plain HTML for crawlers) ── */}
       {meta.pillar && (
         <PillarSections pillar={meta.pillar} isRtl={isRtl} accentHex={meta.accentHex} />

@@ -57,7 +57,7 @@ export function CustomsClearanceSection() {
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
               {t("Customs Clearance", "التخليص الجمركي")}
               <br />
-              <span className="text-secondary">{t("Under 24 Hours", "خلال 24 ساعة")}</span>
+              <span className="text-secondary">{t("Often Within 24 Hours", "غالباً خلال 24 ساعة")}</span>
             </h2>
           </motion.div>
           <motion.p
@@ -68,8 +68,8 @@ export function CustomsClearanceSection() {
             className="text-white/55 max-w-xl mx-auto text-sm leading-relaxed"
           >
             {t(
-              "Direct relationships with Saudi Customs Authority enable us to deliver the fastest, most reliable customs clearance in the Kingdom.",
-              "علاقاتنا المباشرة مع هيئة الجمارك السعودية تمكننا من تقديم أسرع تخليص جمركي وأكثره موثوقية في المملكة.",
+              "Direct relationships with the Saudi Customs Authority enable us to deliver fast, reliable customs clearance across the Kingdom.",
+              "علاقاتنا المباشرة مع هيئة الجمارك السعودية تمكّننا من تقديم تخليص جمركي سريع وموثوق في المملكة.",
             )}
           </motion.p>
         </div>
@@ -175,7 +175,7 @@ export function CustomsClearanceSection() {
               ))}
             </div>
 
-            {/* 24hr guarantee badge */}
+            {/* 24hr commitment badge */}
             <motion.div
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -186,13 +186,13 @@ export function CustomsClearanceSection() {
               <div className={`flex items-center gap-3 mb-2 ${isRtl ? "flex-row-reverse" : ""}`}>
                 <Clock className="w-5 h-5 text-secondary" />
                 <span className="text-secondary font-bold text-sm tracking-wider uppercase">
-                  {t("ENVOD GUARANTEE", "ضمان انفود")}
+                  {t("ENVOD COMMITMENT", "التزام انفود")}
                 </span>
               </div>
               <p className="text-white/70 text-sm leading-relaxed">
                 {t(
-                  "We guarantee customs clearance within 24 hours or we personally escalate with the Saudi Customs Authority on your behalf.",
-                  "نضمن التخليص الجمركي خلال 24 ساعة وإلا تدخلنا شخصياً مع هيئة الجمارك السعودية نيابةً عنك.",
+                  "We work to clear customs as quickly as possible — many shipments clear within 24 hours — and we personally follow up with the Saudi Customs Authority on your behalf.",
+                  "نعمل على إنجاز التخليص الجمركي بأسرع وقت ممكن — وتُخلَّص العديد من الشحنات خلال 24 ساعة — ونتابع شخصياً مع هيئة الجمارك السعودية نيابةً عنك.",
                 )}
               </p>
             </motion.div>

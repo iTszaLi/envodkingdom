@@ -13,14 +13,14 @@ import type { ServicePillar } from "../service-data";
  * venues / majorEvents intentionally left empty (not relevant to this page).
  */
 export const ATA_CARNET_PILLAR: ServicePillar = {
-  seoTitle: "ATA Carnet Saudi Arabia — 24-Hour Processing | ENVOD KINGDOM",
+  seoTitle: "ATA Carnet Saudi Arabia — Typically Within 24 Hours | ENVOD KINGDOM",
   seoDescription:
-    "ATA Carnet processing in Saudi Arabia in 24 hours — the international customs passport for temporary duty-free admission of exhibition goods, professional equipment and commercial samples across 80+ countries.",
+    "ATA Carnet processing in Saudi Arabia typically within 24 hours — the international customs passport for temporary duty-free admission of exhibition goods, professional equipment and commercial samples across 80+ countries.",
 
   intro: [
     {
-      en: "An ATA Carnet is the international customs document that lets goods cross borders temporarily without paying import duties or taxes. ENVOD KINGDOM SHIPPING SERVICES issues, processes and manages ATA Carnets for companies moving exhibition displays, professional equipment and commercial samples into and out of Saudi Arabia — cleared in as little as 24 hours so your cargo is never the reason a stand opens late or a project slips.",
-      ar: "كارنيه ATA هو المستند الجمركي الدولي الذي يتيح عبور البضائع للحدود مؤقتاً دون دفع رسوم أو ضرائب استيراد. تُصدر إنفود كينجدوم لخدمات الشحن كارنيهات ATA وتعالجها وتديرها للشركات التي تنقل معروضات المعارض والمعدات المهنية والعينات التجارية من وإلى المملكة العربية السعودية — بتخليص خلال 24 ساعة فقط لتضمن ألا تكون بضائعك سبباً في تأخر افتتاح جناح أو تعثر مشروع.",
+      en: "An ATA Carnet is the international customs document that lets goods cross borders temporarily without paying import duties or taxes. ENVOD KINGDOM SHIPPING SERVICES issues, processes and manages ATA Carnets for companies moving exhibition displays, professional equipment and commercial samples into and out of Saudi Arabia — typically cleared within 24 hours so your cargo is never the reason a stand opens late or a project slips.",
+      ar: "كارنيه ATA هو المستند الجمركي الدولي الذي يتيح عبور البضائع للحدود مؤقتاً دون دفع رسوم أو ضرائب استيراد. تُصدر إنفود كينجدوم لخدمات الشحن كارنيهات ATA وتعالجها وتديرها للشركات التي تنقل معروضات المعارض والمعدات المهنية والعينات التجارية من وإلى المملكة العربية السعودية — بتخليص عادةً خلال 24 ساعة حتى لا تكون بضائعك سبباً في تأخر افتتاح جناح أو تعثر مشروع.",
     },
     {
       en: "Known as the \"passport for goods\", a single Carnet replaces the temporary-import paperwork that would otherwise be required at every border, guarantees the duties to customs on your behalf, and lets the same goods leave and return without complication. For more than 25 years our customs team has handled that documentation for exhibitors, broadcasters, contractors and manufacturers — so the goods move, the deadlines hold, and nothing gets stuck at the border.",
@@ -98,8 +98,8 @@ export const ATA_CARNET_PILLAR: ServicePillar = {
     {
       id: "how-envod-processes-ata-carnets",
       heading: {
-        en: "How ENVOD processes your ATA Carnet in 24 hours",
-        ar: "كيف تعالج إنفود كارنيه ATA خلال 24 ساعة",
+        en: "How ENVOD processes your ATA Carnet — typically within 24 hours",
+        ar: "كيف تعالج إنفود كارنيه ATA — عادةً خلال 24 ساعة",
       },
       paragraphs: [
         {
@@ -134,14 +134,14 @@ export const ATA_CARNET_PILLAR: ServicePillar = {
       },
       paragraphs: [
         {
-          en: "As a Saudi customs specialist, ENVOD KINGDOM pairs Carnet expertise with the freight forwarding and on-the-ground clearance that a temporary import actually needs. That means one team handles the document, the shipment and the customs endorsements — the fastest, lowest-risk way to keep temporary goods moving.",
-          ar: "بوصفها متخصصة في الجمارك السعودية، تجمع إنفود كينجدوم بين خبرة الكارنيه والشحن والتخليص الميداني الذي يتطلبه الاستيراد المؤقت فعلياً. وهذا يعني أن فريقاً واحداً يتولى المستند والشحنة والتصديقات الجمركية — وهو الأسرع والأقل مخاطرة لإبقاء البضائع المؤقتة في حركة.",
+          en: "As a Saudi customs specialist, ENVOD KINGDOM pairs Carnet expertise with the freight forwarding and on-the-ground clearance that a temporary import actually needs. That means one team handles the document, the shipment and the customs endorsements — a fast, low-risk way to keep temporary goods moving.",
+          ar: "بوصفها متخصصة في الجمارك السعودية، تجمع إنفود كينجدوم بين خبرة الكارنيه والشحن والتخليص الميداني الذي يتطلبه الاستيراد المؤقت فعلياً. وهذا يعني أن فريقاً واحداً يتولى المستند والشحنة والتصديقات الجمركية — وهي طريقة سريعة ومنخفضة المخاطر لإبقاء البضائع المؤقتة في حركة.",
         },
       ],
       bullets: [
         {
-          en: "24-hour Carnet processing for time-critical shipments",
-          ar: "معالجة الكارنيه خلال 24 ساعة للشحنات الحسّاسة للوقت",
+          en: "Carnet processing typically within 24 hours for time-critical shipments",
+          ar: "معالجة الكارنيه عادةً خلال 24 ساعة للشحنات الحسّاسة للوقت",
         },
         {
           en: "End-to-end handling: document, freight and customs under one team",
