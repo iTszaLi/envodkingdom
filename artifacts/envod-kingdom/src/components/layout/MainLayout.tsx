@@ -6,7 +6,8 @@ import { motion } from "framer-motion";
 import { GlobalNetworkMap } from "@/components/GlobalNetworkMap";
 import {
   Globe, Menu, X, Clock, Shield, Globe2,
-  MapPin, Phone, Printer, Mail, ChevronRight, Award,
+  MapPin, Phone, Printer, Mail, ChevronRight, Award, ArrowUpRight,
+  ShieldCheck, BadgeCheck, Leaf, FileCheck, type LucideIcon,
 } from "lucide-react";
 import logoIcon from "@assets/image_1780532431289.png";
 import logoFull from "@assets/image_1780437854819.png";
@@ -272,15 +273,100 @@ function SocialIcons() {
   );
 }
 
-/* ─────────────────────────── Cert Badge ─────────────────────────── */
-function CertBadge({ name, sub }: { name: string; sub?: string }) {
+/* ─────────────────────────── Head Office Mini Map ─────────────────────────── */
+function HeadOfficeMiniMap() {
+  const { t, isRtl } = useLanguage();
+  const [inView, setInView] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  // Only mount the embed once it nears the viewport — keeps the footer light
+  // and protects LCP/CWV (the footer sits at the very bottom of the page).
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "250px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  const query =
+    "Envod Kingdom Shipping Services LLC, Prince Mansour Bin Abdulaziz St, Al Malaz, Riyadh 12831, Saudi Arabia";
+  const embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&z=15&output=embed`;
+  const directionsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+
   return (
-    <div className="relative group overflow-hidden rounded-xl border border-white/10 bg-[#0a1526] hover:border-secondary/40 transition-all duration-500 cursor-default min-w-[90px] shadow-lg hover:shadow-[0_4px_20px_rgba(214,40,40,0.15)] hover:-translate-y-1">
+    <div className="mt-10">
+      <div className="flex items-center gap-2 mb-4">
+        <MapPin className="w-4 h-4 text-secondary shrink-0" />
+        <span className="text-white font-bold text-[13px] tracking-wide">
+          {t("Riyadh Head Office", "المقر الرئيسي — الرياض")}
+        </span>
+      </div>
+
+      <div
+        ref={ref}
+        className="group relative w-full max-w-[340px] aspect-square rounded-2xl overflow-hidden border border-white/10 bg-[#0a1526] shadow-[0_18px_50px_-16px_rgba(0,0,0,0.8)] hover:border-secondary/30 transition-colors duration-500"
+      >
+        {inView && (
+          <iframe
+            title={t("Riyadh Head Office Map", "خريطة المقر الرئيسي — الرياض")}
+            src={embedSrc}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            className="absolute inset-0 h-full w-full border-0 pointer-events-none"
+            style={{
+              filter:
+                "invert(0.92) hue-rotate(180deg) brightness(0.95) contrast(0.92) saturate(0.9)",
+            }}
+          />
+        )}
+
+        {/* Depth + legibility wash (kept above the inverted iframe) */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-[#06101e]/55 via-transparent to-[#06101e]/15" />
+
+        {/* Whole-map click target → opens Google Maps directions in a new tab */}
+        <a
+          href={directionsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={t("Open Riyadh Head Office in Google Maps", "افتح المقر الرئيسي في خرائط جوجل")}
+          className="absolute inset-0 z-10"
+        >
+          <span
+            className={`absolute bottom-3 ${isRtl ? "left-3" : "right-3"} inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-secondary text-white text-[11px] font-bold tracking-wide shadow-lg opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300`}
+          >
+            {t("Get Directions", "الاتجاهات")}
+            <ArrowUpRight className={`w-3.5 h-3.5 ${isRtl ? "-scale-x-100" : ""}`} />
+          </span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────── Cert Badge ─────────────────────────── */
+function CertBadge({ icon: Icon, name, sub }: { icon: LucideIcon; name: string; sub?: string }) {
+  return (
+    <div className="relative group h-full overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] hover:border-secondary/40 hover:bg-white/[0.04] transition-all duration-500 cursor-default shadow-lg hover:shadow-[0_10px_30px_-10px_rgba(214,40,40,0.25)] hover:-translate-y-1">
       <div className="absolute inset-0 bg-gradient-to-br from-secondary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="flex flex-col items-center justify-center gap-1.5 px-5 py-4 relative z-10">
-        <Award className="w-6 h-6 text-white/30 group-hover:text-secondary transition-colors duration-500" />
-        <span className="text-white font-bold text-[12px] tracking-widest text-center">{name}</span>
-        {sub && <span className="text-white/40 text-[9px] tracking-[0.2em] uppercase">{sub}</span>}
+      <div className="flex h-full flex-col items-center justify-center gap-2.5 px-4 py-6 relative z-10 text-center">
+        <div className="w-11 h-11 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center group-hover:border-secondary/30 group-hover:bg-secondary/10 transition-colors duration-500">
+          <Icon className="w-5 h-5 text-white/50 group-hover:text-secondary transition-colors duration-500" />
+        </div>
+        <span className="text-white font-bold text-[12.5px] tracking-wide leading-none">{name}</span>
+        {sub && <span className="text-white/40 text-[9px] font-semibold tracking-[0.18em] uppercase">{sub}</span>}
       </div>
     </div>
   );
@@ -326,45 +412,39 @@ export function Footer() {
     [t("Customs Clearance", "التخليص الجمركي"), "/services/customs-clearance"],
     [t("Ocean & Sea Freight", "الشحن البحري"), "/services/ocean-freight"],
     [t("Air Freight", "الشحن الجوي"), "/services/air-freight"],
-    [t("GCC Transportation", "النقل الخليجي"), "/services/gcc-transportation"],
     [t("Exhibition Logistics", "لوجستيات المعارض"), "/services/exhibition-logistics"],
-    [t("ATA Carnet Services", "خدمات كارنيه ATA"), "/services/exhibition-logistics"],
+    [t("ATA Carnet", "كارنيه ATA"), "/services/exhibition-logistics"],
+    [t("Warehousing", "التخزين"), "/services/warehousing"],
     [t("Project Cargo", "بضائع المشاريع"), "/services/project-cargo"],
-    [t("Warehousing & Distribution", "التخزين والتوزيع"), "/services/warehousing"],
     [t("Freight Forwarding", "الشحن والتخليص"), "/services/freight-forwarding"],
-    [t("RoRo Shipping", "الشحن الدحرجي"), "/services/roro-shipping"],
+    [t("GCC Transportation", "النقل الخليجي"), "/services/gcc-transportation"],
   ];
 
   const industries: [string, string][] = [
     [t("Oil & Gas", "النفط والغاز"), "/services"],
-    [t("Healthcare & Pharma", "الرعاية الصحية والأدوية"), "/services"],
+    [t("Healthcare", "الرعاية الصحية"), "/services"],
     [t("Construction", "البناء والإنشاء"), "/services"],
     [t("Food & Beverage", "الغذاء والمشروبات"), "/services"],
     [t("Automotive", "السيارات"), "/services"],
-    [t("Manufacturing", "التصنيع"), "/services"],
-    [t("E-Commerce", "التجارة الإلكترونية"), "/services"],
-    [t("Exhibition & Events", "المعارض والفعاليات"), "/services"],
-    [t("Government & Defense", "الحكومة والدفاع"), "/services"],
   ];
 
   const quickLinks: [string, string][] = [
     [t("Home", "الرئيسية"), "/"],
-    [t("About Us", "عن الشركة"), "/about"],
-    [t("All Services", "جميع الخدمات"), "/services"],
-    [t("Track Shipment", "تتبع الشحنة"), "/track"],
+    [t("About", "عن الشركة"), "/about"],
+    [t("Services", "الخدمات"), "/services"],
     [t("Gallery", "المعرض"), "/gallery"],
-    [t("Contact Us", "اتصل بنا"), "/contact"],
-    [t("Get a Free Quote", "احصل على عرض سعر"), "/contact"],
+    [t("Track Shipment", "تتبع الشحنة"), "/track"],
+    [t("Contact", "اتصل بنا"), "/contact"],
   ];
 
-  const certs = [
-    { name: "SABER",      sub: "Saudi" },
-    { name: "SFDA",       sub: "Certified" },
-    { name: "ATA Carnet", sub: "Member" },
-    { name: "IEC",        sub: "Certified" },
-    { name: "ISO 9001",   sub: "Quality" },
-    { name: "ISO 14001",  sub: "Environment" },
-    { name: "ISO 45001",  sub: "Safety" },
+  const certs: { icon: LucideIcon; name: string; sub: string }[] = [
+    { icon: ShieldCheck, name: "SABER",      sub: t("Saudi", "سعودي") },
+    { icon: BadgeCheck,  name: "SFDA",       sub: t("Certified", "معتمد") },
+    { icon: FileCheck,   name: "ATA Carnet", sub: t("Member", "عضو") },
+    { icon: BadgeCheck,  name: "IEC",        sub: t("Certified", "معتمد") },
+    { icon: Award,       name: "ISO 9001",   sub: t("Quality", "الجودة") },
+    { icon: Leaf,        name: "ISO 14001",  sub: t("Environment", "البيئة") },
+    { icon: ShieldCheck, name: "ISO 45001",  sub: t("Safety", "السلامة") },
   ];
 
   const containerVariants = {
@@ -381,7 +461,7 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[#06101e] text-white relative overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
+    <footer className="bg-gradient-to-b from-[#0a1524] via-[#06101e] to-[#040b16] text-white relative overflow-hidden" dir={isRtl ? "rtl" : "ltr"}>
       <GlobalNetworkMap />
       
       {/* Decorative background elements */}
@@ -390,17 +470,17 @@ export function Footer() {
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-[#0a192f] rounded-full blur-[100px] pointer-events-none translate-y-1/3 -translate-x-1/3" />
 
       {/* ── Main grid ── */}
-      <div className="container mx-auto px-6 pt-24 pb-16 relative z-10">
+      <div className="container mx-auto px-6 pt-20 pb-14 relative z-10">
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-x-12 gap-y-16"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
 
-          {/* Brand — col-span-4 */}
-          <motion.div className="lg:col-span-4" variants={itemVariants}>
+          {/* Brand */}
+          <motion.div variants={itemVariants}>
             <Link
               href="/"
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -427,15 +507,17 @@ export function Footer() {
             </div>
 
             <SocialIcons />
+
+            <HeadOfficeMiniMap />
           </motion.div>
 
-          {/* Services — col-span-3 */}
-          <motion.div className="lg:col-span-3" variants={itemVariants}>
-            <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+          {/* Services */}
+          <motion.div variants={itemVariants}>
+            <h4 className="text-white font-black text-[13px] uppercase tracking-[0.22em] mb-6 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
               {t("Our Services", "خدماتنا")}
             </h4>
-            <ul className="space-y-4">
+            <ul className="space-y-3.5">
               {services.map(([label, href], i) => (
                 <li key={i}>
                   <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
@@ -447,15 +529,15 @@ export function Footer() {
             </ul>
           </motion.div>
 
-          {/* Industries + Quick Links — col-span-2 */}
-          <motion.div className="lg:col-span-2 flex flex-col gap-12" variants={itemVariants}>
+          {/* Industries + Quick Links */}
+          <motion.div className="flex flex-col gap-10" variants={itemVariants}>
             <div>
-              <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+              <h4 className="text-white font-black text-[13px] uppercase tracking-[0.22em] mb-6 flex items-center gap-3">
                 <span className="w-2 h-2 rounded-full bg-secondary"></span>
                 {t("Industries", "القطاعات")}
               </h4>
-              <ul className="space-y-4">
-                {industries.slice(0, 5).map(([label, href], i) => (
+              <ul className="space-y-3.5">
+                {industries.map(([label, href], i) => (
                   <li key={i}>
                     <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
                       <ChevronRight className={`w-3.5 h-3.5 text-secondary/0 group-hover:text-secondary transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 ${isRtl ? "rotate-180 translate-x-2 group-hover:-translate-x-0" : ""}`} />
@@ -467,12 +549,12 @@ export function Footer() {
             </div>
 
             <div>
-              <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+              <h4 className="text-white font-black text-[13px] uppercase tracking-[0.22em] mb-6 flex items-center gap-3">
                 <span className="w-2 h-2 rounded-full bg-secondary"></span>
                 {t("Quick Links", "روابط سريعة")}
               </h4>
-              <ul className="space-y-4">
-                {quickLinks.slice(0, 4).map(([label, href], i) => (
+              <ul className="space-y-3.5">
+                {quickLinks.map(([label, href], i) => (
                   <li key={i}>
                     <Link href={href} className="flex items-center gap-3 text-[14px] text-white/60 hover:text-white transition-colors duration-300 group">
                       <ChevronRight className={`w-3.5 h-3.5 text-secondary/0 group-hover:text-secondary transition-all duration-300 transform -translate-x-2 group-hover:translate-x-0 ${isRtl ? "rotate-180 translate-x-2 group-hover:-translate-x-0" : ""}`} />
@@ -484,9 +566,9 @@ export function Footer() {
             </div>
           </motion.div>
 
-          {/* Contact — col-span-3 */}
-          <motion.div className="lg:col-span-3" variants={itemVariants}>
-            <h4 className="text-white font-black text-[12px] uppercase tracking-[0.25em] mb-8 flex items-center gap-3">
+          {/* Contact */}
+          <motion.div variants={itemVariants}>
+            <h4 className="text-white font-black text-[13px] uppercase tracking-[0.22em] mb-6 flex items-center gap-3">
               <span className="w-2 h-2 rounded-full bg-secondary"></span>
               {t("Contact Us", "اتصل بنا")}
             </h4>
@@ -535,6 +617,16 @@ export function Footer() {
 
               <li className="flex gap-4 group">
                 <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
+                  <Printer className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
+                </div>
+                <div>
+                  <p className="text-white/40 text-[10px] font-bold uppercase tracking-[0.15em] mb-1">{t("Fax", "فاكس")}</p>
+                  <span className="text-white/80 text-[14px] font-medium" dir="ltr">+966 11 238 0517</span>
+                </div>
+              </li>
+
+              <li className="flex gap-4 group">
+                <div className="w-10 h-10 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-secondary/10 group-hover:border-secondary/30 transition-colors duration-300">
                   <Mail className="w-4 h-4 text-white/60 group-hover:text-secondary transition-colors" />
                 </div>
                 <div>
@@ -562,15 +654,6 @@ export function Footer() {
                 </div>
               </li>
             </ul>
-
-            <a
-              href="https://www.google.com/maps/search/?api=1&query=Envod+Kingdom+Shipping+Services+LLC%2C+Al+Malaz%2C+Riyadh"
-              target="_blank" rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center justify-center w-full py-3.5 rounded-xl bg-white/[0.02] border border-white/10 text-[13px] text-white hover:text-white hover:bg-white/[0.05] hover:border-white/20 font-bold tracking-wide transition-all duration-300 gap-2"
-            >
-              <MapPin className="w-4 h-4 text-secondary" />
-              {t("View on Google Maps", "عرض على خرائط جوجل")}
-            </a>
           </motion.div>
         </motion.div>
       </div>
@@ -582,14 +665,14 @@ export function Footer() {
             {t("Certifications & Compliance", "الشهادات والامتثال")}
           </p>
           <motion.div 
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-3 sm:gap-4"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-50px" }}
             variants={containerVariants}
           >
             {certs.map((c) => (
-              <motion.div key={c.name} variants={itemVariants}>
+              <motion.div key={c.name} variants={itemVariants} className="h-full">
                 <CertBadge {...c} />
               </motion.div>
             ))}
@@ -605,10 +688,17 @@ export function Footer() {
               © {year} {t("ENVOD KINGDOM SHIPPING SERVICES LLC", "انفود كينغدوم لخدمات الشحن ذ.م.م")}.{" "}
               {t("All rights reserved.", "جميع الحقوق محفوظة.")}
             </p>
-            <div className="flex items-center gap-6 flex-wrap justify-center">
-              <a href="#" className="hover:text-white transition-colors">{t("Privacy Policy", "سياسة الخصوصية")}</a>
-              <a href="#" className="hover:text-white transition-colors">{t("Terms & Conditions", "الشروط والأحكام")}</a>
-              <a href="#" className="hover:text-white transition-colors">{t("Cookie Policy", "سياسة الكوكيز")}</a>
+            <div className="flex items-center gap-4 flex-wrap justify-center">
+              {([
+                ["Privacy Policy", "سياسة الخصوصية"],
+                ["Terms & Conditions", "الشروط والأحكام"],
+                ["Cookie Policy", "سياسة الكوكيز"],
+              ] as const).map(([en, ar], i) => (
+                <React.Fragment key={en}>
+                  {i > 0 && <span className="w-px h-3 bg-white/15" aria-hidden />}
+                  <a href="#" className="hover:text-white transition-colors">{t(en, ar)}</a>
+                </React.Fragment>
+              ))}
             </div>
           </div>
         </div>

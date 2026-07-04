@@ -1,0 +1,133 @@
+Redesign the "End-to-End Exhibition Logistics Workflow" section to look like a premium enterprise logistics process similar to DHL, Maersk, DP World, DSV, and Kuehne+Nagel. The current horizontal timeline with numbered circles feels too basic and does not communicate the value of our services.
+
+Overall Design
+
+Replace the current timeline with a modern, professional workflow consisting of 7 premium process cards connected by a thin horizontal line or subtle directional arrows.
+
+The section should feel clean, structured, and informative—not overly animated.
+
+Layout
+
+Create seven equally sized cards arranged horizontally on desktop.
+
+On tablets and mobile, stack them into two columns or a vertical timeline.
+
+Each card should contain:
+
+A clean professional icon
+Step number (01–07)
+Step title
+A short 1–2 sentence description
+Optional estimated timeframe (where appropriate)
+
+Example:
+
+01 Consultation
+
+📞 Icon
+
+Understand your exhibition requirements, shipment size, venue, deadlines, and special handling requirements.
+
+02 Planning
+
+📋 Icon
+
+Prepare the logistics plan, transportation schedule, customs documentation, and delivery timeline.
+
+03 Documentation
+
+📄 Icon
+
+Manage ATA Carnet, customs clearance, permits, and all required shipping documents.
+
+04 Transportation
+
+🚛 Icon
+
+Transport cargo safely via air, sea, or road while providing shipment tracking.
+
+05 Venue Delivery
+
+🏢 Icon
+
+Deliver directly to the exhibition venue according to organizer schedules and booth setup timelines.
+
+06 On-site Support
+
+👷 Icon
+
+Coordinate unloading, handling, temporary storage, and provide on-site logistics assistance throughout the exhibition.
+
+07 Return Logistics
+
+📦 Icon
+
+Arrange packing, customs processing, and return shipping after the exhibition concludes.
+
+Visual Style
+
+Each card should have:
+
+Dark premium background
+16–20px rounded corners
+Thin border
+Soft shadow
+High-quality outline icon
+Large bold step number
+Clean typography
+Plenty of white space
+
+Cards should feel similar to enterprise SaaS dashboards.
+
+Connection Style
+
+Instead of a heavy timeline:
+
+Connect the cards using a thin subtle line.
+Place a small arrow between each card.
+Keep the connection understated.
+Remove the oversized circles from the current design.
+Animations
+
+Keep animations minimal and professional.
+
+Fade-up animation when the section enters the viewport.
+Slight card elevation (4–6px) on hover.
+Soft border highlight using the brand color.
+Icon gently scales by 5%.
+No bouncing, spinning, or flashy animations.
+No continuous movement.
+Add Trust Indicators
+
+At the bottom of the workflow, include a small trust strip:
+
+✓ ATA Carnet Specialists
+
+✓ Customs Clearance Experts
+
+✓ On-Time Venue Delivery
+
+✓ 24/7 Shipment Tracking
+
+✓ Dedicated Project Manager
+
+These should appear as elegant badges or chips.
+
+Optional Enhancement
+
+At the end of the workflow, after Step 07, add a subtle call-to-action:
+
+Need exhibition logistics support?
+
+Get a Free Logistics Consultation →
+
+This should blend naturally into the design without looking like a large advertisement.
+
+Performance
+Use SVG icons.
+Keep animations GPU-accelerated.
+Ensure excellent responsiveness.
+Maintain fast loading and good Core Web Vitals.
+Overall Goal
+
+The section should clearly explain our complete exhibition logistics process while reinforcing professionalism, reliability, and expertise. It should look like a workflow presented by a global logistics company—not a generic timeline. The design should immediately build trust with corporate clients and make the process easy to understand at a glance.

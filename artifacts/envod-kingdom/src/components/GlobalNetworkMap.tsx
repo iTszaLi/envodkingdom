@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState, useEffect } from "react";
+import { Link } from "wouter";
 import { motion, AnimatePresence, useReducedMotion, useInView } from "framer-motion";
 import { geoMercator, geoPath } from "d3-geo";
 import { feature } from "topojson-client";
@@ -7,8 +8,57 @@ import type { LucideIcon } from "lucide-react";
 import {
   Building2, Plane, Ship, Truck, Anchor, Warehouse, Globe2, Package,
   FileCheck2, Boxes, ArrowRight, ChevronRight,
+  MapPin, Clock, Phone, Mail, Navigation, MessageSquare,
 } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import SAFlag from "country-flag-icons/react/3x2/SA";
+import AEFlag from "country-flag-icons/react/3x2/AE";
+import BHFlag from "country-flag-icons/react/3x2/BH";
+import INFlag from "country-flag-icons/react/3x2/IN";
+
+/* ───────────────────────────── Country flags ─────────────────────────── */
+type CountryCode = "SA" | "AE" | "BH" | "IN";
+const FLAGS: Record<CountryCode, typeof SAFlag> = { SA: SAFlag, AE: AEFlag, BH: BHFlag, IN: INFlag };
+const mapsUrl = (q: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(q)}`;
+
+/** Crisp circular country flag — a 3:2 SVG cropped into a ring-bordered circle. */
+function CircleFlag({ code, size = 22, className = "" }: { code: CountryCode; size?: number; className?: string }) {
+  const Flag = FLAGS[code];
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex items-center justify-center overflow-hidden rounded-full ring-1 ring-white/20 shadow-sm shrink-0 ${className}`}
+      style={{ width: size, height: size }}
+    >
+      <Flag style={{ height: "100%", width: "auto", maxWidth: "none" }} />
+    </span>
+  );
+}
+
+/** One labelled line (icon + label + value) inside the office info panel. */
+function DetailRow({
+  icon: Icon, label, value, href, ltr,
+}: { icon: LucideIcon; label: string; value: string; href?: string; ltr?: boolean }) {
+  const text = (
+    <div className="min-w-0">
+      <div className="text-white/40 text-[10px] font-bold uppercase tracking-widest mb-0.5">{label}</div>
+      <div className="text-white/85 text-[13px] leading-snug break-words" dir={ltr ? "ltr" : undefined}>
+        {value}
+      </div>
+    </div>
+  );
+  return (
+    <div className="flex items-start gap-3">
+      <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-white/[0.05] border border-white/10 shrink-0">
+        <Icon className="w-4 h-4 text-secondary" />
+      </span>
+      {href ? (
+        <a href={href} className="min-w-0 hover:opacity-80 transition-opacity">{text}</a>
+      ) : text}
+    </div>
+  );
+}
 
 /* ───────────────────────── Geometry constants ───────────────────────── */
 const VB_W = 1000;
@@ -56,20 +106,36 @@ interface Office {
   country: string;
   countryAr: string;
   countryName: string; // world-atlas match
-  flag: string;
+  code: CountryCode;
   lat: number;
   lng: number;
   isHub?: boolean;
+  address: string;
+  addressAr: string;
+  hours: string;
+  hoursAr: string;
+  phone: string;
+  email: string;
+  mapsQuery: string;
   gateways: [string, string][]; // [en, ar]
   services: ServiceKey[];
   icon: LucideIcon; // card accent
 }
 
+// Single shared point of contact for every office (per company records).
+const OFFICE_PHONE = "+966 50 226 0256";
+const OFFICE_EMAIL = "info@envodkingdom.net";
+
 const OFFICES: Office[] = [
   {
     id: "riyadh", city: "Riyadh", cityAr: "الرياض",
     country: "Saudi Arabia", countryAr: "المملكة العربية السعودية",
-    countryName: "Saudi Arabia", flag: "🇸🇦", lat: 24.71, lng: 46.68, isHub: true,
+    countryName: "Saudi Arabia", code: "SA", lat: 24.71, lng: 46.68, isHub: true,
+    address: "Prince Mansour Bin Abdulaziz St., Al Malaz District, Riyadh 12831",
+    addressAr: "شارع الأمير منصور بن عبدالعزيز، حي الملز، الرياض 12831",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "Envod Kingdom Shipping Services LLC, Al Malaz, Riyadh",
     gateways: [["King Khalid International Airport", "مطار الملك خالد الدولي"]],
     services: ["air", "customs", "warehouse", "exhibition", "project"],
     icon: Building2,
@@ -77,7 +143,12 @@ const OFFICES: Office[] = [
   {
     id: "jeddah", city: "Jeddah", cityAr: "جدة",
     country: "Saudi Arabia", countryAr: "المملكة العربية السعودية",
-    countryName: "Saudi Arabia", flag: "🇸🇦", lat: 21.49, lng: 39.19,
+    countryName: "Saudi Arabia", code: "SA", lat: 21.49, lng: 39.19,
+    address: "Near Jeddah Islamic Port, Jeddah",
+    addressAr: "بالقرب من ميناء جدة الإسلامي، جدة",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "Jeddah Islamic Port, Jeddah, Saudi Arabia",
     gateways: [
       ["Jeddah Islamic Port", "ميناء جدة الإسلامي"],
       ["King Abdulaziz International Airport", "مطار الملك عبدالعزيز الدولي"],
@@ -88,7 +159,12 @@ const OFFICES: Office[] = [
   {
     id: "dammam", city: "Dammam", cityAr: "الدمام",
     country: "Saudi Arabia", countryAr: "المملكة العربية السعودية",
-    countryName: "Saudi Arabia", flag: "🇸🇦", lat: 26.43, lng: 50.1,
+    countryName: "Saudi Arabia", code: "SA", lat: 26.43, lng: 50.1,
+    address: "King Abdulaziz Port area, Dammam",
+    addressAr: "منطقة ميناء الملك عبدالعزيز، الدمام",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "King Abdulaziz Port, Dammam, Saudi Arabia",
     gateways: [
       ["King Abdulaziz Port", "ميناء الملك عبدالعزيز"],
       ["King Fahd International Airport", "مطار الملك فهد الدولي"],
@@ -99,7 +175,12 @@ const OFFICES: Office[] = [
   {
     id: "dubai", city: "Dubai", cityAr: "دبي",
     country: "United Arab Emirates", countryAr: "الإمارات العربية المتحدة",
-    countryName: "United Arab Emirates", flag: "🇦🇪", lat: 25.2, lng: 55.27,
+    countryName: "United Arab Emirates", code: "AE", lat: 25.2, lng: 55.27,
+    address: "Jebel Ali, Dubai",
+    addressAr: "جبل علي، دبي",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "Jebel Ali Port, Dubai, United Arab Emirates",
     gateways: [
       ["Jebel Ali Port", "ميناء جبل علي"],
       ["Al Maktoum International Airport", "مطار آل مكتوم الدولي"],
@@ -110,7 +191,12 @@ const OFFICES: Office[] = [
   {
     id: "manama", city: "Manama", cityAr: "المنامة",
     country: "Bahrain", countryAr: "البحرين",
-    countryName: "Bahrain", flag: "🇧🇭", lat: 26.23, lng: 50.58,
+    countryName: "Bahrain", code: "BH", lat: 26.23, lng: 50.58,
+    address: "Khalifa Bin Salman Port area, Manama",
+    addressAr: "منطقة ميناء خليفة بن سلمان، المنامة",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "Khalifa Bin Salman Port, Manama, Bahrain",
     gateways: [
       ["Khalifa Bin Salman Port", "ميناء خليفة بن سلمان"],
       ["Bahrain International Airport", "مطار البحرين الدولي"],
@@ -121,7 +207,12 @@ const OFFICES: Office[] = [
   {
     id: "karnataka", city: "Bengaluru", cityAr: "بنغالورو",
     country: "India", countryAr: "الهند",
-    countryName: "India", flag: "🇮🇳", lat: 12.97, lng: 77.59,
+    countryName: "India", code: "IN", lat: 12.97, lng: 77.59,
+    address: "Near Kempegowda Int'l Airport, Bengaluru",
+    addressAr: "بالقرب من مطار كمبيغودا الدولي، بنغالورو",
+    hours: "Mon – Sat · 9:00 AM – 6:00 PM", hoursAr: "الاثنين – السبت · 9:00 ص – 6:00 م",
+    phone: OFFICE_PHONE, email: OFFICE_EMAIL,
+    mapsQuery: "Kempegowda International Airport, Bengaluru, India",
     gateways: [
       ["Kempegowda International Airport", "مطار كمبيغودا الدولي"],
       ["Chennai Port", "ميناء تشيناي"],
@@ -308,10 +399,12 @@ export function GlobalNetworkMap() {
         >
           {/* Map card */}
           <div
-            className="relative rounded-[24px] border border-white/10 overflow-hidden shadow-[0_30px_80px_-40px_rgba(0,0,0,0.85)]"
-            style={{ aspectRatio: `${VB_W} / ${VB_H}`, background: "linear-gradient(160deg,#071628 0%,#040c18 100%)" }}
+            className="relative rounded-[24px] border border-white/10 overflow-hidden shadow-[0_30px_80px_-40px_rgba(0,0,0,0.85)] flex items-center justify-center min-h-[320px]"
+            style={{ background: "linear-gradient(160deg,#071628 0%,#040c18 100%)" }}
             dir="ltr"
           >
+            {/* Aspect-locked stage — the svg map and markers align to this box */}
+            <div className="relative w-full" style={{ aspectRatio: `${VB_W} / ${VB_H}` }}>
             <svg viewBox={`0 0 ${VB_W} ${VB_H}`} preserveAspectRatio="xMidYMid meet" className="absolute inset-0 w-full h-full">
               <defs>
                 <filter id="routeGlow" x="-30%" y="-30%" width="160%" height="160%">
@@ -374,13 +467,22 @@ export function GlobalNetworkMap() {
               if (!p) return null;
               const isPanel = displayId === o.id;
               const isHot = interactId === o.id;
+              const active = isHot || isPanel;
+              const dimmed = interactId !== null && interactId !== o.id;
               return (
                 <button
                   key={o.id}
                   type="button"
                   aria-label={t(o.city, o.cityAr)}
-                  className="absolute z-20 cursor-pointer"
-                  style={{ left: `${(p.x / VB_W) * 100}%`, top: `${(p.y / VB_H) * 100}%`, transform: "translate(-50%,-50%)" }}
+                  className="absolute cursor-pointer"
+                  style={{
+                    left: `${(p.x / VB_W) * 100}%`,
+                    top: `${(p.y / VB_H) * 100}%`,
+                    transform: "translate(-50%,-50%)",
+                    opacity: dimmed ? 0.35 : 1,
+                    zIndex: active ? 30 : 20,
+                    transition: "opacity 250ms ease",
+                  }}
                   onMouseEnter={() => setHoverId(o.id)}
                   onMouseLeave={() => setHoverId(null)}
                   onClick={() => setActiveId(o.id)}
@@ -390,20 +492,24 @@ export function GlobalNetworkMap() {
                     <span
                       className="absolute rounded-full"
                       style={{
-                        width: o.isHub ? 34 : 26,
-                        height: o.isHub ? 34 : 26,
-                        background: "radial-gradient(circle,rgba(214,40,40,0.5),transparent 70%)",
-                        opacity: isHot ? 1 : 0,
+                        width: o.isHub ? 44 : 34,
+                        height: o.isHub ? 44 : 34,
+                        background: o.isHub
+                          ? "radial-gradient(circle,rgba(214,40,40,0.55),transparent 70%)"
+                          : "radial-gradient(circle,rgba(232,240,251,0.45),transparent 70%)",
+                        opacity: active ? 1 : 0,
                         transition: "opacity 250ms ease",
                       }}
                     />
                     {/* selection ring (panel target) */}
                     <span
-                      className="absolute rounded-full ring-1 ring-inset"
+                      className="absolute rounded-full"
                       style={{
-                        width: o.isHub ? 22 : 16,
-                        height: o.isHub ? 22 : 16,
-                        boxShadow: isPanel ? "0 0 0 3px rgba(214,40,40,0.28)" : "none",
+                        width: o.isHub ? 26 : 20,
+                        height: o.isHub ? 26 : 20,
+                        boxShadow: isPanel
+                          ? `0 0 0 2px ${o.isHub ? "rgba(214,40,40,0.9)" : "rgba(232,240,251,0.85)"}`
+                          : "none",
                         transition: "box-shadow 250ms ease",
                       }}
                     />
@@ -411,11 +517,11 @@ export function GlobalNetworkMap() {
                     <span
                       className="relative rounded-full ring-2 ring-[#040c18]"
                       style={{
-                        width: o.isHub ? 14 : 9,
-                        height: o.isHub ? 14 : 9,
+                        width: o.isHub ? 16 : 11,
+                        height: o.isHub ? 16 : 11,
                         background: o.isHub ? "#D62828" : "#e8f0fb",
-                        boxShadow: o.isHub ? "0 0 12px 2px rgba(214,40,40,0.45)" : "0 0 6px 1px rgba(255,255,255,0.25)",
-                        transform: isHot ? "scale(1.25)" : "scale(1)",
+                        boxShadow: o.isHub ? "0 0 14px 2px rgba(214,40,40,0.5)" : "0 0 8px 1px rgba(255,255,255,0.3)",
+                        transform: active ? "scale(1.25)" : "scale(1)",
                         transition: "transform 250ms ease",
                       }}
                     />
@@ -429,6 +535,7 @@ export function GlobalNetworkMap() {
                 </button>
               );
             })}
+            </div>
 
             {/* Corner caption */}
             <div className="absolute left-3 top-3 z-30 flex items-center gap-2 rounded-lg border border-white/10 bg-[#06101e]/70 backdrop-blur px-3 py-1.5">
@@ -439,10 +546,19 @@ export function GlobalNetworkMap() {
             </div>
 
             {/* Legend */}
-            <div className="absolute left-3 bottom-3 z-30 hidden sm:flex items-center gap-3 rounded-lg border border-white/10 bg-[#06101e]/70 backdrop-blur px-3 py-2 text-[10px] text-white/60">
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-secondary" />{t("Head Office", "المقر الرئيسي")}</span>
-              <span className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-[#e8f0fb]" />{t("Branch", "فرع")}</span>
-              <span className="flex items-center gap-1.5"><span className="w-4 h-px bg-white/40" />{t("Network", "الشبكة")}</span>
+            <div className="absolute left-3 bottom-3 z-30 hidden sm:flex flex-col gap-2 rounded-xl border border-white/10 bg-[#06101e]/80 backdrop-blur px-3.5 py-3 text-[11px] font-medium text-white/70">
+              <span className="flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-secondary shadow-[0_0_6px_rgba(214,40,40,0.6)] shrink-0" />
+                {t("Head Office", "المقر الرئيسي")}
+              </span>
+              <span className="flex items-center gap-2.5">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#e8f0fb] ring-2 ring-[#e8f0fb]/20 shrink-0" />
+                {t("Branch Office", "مكتب فرعي")}
+              </span>
+              <span className="flex items-center gap-2.5">
+                <span className="w-4 border-t-2 border-dashed border-white/45 shrink-0" />
+                {t("Logistics Network", "الشبكة اللوجستية")}
+              </span>
             </div>
           </div>
 
@@ -460,7 +576,7 @@ export function GlobalNetworkMap() {
                 {/* Header */}
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <span className="text-3xl leading-none">{office.flag}</span>
+                    <CircleFlag code={office.code} size={34} />
                     <div>
                       <div className="text-white font-black text-xl leading-tight">
                         {isRtl ? office.cityAr : office.city}
@@ -481,8 +597,16 @@ export function GlobalNetworkMap() {
 
                 {/* Online status */}
                 <div className="mt-4 inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-400">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.8)]" />
                   {t("Operational · 24/7", "قيد التشغيل · 24/7")}
+                </div>
+
+                {/* Contact details */}
+                <div className="mt-6 space-y-3.5">
+                  <DetailRow icon={MapPin} label={t("Address", "العنوان")} value={isRtl ? office.addressAr : office.address} />
+                  <DetailRow icon={Clock} label={t("Business Hours", "ساعات العمل")} value={isRtl ? office.hoursAr : office.hours} />
+                  <DetailRow icon={Phone} label={t("Phone", "الهاتف")} value={office.phone} href={`tel:${office.phone.replace(/\s/g, "")}`} ltr />
+                  <DetailRow icon={Mail} label={t("Email", "البريد الإلكتروني")} value={office.email} href={`mailto:${office.email}`} ltr />
                 </div>
 
                 {/* Nearest gateway */}
@@ -525,6 +649,26 @@ export function GlobalNetworkMap() {
                     })}
                   </div>
                 </div>
+
+                {/* Actions */}
+                <div className="mt-auto pt-6 flex flex-col sm:flex-row gap-2.5">
+                  <a
+                    href={mapsUrl(office.mapsQuery)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[0.04] px-4 py-2.5 text-[13px] font-bold text-white transition-colors hover:border-white/30 hover:bg-white/[0.08]"
+                  >
+                    <Navigation className="w-4 h-4 text-secondary" />
+                    {t("View on Google Maps", "عرض على خرائط جوجل")}
+                  </a>
+                  <Link
+                    href="/contact"
+                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl bg-secondary px-4 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-secondary/90"
+                  >
+                    <MessageSquare className="w-4 h-4" />
+                    {t("Contact this Office", "تواصل مع المكتب")}
+                  </Link>
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -550,7 +694,7 @@ export function GlobalNetworkMap() {
                   onClick={() => setActiveId(o.id)}
                   onMouseEnter={() => setHoverId(o.id)}
                   onMouseLeave={() => setHoverId(null)}
-                  className={`group text-left rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)] ${
+                  className={`group h-full flex flex-col text-left rounded-2xl border p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_18px_40px_-24px_rgba(0,0,0,0.9)] ${
                     isSel
                       ? "border-secondary/60 bg-secondary/[0.08]"
                       : "border-white/10 bg-white/[0.03] hover:border-secondary/30 hover:bg-white/[0.05]"
@@ -561,16 +705,16 @@ export function GlobalNetworkMap() {
                     <span className={`flex items-center justify-center w-9 h-9 rounded-xl ${o.isHub ? "bg-secondary/20" : "bg-white/[0.06]"}`}>
                       <o.icon className={`w-4 h-4 ${o.isHub ? "text-secondary" : "text-white/70"}`} />
                     </span>
-                    <span className="text-2xl leading-none">{o.flag}</span>
+                    <CircleFlag code={o.code} size={24} />
                   </div>
                   <div className="text-white font-bold text-[15px] leading-tight">{isRtl ? o.cityAr : o.city}</div>
-                  <div className="text-white/45 text-xs mb-2.5">{isRtl ? o.countryAr : o.country}</div>
+                  <div className="text-white/45 text-xs mb-3">{isRtl ? o.countryAr : o.country}</div>
 
-                  <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center justify-between gap-2 mb-3">
                     <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-[9px] font-black uppercase tracking-wider ${o.isHub ? "bg-secondary/20 text-secondary" : "bg-white/[0.07] text-white/60"}`}>
                       {o.isHub ? t("Head Office", "المقر الرئيسي") : t("Branch", "فرع")}
                     </span>
-                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-400">
+                    <span className="inline-flex items-center gap-1 text-[9px] font-bold text-emerald-400 shrink-0">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
                       {t("Online", "متصل")}
                     </span>
@@ -592,7 +736,7 @@ export function GlobalNetworkMap() {
                     })}
                   </div>
 
-                  <div className="mt-3 flex items-center gap-1 text-[11px] font-semibold text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="mt-auto pt-3 flex items-center gap-1 text-[11px] font-semibold text-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     {t("View details", "عرض التفاصيل")}
                     {isRtl ? <ChevronRight className="w-3 h-3 rotate-180" /> : <ArrowRight className="w-3 h-3" />}
                   </div>

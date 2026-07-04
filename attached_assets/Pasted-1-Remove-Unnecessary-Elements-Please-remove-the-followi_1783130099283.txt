@@ -1,0 +1,207 @@
+1. Remove Unnecessary Elements
+
+Please remove the following completely:
+
+Remove the "View on Google Maps" button from the Contact Us section (we already have the embedded map).
+Remove the Phone section from the very bottom if it appears there.
+Remove any duplicate contact information.
+Remove any unnecessary empty space or duplicated UI elements.
+
+ALSO ADD
+Fax
++966 11 238 0517
+
+Display it with a clean fax icon matching the existing icon style.
+
+2. Footer Layout
+
+Rebuild the footer using a clean 4-column grid with perfectly aligned content.
+
+Column 1
+Company Logo
+Short company description
+Certifications badges
+Social Media Icons
+Embedded Head Office Map
+Column 2
+
+Our Services
+
+Customs Clearance
+Ocean Freight
+Air Freight
+Exhibition Logistics
+ATA Carnet
+Warehousing
+Project Cargo
+Freight Forwarding
+GCC Transportation
+Column 3
+
+Industries
+
+Oil & Gas
+Healthcare
+Construction
+Food & Beverage
+Automotive
+
+Quick Links
+
+Home
+About
+Services
+Gallery
+Track Shipment
+Contact
+Column 4
+
+Contact Information
+
+Riyadh Head Office
+Address
+Phone
+WhatsApp
+Fax
+Email
+Business Hours
+
+Everything should align perfectly vertically.
+
+3. Improve the Embedded Map
+
+Keep the embedded Google Map but improve its presentation.
+
+Increase its size slightly.
+Make it perfectly square.
+Rounded corners (16px).
+Thin border.
+Soft shadow.
+Add a subtle label above:
+
+📍 Riyadh Head Office
+
+Remove unnecessary Google UI controls if possible.
+
+4. Better Alignment
+
+The current footer alignment feels inconsistent.
+
+Please:
+
+Align every heading to the same horizontal starting point.
+Use consistent spacing between headings and content.
+Make every column the same visual height.
+Ensure icons align perfectly with their corresponding text.
+Align certification badges properly.
+Improve vertical rhythm throughout the footer.
+
+The entire footer should look balanced and symmetrical.
+
+5. Improve Typography
+
+Create a stronger visual hierarchy.
+
+Headings:
+
+Larger
+Bold
+Better letter spacing
+
+Body text:
+
+Slightly lighter
+Better line height
+Consistent spacing
+
+Reduce excessive empty gaps while maintaining breathing room.
+
+6. Social Icons
+
+Improve the social icons.
+
+Equal spacing
+Same size
+Circular buttons
+Thin border
+Smooth hover effect
+Brand-colored hover state (subtle)
+
+Do not over-animate.
+
+7. Certification Section
+
+The certification badges currently look disconnected.
+
+Redesign them as premium certification cards.
+
+Each card should include:
+
+Icon
+Certification Name
+Small subtitle
+
+Examples:
+
+SABER
+SFDA Certified
+ATA Carnet Member
+IEC Certified
+ISO 9001
+ISO 14001
+ISO 45001
+
+All cards should have equal width and height.
+
+8. Improve Footer Bottom Bar
+
+Redesign the copyright section.
+
+Left:
+
+© 2026 ENVOD Kingdom Shipping Services LLC. All Rights Reserved.
+
+Right:
+
+Privacy Policy
+
+Terms & Conditions
+
+Cookie Policy
+
+Separate links with subtle dividers.
+
+Center everything vertically.
+
+9. Add More Enterprise Polish
+
+Improve the footer with subtle premium touches:
+
+Slight gradient background.
+Better separators between sections.
+Softer borders.
+More consistent corner radius.
+Improved spacing.
+Better visual balance.
+More white space around important content.
+
+Avoid making it flashy.
+
+10. Responsive Design
+
+Ensure the footer looks perfect on:
+
+Desktop
+Laptop
+Tablet
+Mobile
+
+On mobile:
+
+Stack columns cleanly.
+Keep the embedded map visible.
+Maintain proper spacing.
+Avoid oversized buttons.
+11. Final Goal
+
+The footer should feel like the closing section of a Fortune 500 logistics company's website. It should immediately communicate professionalism, trust, and credibility through clean alignment, consistent spacing, modern typography, and an organized information hierarchy. Every element should have a purpose, and nothing should feel duplicated, misaligned, or cluttered. The overall result should be elegant, timeless, and enterprise-grade while matching the premium design language used throughout the rest of the website.

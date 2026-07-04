@@ -1,7 +1,21 @@
-import { useRef, type MouseEvent } from "react";
-import { motion, useInView } from "framer-motion";
+import { type MouseEvent } from "react";
+import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
-import { CheckCircle2, ArrowRight, ChevronRight, BadgeCheck } from "lucide-react";
+import {
+  CheckCircle2,
+  ArrowRight,
+  ChevronRight,
+  BadgeCheck,
+  PhoneCall,
+  ClipboardList,
+  FileText,
+  Truck,
+  Building2,
+  HardHat,
+  PackageCheck,
+  Clock,
+  type LucideIcon,
+} from "lucide-react";
 import { Link } from "wouter";
 
 import logoLeap from "@assets/image_1783126648923.png";
@@ -56,14 +70,88 @@ const EVENTS_SCHEMA = {
   })),
 };
 
-const TIMELINE = [
-  { en: "Consultation",     ar: "الاستشارة",       num: "01" },
-  { en: "Planning",         ar: "التخطيط",         num: "02" },
-  { en: "Documentation",    ar: "التوثيق",         num: "03" },
-  { en: "Transportation",   ar: "النقل",           num: "04" },
-  { en: "Venue Delivery",   ar: "التسليم للموقع", num: "05" },
-  { en: "On-site Support",  ar: "الدعم الميداني", num: "06" },
-  { en: "Return Logistics", ar: "اللوجستيات العكسية", num: "07" },
+type ProcessStep = {
+  num: string;
+  en: string;
+  ar: string;
+  dEn: string;
+  dAr: string;
+  icon: LucideIcon;
+  tEn?: string;
+  tAr?: string;
+};
+
+const PROCESS_STEPS: ProcessStep[] = [
+  {
+    num: "01",
+    en: "Consultation",
+    ar: "الاستشارة",
+    icon: PhoneCall,
+    dEn: "Understand your exhibition requirements, shipment size, venue, deadlines, and special handling needs.",
+    dAr: "نفهم متطلبات معرضك وحجم الشحنة والموقع والمواعيد النهائية ومتطلبات المناولة الخاصة.",
+    tEn: "Within 24 hrs",
+    tAr: "خلال 24 ساعة",
+  },
+  {
+    num: "02",
+    en: "Planning",
+    ar: "التخطيط",
+    icon: ClipboardList,
+    dEn: "Prepare the logistics plan, transportation schedule, customs documentation, and delivery timeline.",
+    dAr: "نُعد الخطة اللوجستية وجدول النقل ووثائق التخليص الجمركي والجدول الزمني للتسليم.",
+    tEn: "1–2 days",
+    tAr: "1–2 يوم",
+  },
+  {
+    num: "03",
+    en: "Documentation",
+    ar: "التوثيق",
+    icon: FileText,
+    dEn: "Manage ATA Carnet, customs clearance, permits, and all required shipping documents.",
+    dAr: "ندير كارنيه ATA والتخليص الجمركي والتصاريح وجميع مستندات الشحن المطلوبة.",
+    tEn: "24 hr ATA Carnet",
+    tAr: "كارنيه خلال 24 ساعة",
+  },
+  {
+    num: "04",
+    en: "Transportation",
+    ar: "النقل",
+    icon: Truck,
+    dEn: "Transport cargo safely via air, sea, or road with real-time shipment tracking.",
+    dAr: "ننقل البضائع بأمان عبر الجو أو البحر أو البر مع تتبع الشحنة في الوقت الفعلي.",
+  },
+  {
+    num: "05",
+    en: "Venue Delivery",
+    ar: "التسليم للموقع",
+    icon: Building2,
+    dEn: "Deliver directly to the exhibition venue per organizer schedules and booth setup timelines.",
+    dAr: "نُسلّم مباشرة إلى موقع المعرض وفقاً لجداول المنظمين ومواعيد تجهيز الأجنحة.",
+  },
+  {
+    num: "06",
+    en: "On-site Support",
+    ar: "الدعم الميداني",
+    icon: HardHat,
+    dEn: "Coordinate unloading, handling, temporary storage, and on-site logistics throughout the event.",
+    dAr: "ننسق التفريغ والمناولة والتخزين المؤقت والدعم اللوجستي الميداني طوال فترة المعرض.",
+  },
+  {
+    num: "07",
+    en: "Return Logistics",
+    ar: "اللوجستيات العكسية",
+    icon: PackageCheck,
+    dEn: "Arrange packing, customs processing, and return shipping after the exhibition concludes.",
+    dAr: "نرتب التغليف والإجراءات الجمركية والشحن العكسي بعد انتهاء المعرض.",
+  },
+];
+
+const TRUST = [
+  { en: "ATA Carnet Specialists", ar: "متخصصو كارنيه ATA" },
+  { en: "Customs Clearance Experts", ar: "خبراء التخليص الجمركي" },
+  { en: "On-Time Venue Delivery", ar: "تسليم في الموعد للموقع" },
+  { en: "24/7 Shipment Tracking", ar: "تتبع الشحنات على مدار الساعة" },
+  { en: "Dedicated Project Manager", ar: "مدير مشروع مخصص" },
 ];
 
 const STATS = [
@@ -175,10 +263,76 @@ function EventCard({ event, index, isRtl }: { event: (typeof EVENTS)[number]; in
   );
 }
 
+function ProcessCard({
+  step,
+  index,
+  isLast,
+  isRtl,
+}: {
+  step: ProcessStep;
+  index: number;
+  isLast: boolean;
+  isRtl: boolean;
+}) {
+  const Icon = step.icon;
+  const timeframe = isRtl ? step.tAr : step.tEn;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
+      transition={{ delay: 0.08 + index * 0.09, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
+      className="group relative h-full"
+    >
+      {/* Directional connector — xl only, not on last card */}
+      {!isLast && (
+        <div
+          aria-hidden="true"
+          className={`hidden xl:block absolute top-[34px] z-20 ${isRtl ? "-left-5" : "-right-5"}`}
+        >
+          <ChevronRight className={`w-4 h-4 text-secondary/45 ${isRtl ? "rotate-180" : ""}`} />
+        </div>
+      )}
+
+      {/* Card */}
+      <div className="relative z-10 h-full flex flex-col rounded-[18px] border border-white/10 bg-white/[0.03] p-5 shadow-[0_10px_30px_-16px_rgba(0,0,0,0.75)] transition-all duration-300 ease-out will-change-transform group-hover:-translate-y-1.5 group-hover:border-secondary/40 group-hover:shadow-[0_18px_44px_-16px_rgba(214,40,40,0.28)]">
+        {/* Icon + step number */}
+        <div className={`flex items-center justify-between mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+          <div className="flex items-center justify-center w-11 h-11 rounded-xl border border-secondary/20 bg-secondary/10 text-secondary transition-transform duration-300 will-change-transform group-hover:scale-105">
+            <Icon className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
+          </div>
+          <span className="text-3xl font-black leading-none tabular-nums text-secondary/25 transition-colors duration-300 group-hover:text-secondary/60">
+            {step.num}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h4 className={`text-white font-bold text-[15px] leading-snug mb-2 ${isRtl ? "text-right" : ""}`}>
+          {isRtl ? step.ar : step.en}
+        </h4>
+
+        {/* Description */}
+        <p className={`text-white/50 text-[12.5px] leading-relaxed ${isRtl ? "text-right" : ""}`}>
+          {isRtl ? step.dAr : step.dEn}
+        </p>
+
+        {/* Optional timeframe */}
+        {timeframe && (
+          <div className={`mt-auto pt-4 ${isRtl ? "text-right" : ""}`}>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/55">
+              <Clock className="w-3 h-3 text-secondary/70" aria-hidden="true" />
+              {timeframe}
+            </span>
+          </div>
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
 export function ExhibitionSection() {
   const { t, isRtl } = useLanguage();
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const timelineInView = useInView(timelineRef, { once: true, amount: 0.3 });
 
   return (
     <section className="relative overflow-hidden" style={{ background: "linear-gradient(180deg, #020d1c 0%, #030f22 60%, #020b18 100%)" }}>
@@ -371,10 +525,10 @@ export function ExhibitionSection() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════
-          PROCESS TIMELINE
+          PROCESS — Premium enterprise workflow cards
       ══════════════════════════════════════════════════════════ */}
-      <div className="border-t border-white/6 py-20 overflow-hidden" ref={timelineRef}>
-        <div className="container mx-auto px-6 md:px-8">
+      <div className="border-t border-white/6 py-20 md:py-24 overflow-hidden">
+        <div className="container mx-auto px-6 md:px-8 xl:px-12">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -384,49 +538,71 @@ export function ExhibitionSection() {
             <p className="text-secondary text-[10px] font-bold tracking-[0.4em] uppercase mb-3">
               {t("OUR PROCESS", "عمليتنا")}
             </p>
-            <h3 className="text-2xl md:text-3xl font-black text-white">
+            <h3 className="text-2xl md:text-3xl xl:text-4xl font-black text-white">
               {t("End-to-End Exhibition Logistics Workflow", "سير عمل لوجستيات المعارض من البداية للنهاية")}
             </h3>
+            <p className={`text-white/45 text-sm mt-3 max-w-2xl leading-relaxed ${isRtl ? "ml-auto" : "mx-auto"}`}>
+              {t(
+                "A structured seven-stage process engineered for corporate exhibitors — transparent, reliable, and managed end to end.",
+                "عملية منظمة من سبع مراحل مصممة للعارضين من الشركات — شفافة وموثوقة ومُدارة من البداية إلى النهاية.",
+              )}
+            </p>
           </motion.div>
 
-          {/* Timeline track */}
-          <div className="relative">
-            {/* Animated horizontal line */}
-            <div className="hidden md:block absolute top-8 left-0 right-0 h-px bg-white/8">
-              <motion.div
-                className="h-full bg-gradient-to-r from-secondary/60 to-secondary/20"
-                initial={{ scaleX: 0, originX: 0 }}
-                animate={timelineInView ? { scaleX: 1 } : { scaleX: 0 }}
-                transition={{ duration: 1.4, ease: [0.22,1,0.36,1] as [number,number,number,number] }}
+          {/* Cards grid + subtle connectors */}
+          <div className={`relative grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-7 gap-4 xl:gap-x-6 items-stretch ${isRtl ? "direction-rtl" : ""}`}>
+            {/* Thin connecting line — xl only, behind cards */}
+            <div aria-hidden="true" className="hidden xl:block absolute top-[42px] left-0 right-0 h-px bg-white/8 z-0" />
+
+            {PROCESS_STEPS.map((step, i) => (
+              <ProcessCard
+                key={step.num}
+                step={step}
+                index={i}
+                isLast={i === PROCESS_STEPS.length - 1}
+                isRtl={isRtl}
               />
-            </div>
-
-            <div className={`grid grid-cols-2 md:grid-cols-7 gap-6 md:gap-2 ${isRtl ? "direction-rtl" : ""}`}>
-              {TIMELINE.map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={timelineInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-                  transition={{ delay: 0.1 + i * 0.12, duration: 0.5 }}
-                  className={`flex flex-col items-center text-center gap-3 ${isRtl ? "direction-ltr" : ""}`}
-                >
-                  {/* Circle node */}
-                  <div className="relative z-10 w-16 h-16 rounded-full border border-secondary/40 bg-[#030f22] flex flex-col items-center justify-center shadow-lg shadow-secondary/10">
-                    <span className="text-secondary text-[10px] font-black tracking-widest">{step.num}</span>
-                  </div>
-
-                  {/* Arrow connector (not on last) */}
-                  {i < TIMELINE.length - 1 && (
-                    <ChevronRight className="hidden md:block absolute -right-3 top-5 w-4 h-4 text-secondary/30 translate-x-1/2 z-10" />
-                  )}
-
-                  <div>
-                    <p className="text-white font-bold text-xs leading-tight">{isRtl ? step.ar : step.en}</p>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            ))}
           </div>
+
+          {/* Trust strip */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className={`mt-14 flex flex-wrap items-center justify-center gap-3 ${isRtl ? "direction-rtl" : ""}`}
+          >
+            {TRUST.map((item, i) => (
+              <span
+                key={i}
+                className={`inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] font-semibold text-white/70 transition-colors hover:border-secondary/35 hover:text-white ${isRtl ? "flex-row-reverse" : ""}`}
+              >
+                <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" aria-hidden="true" />
+                {isRtl ? item.ar : item.en}
+              </span>
+            ))}
+          </motion.div>
+
+          {/* Subtle CTA */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className={`mt-10 flex flex-col sm:flex-row items-center justify-center gap-x-3 gap-y-2 text-center ${isRtl ? "sm:flex-row-reverse" : ""}`}
+          >
+            <span className="text-white/55 text-sm">
+              {t("Need exhibition logistics support?", "هل تحتاج دعم لوجستيات المعارض؟")}
+            </span>
+            <Link
+              href="/contact"
+              className={`group inline-flex items-center gap-1.5 text-secondary font-bold text-sm hover:text-secondary/80 transition-colors ${isRtl ? "flex-row-reverse" : ""}`}
+            >
+              {t("Get a Free Logistics Consultation", "احصل على استشارة لوجستية مجانية")}
+              <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180 group-hover:-translate-x-0.5" : ""}`} />
+            </Link>
+          </motion.div>
         </div>
       </div>
 
