@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { Service } from "@workspace/api-client-react";
 import { SERVICE_CATALOG, SERVICE_META } from "@/lib/service-data";
+import { SERVICE_IMAGES } from "@/lib/service-images";
 
 // ─── Icon resolver (catalog `icon` string → lucide component) ────────────────
 function ServiceIcon({ name, className = "w-6 h-6" }: { name: string; className?: string }) {
@@ -54,6 +55,7 @@ function FeaturedCard({ service, index }: { service: Service; index: number }) {
   const desc = isRtl ? service.descriptionAr : service.description;
   const feats = HERO_FEATURES[service.id];
   const features = feats ? (isRtl ? feats.ar : feats.en) : [];
+  const image = SERVICE_IMAGES[service.id];
 
   return (
     <motion.div
@@ -71,49 +73,71 @@ function FeaturedCard({ service, index }: { service: Service; index: number }) {
       >
         <Link
           href={`/services/${slug}`}
-          className="relative h-full rounded-[19px] bg-white p-7 flex flex-col overflow-hidden shadow-[0_12px_44px_-14px_rgba(10,35,66,0.22)] group-hover:shadow-[0_24px_60px_-16px_rgba(10,35,66,0.30)] transition-shadow duration-300"
+          className="relative h-full rounded-[19px] bg-white flex flex-col overflow-hidden shadow-[0_12px_44px_-14px_rgba(10,35,66,0.22)] group-hover:shadow-[0_24px_60px_-16px_rgba(10,35,66,0.30)] transition-shadow duration-300"
         >
-          {/* corner wash for depth */}
-          <div
-            className="absolute -top-20 -right-20 rtl:right-auto rtl:-left-20 w-52 h-52 rounded-full pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(214,40,40,0.09), transparent 70%)" }}
-          />
+          {/* photo header */}
+          {image && (
+            <div className="relative h-44 overflow-hidden">
+              <img
+                src={image}
+                alt={name}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
+              <span className="absolute top-3.5 right-3.5 rtl:right-auto rtl:left-3.5 z-10 text-[9px] font-black tracking-[0.25em] uppercase text-white bg-secondary/95 px-2.5 py-1 rounded-full shadow-lg shadow-secondary/30">
+                {t("Specialty", "تخصص")}
+              </span>
+            </div>
+          )}
 
-          <div className={`relative flex items-center justify-between mb-5 ${isRtl ? "flex-row-reverse" : ""}`}>
-            <motion.div
-              whileHover={{ rotate: 6, scale: 1.08 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="w-14 h-14 rounded-2xl flex items-center justify-center bg-secondary/12 border border-secondary/20"
+          {/* body */}
+          <div className="relative p-7 flex flex-col flex-1">
+            {/* corner wash for depth */}
+            <div
+              className="absolute -top-20 -right-20 rtl:right-auto rtl:-left-20 w-52 h-52 rounded-full pointer-events-none"
+              style={{ background: "radial-gradient(circle, rgba(214,40,40,0.09), transparent 70%)" }}
+            />
+
+            <div className={`relative flex items-center justify-between mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+              <motion.div
+                whileHover={{ rotate: 6, scale: 1.08 }}
+                transition={{ type: "spring", stiffness: 300 }}
+                className={`w-14 h-14 rounded-2xl flex items-center justify-center ${image ? "-mt-14 bg-white border border-secondary/15 shadow-[0_10px_28px_-10px_rgba(10,35,66,0.45)]" : "bg-secondary/12 border border-secondary/20"}`}
+              >
+                <ServiceIcon name={service.icon} className="w-7 h-7 text-secondary" />
+              </motion.div>
+              {!image && (
+                <span className="text-[9px] font-black tracking-[0.25em] uppercase text-secondary bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-full">
+                  {t("Specialty", "تخصص")}
+                </span>
+              )}
+            </div>
+
+            <h3 className={`relative font-black text-lg leading-tight mb-2 ${isRtl ? "text-right" : ""}`} style={{ color: "#0A2342" }}>
+              {name}
+            </h3>
+            <p className={`relative text-sm leading-relaxed mb-5 ${isRtl ? "text-right" : ""}`} style={{ color: "#475569" }}>
+              {desc}
+            </p>
+
+            <ul className="relative space-y-2.5 mb-7 flex-1">
+              {features.map((f, i) => (
+                <li key={i} className={`flex items-center gap-2.5 text-[13px] ${isRtl ? "flex-row-reverse text-right" : ""}`} style={{ color: "#334155" }}>
+                  <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" />
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <span
+              className={`relative mt-auto inline-flex items-center gap-2 text-sm font-bold text-secondary transition-all group-hover:gap-3 ${isRtl ? "flex-row-reverse" : ""}`}
             >
-              <ServiceIcon name={service.icon} className="w-7 h-7 text-secondary" />
-            </motion.div>
-            <span className="text-[9px] font-black tracking-[0.25em] uppercase text-secondary bg-secondary/10 border border-secondary/20 px-2.5 py-1 rounded-full">
-              {t("Specialty", "تخصص")}
+              {t("Explore Service", "استكشف الخدمة")}
+              <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180 group-hover:-translate-x-0.5" : ""}`} />
             </span>
           </div>
-
-          <h3 className={`relative font-black text-lg leading-tight mb-2 ${isRtl ? "text-right" : ""}`} style={{ color: "#0A2342" }}>
-            {name}
-          </h3>
-          <p className={`relative text-sm leading-relaxed mb-5 ${isRtl ? "text-right" : ""}`} style={{ color: "#475569" }}>
-            {desc}
-          </p>
-
-          <ul className="relative space-y-2.5 mb-7 flex-1">
-            {features.map((f, i) => (
-              <li key={i} className={`flex items-center gap-2.5 text-[13px] ${isRtl ? "flex-row-reverse text-right" : ""}`} style={{ color: "#334155" }}>
-                <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" />
-                {f}
-              </li>
-            ))}
-          </ul>
-
-          <span
-            className={`relative mt-auto inline-flex items-center gap-2 text-sm font-bold text-secondary transition-all group-hover:gap-3 ${isRtl ? "flex-row-reverse" : ""}`}
-          >
-            {t("Explore Service", "استكشف الخدمة")}
-            <ArrowRight className={`w-4 h-4 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180 group-hover:-translate-x-0.5" : ""}`} />
-          </span>
         </Link>
       </motion.div>
     </motion.div>
@@ -127,6 +151,7 @@ function CompactCard({ service, index }: { service: Service; index: number }) {
   const slug = meta?.slug ?? "";
   const name = isRtl ? service.nameAr : service.name;
   const desc = isRtl ? service.descriptionAr : service.description;
+  const image = SERVICE_IMAGES[service.id];
 
   return (
     <motion.div
@@ -149,27 +174,44 @@ function CompactCard({ service, index }: { service: Service; index: number }) {
         />
         <Link
           href={`/services/${slug}`}
-          className="relative h-full rounded-[16px] bg-white p-6 flex flex-col shadow-sm group-hover:shadow-[0_18px_44px_-16px_rgba(10,35,66,0.22)] transition-shadow duration-300"
+          className="relative h-full rounded-[16px] bg-white flex flex-col overflow-hidden shadow-sm group-hover:shadow-[0_18px_44px_-16px_rgba(10,35,66,0.22)] transition-shadow duration-300"
         >
-          <motion.div
-            whileHover={{ rotate: 6, scale: 1.08 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="w-12 h-12 rounded-xl flex items-center justify-center mb-5 bg-[#F1F5F9] group-hover:bg-secondary/12 transition-colors"
-          >
-            <ServiceIcon name={service.icon} className="w-6 h-6 text-secondary" />
-          </motion.div>
+          {/* photo header */}
+          {image && (
+            <div className="relative h-32 overflow-hidden">
+              <img
+                src={image}
+                alt={name}
+                loading="lazy"
+                decoding="async"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-[600ms] ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-black/5 to-transparent" />
+            </div>
+          )}
 
-          <h3 className={`font-bold text-[15px] leading-tight mb-2 ${isRtl ? "text-right" : ""}`} style={{ color: "#0A2342" }}>
-            {name}
-          </h3>
-          <p className={`text-[13px] leading-relaxed mb-5 flex-1 line-clamp-3 ${isRtl ? "text-right" : ""}`} style={{ color: "#475569" }}>
-            {desc}
-          </p>
+          {/* body */}
+          <div className="relative p-6 flex flex-col flex-1">
+            <motion.div
+              whileHover={{ rotate: 6, scale: 1.08 }}
+              transition={{ type: "spring", stiffness: 300 }}
+              className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 ${image ? "-mt-12 bg-white border border-secondary/10 shadow-[0_10px_24px_-10px_rgba(10,35,66,0.45)]" : "mb-5 bg-[#F1F5F9] group-hover:bg-secondary/12 transition-colors"}`}
+            >
+              <ServiceIcon name={service.icon} className="w-6 h-6 text-secondary" />
+            </motion.div>
 
-          <span className={`mt-auto inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-secondary transition-all group-hover:gap-2.5 ${isRtl ? "flex-row-reverse" : ""}`}>
-            {t("Explore Service", "استكشف الخدمة")}
-            <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180 group-hover:-translate-x-0.5" : ""}`} />
-          </span>
+            <h3 className={`font-bold text-[15px] leading-tight mb-2 ${isRtl ? "text-right" : ""}`} style={{ color: "#0A2342" }}>
+              {name}
+            </h3>
+            <p className={`text-[13px] leading-relaxed mb-5 flex-1 line-clamp-3 ${isRtl ? "text-right" : ""}`} style={{ color: "#475569" }}>
+              {desc}
+            </p>
+
+            <span className={`mt-auto inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-secondary transition-all group-hover:gap-2.5 ${isRtl ? "flex-row-reverse" : ""}`}>
+              {t("Explore Service", "استكشف الخدمة")}
+              <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180 group-hover:-translate-x-0.5" : ""}`} />
+            </span>
+          </div>
         </Link>
       </motion.div>
     </motion.div>
