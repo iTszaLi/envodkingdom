@@ -78,6 +78,7 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 - When using query hooks with `enabled`, always pass `queryKey` too: `{ query: { enabled: !!id, queryKey: getXQueryKey(id) } }`
 - `pnpm run typecheck:libs` must be run before `pnpm --filter @workspace/api-server run typecheck` if DB schema changed
 - Never run `pnpm dev` at workspace root — use workflow restarts instead
+- Hero background videos (`artifacts/envod-kingdom/public/media/{crane,air,warehouse}.{mp4,webm,jpg}`) had a baked-in grey four-point sparkle in the lower-right; it was removed by re-encoding with ffmpeg `delogo=x=1101:y=535:w=120:h=140`. The ORIGINAL source WebPs in `attached_assets/` still contain the watermark, and the admin CMS re-encode pipeline does NOT apply delogo — so re-uploading original footage via `/admin` reintroduces the star. Clean the source before any re-upload.
 - API tests use PGlite (in-memory Postgres) so they need no real DB. Because drizzle-orm creates a per-package peer variant when an optional driver peer (e.g. `@electric-sql/pglite`) is present, **every** package that both depends on `drizzle-orm` and shares types with `@workspace/db` must have `@electric-sql/pglite` installed (currently `lib/db`, `api-server`, `scripts`) or workspace typecheck breaks with "separate declarations of a private property 'shouldInlineParams'"
 
 ## User preferences
