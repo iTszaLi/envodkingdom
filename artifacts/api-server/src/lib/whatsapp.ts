@@ -25,7 +25,7 @@ export interface NotificationPayload {
 export function buildWhatsAppMessage(payload: NotificationPayload): string {
   const label = STATUS_LABELS[payload.newStatus] ?? { en: payload.newStatus, ar: payload.newStatus };
   const name = payload.consigneeName ?? "Valued Customer";
-  const trackingUrl = `https://envodkingdom.com/track?id=${payload.trackingNumber}`;
+  const trackingUrl = `https://www.envodkingdom.net/track?id=${payload.trackingNumber}`;
 
   return (
     `*ENVOD KINGDOM* — Shipment Update\n\n` +

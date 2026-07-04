@@ -2,7 +2,7 @@ import type { SeoConfig } from "./seo";
 import { SERVICE_CATALOG, SERVICE_META, SLUG_TO_ID, ID_TO_SLUG } from "./service-data";
 
 /** Canonical production origin. Single source of truth for absolute URLs. */
-export const SITE_URL = "https://www.envodkingdom.com";
+export const SITE_URL = "https://www.envodkingdom.net";
 export const OG_IMAGE = `${SITE_URL}/opengraph.jpg`;
 const ORG_ID = `${SITE_URL}/#organization`;
 

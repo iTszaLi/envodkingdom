@@ -2,7 +2,7 @@ PROJECT TITLE:
 ENVOD KINGDOM SHIPPING SERVICES LLC
 
 DOMAIN:
-https://envodkingdom.com
+https://www.envodkingdom.net
 
 OBJECTIVE
 
@@ -68,7 +68,7 @@ Company Name:
 ENVOD KINGDOM SHIPPING SERVICES LLC
 
 Website:
-envodkingdom.com
+www.envodkingdom.net
 
 Primary Color:
 #0A2342

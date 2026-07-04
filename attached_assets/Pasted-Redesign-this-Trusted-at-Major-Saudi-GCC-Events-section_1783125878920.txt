@@ -1,0 +1,47 @@
+Redesign this "Trusted at Major Saudi & GCC Events" section to look much more premium, modern, and enterprise-level. The current cards look too plain and don't showcase our experience strongly enough.
+
+For every exhibition card:
+Add the official exhibition logo (high-quality SVG or transparent PNG) at the top of each card.
+Display the event name clearly.
+Add the year(s) we participated, for example:
+LEAP 2025
+Saudi Build 2024
+Cityscape Global 2024
+Big 5 Construct Saudi 2025
+Saudi Food Show 2025
+INDEX Saudi 2024
+Keep the city/location as a smaller secondary label.
+Add premium visual effects:
+Smooth hover animation (lift the card slightly).
+Soft glowing border on hover using our brand color.
+Logo should scale up slightly on hover.
+Add a subtle gradient background inside each card.
+Glassmorphism effect with slight backdrop blur.
+Better shadows to create depth.
+Rounded corners (16–20px).
+Smooth 300–400ms transitions.
+Mouse-follow light reflection effect (very subtle).
+Animated border or shimmer effect on hover.
+Fade-in animation when the section scrolls into view.
+Layout improvements:
+Increase spacing between cards.
+Make every card exactly the same height.
+Logos should be perfectly centered and equal size.
+Cards should remain fully responsive on tablets and mobile.
+Use CSS Grid so the layout adapts beautifully on all screen sizes.
+Trust & credibility enhancements:
+Add a small badge such as:
+✓ Exhibited
+✓ Official Logistics Partner
+✓ Successfully Delivered
+Add a tooltip or hover text:
+"ENVOD successfully managed exhibition logistics for this event."
+Performance & SEO:
+Use optimized SVG/WebP logos.
+Lazy-load logos below the fold.
+Add descriptive alt text for every logo.
+Include structured data (Organization/Event where appropriate) to strengthen SEO.
+Ensure animations are GPU-accelerated and do not impact page performance.
+Overall Goal
+
+This section should instantly communicate that ENVOD has successfully handled logistics for some of the biggest exhibitions in Saudi Arabia and the GCC, giving visitors confidence that they are dealing with an experienced, trusted, enterprise-grade exhibition logistics company. It should feel comparable to the quality of websites from DHL, Maersk, DP World, and other Fortune 500 logistics companies.
