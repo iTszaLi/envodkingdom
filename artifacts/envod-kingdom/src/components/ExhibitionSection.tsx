@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
 import {
   CheckCircle2,
+  Check,
   ArrowRight,
-  ChevronRight,
   BadgeCheck,
   PhoneCall,
   ClipboardList,
@@ -87,9 +87,9 @@ const PROCESS_STEPS: ProcessStep[] = [
     en: "Consultation",
     ar: "الاستشارة",
     icon: PhoneCall,
-    dEn: "Understand your exhibition requirements, shipment size, venue, deadlines, and special handling needs.",
-    dAr: "نفهم متطلبات معرضك وحجم الشحنة والموقع والمواعيد النهائية ومتطلبات المناولة الخاصة.",
-    tEn: "Within 24 hrs",
+    dEn: "We map your requirements — shipment size, venue, deadlines, and handling.",
+    dAr: "نحدد متطلباتك: حجم الشحنة والموقع والمواعيد والمناولة الخاصة.",
+    tEn: "Within 24 Hours",
     tAr: "خلال 24 ساعة",
   },
   {
@@ -97,60 +97,68 @@ const PROCESS_STEPS: ProcessStep[] = [
     en: "Planning",
     ar: "التخطيط",
     icon: ClipboardList,
-    dEn: "Prepare the logistics plan, transportation schedule, customs documentation, and delivery timeline.",
-    dAr: "نُعد الخطة اللوجستية وجدول النقل ووثائق التخليص الجمركي والجدول الزمني للتسليم.",
-    tEn: "1–2 days",
-    tAr: "1–2 يوم",
+    dEn: "We build the logistics plan, transport schedule, customs docs, and timeline.",
+    dAr: "نُعد الخطة اللوجستية وجدول النقل ووثائق الجمارك والتسليم.",
+    tEn: "1–2 Business Days",
+    tAr: "1–2 يوم عمل",
   },
   {
     num: "03",
     en: "Documentation",
     ar: "التوثيق",
     icon: FileText,
-    dEn: "Manage ATA Carnet, customs clearance, permits, and all required shipping documents.",
-    dAr: "ندير كارنيه ATA والتخليص الجمركي والتصاريح وجميع مستندات الشحن المطلوبة.",
-    tEn: "24 hr ATA Carnet",
-    tAr: "كارنيه خلال 24 ساعة",
+    dEn: "We handle ATA Carnet, customs clearance, permits, and shipping paperwork.",
+    dAr: "ندير كارنيه ATA والتخليص الجمركي والتصاريح ومستندات الشحن.",
+    tEn: "ATA Carnet & Customs",
+    tAr: "كارنيه ATA والجمارك",
   },
   {
     num: "04",
     en: "Transportation",
     ar: "النقل",
     icon: Truck,
-    dEn: "Transport cargo safely via air, sea, or road with real-time shipment tracking.",
-    dAr: "ننقل البضائع بأمان عبر الجو أو البحر أو البر مع تتبع الشحنة في الوقت الفعلي.",
+    dEn: "We move cargo safely by air, sea, or road with real-time tracking.",
+    dAr: "ننقل البضائع بأمان جواً أو بحراً أو براً مع تتبع مباشر.",
+    tEn: "Live Tracking Available",
+    tAr: "تتبع مباشر متاح",
   },
   {
     num: "05",
     en: "Venue Delivery",
     ar: "التسليم للموقع",
     icon: Building2,
-    dEn: "Deliver directly to the exhibition venue per organizer schedules and booth setup timelines.",
-    dAr: "نُسلّم مباشرة إلى موقع المعرض وفقاً لجداول المنظمين ومواعيد تجهيز الأجنحة.",
+    dEn: "We deliver to the venue on organizer and booth-setup schedules.",
+    dAr: "نُسلّم إلى الموقع وفق جداول المنظمين وتجهيز الأجنحة.",
+    tEn: "Organizer Schedule",
+    tAr: "حسب جدول المنظم",
   },
   {
     num: "06",
     en: "On-site Support",
     ar: "الدعم الميداني",
     icon: HardHat,
-    dEn: "Coordinate unloading, handling, temporary storage, and on-site logistics throughout the event.",
-    dAr: "ننسق التفريغ والمناولة والتخزين المؤقت والدعم اللوجستي الميداني طوال فترة المعرض.",
+    dEn: "Unloading, handling, storage, and on-site coordination during the event.",
+    dAr: "التفريغ والمناولة والتخزين والتنسيق الميداني طوال الفعالية.",
+    tEn: "Throughout Event",
+    tAr: "طوال الفعالية",
   },
   {
     num: "07",
     en: "Return Logistics",
     ar: "اللوجستيات العكسية",
     icon: PackageCheck,
-    dEn: "Arrange packing, customs processing, and return shipping after the exhibition concludes.",
-    dAr: "نرتب التغليف والإجراءات الجمركية والشحن العكسي بعد انتهاء المعرض.",
+    dEn: "Packing, customs, and return shipping once the show wraps.",
+    dAr: "التغليف والإجراءات الجمركية والشحن العكسي بعد المعرض.",
+    tEn: "Post-Event Handling",
+    tAr: "ما بعد الفعالية",
   },
 ];
 
 const TRUST = [
   { en: "ATA Carnet Specialists", ar: "متخصصو كارنيه ATA" },
   { en: "Customs Clearance Experts", ar: "خبراء التخليص الجمركي" },
-  { en: "On-Time Venue Delivery", ar: "تسليم في الموعد للموقع" },
   { en: "24/7 Shipment Tracking", ar: "تتبع الشحنات على مدار الساعة" },
+  { en: "On-Time Venue Delivery", ar: "تسليم في الموعد للموقع" },
   { en: "Dedicated Project Manager", ar: "مدير مشروع مخصص" },
 ];
 
@@ -285,43 +293,43 @@ function ProcessCard({
       transition={{ delay: 0.08 + index * 0.09, duration: 0.5, ease: [0.22, 1, 0.36, 1] as [number, number, number, number] }}
       className="group relative h-full"
     >
-      {/* Directional connector — xl only, not on last card */}
+      {/* Directional connector — subtle line + arrowhead centred in the gap (xl only, not on last card) */}
       {!isLast && (
         <div
           aria-hidden="true"
-          className={`hidden xl:block absolute top-[34px] z-20 ${isRtl ? "-left-5" : "-right-5"}`}
+          className={`hidden xl:flex items-center justify-center absolute top-[36px] -translate-y-1/2 z-20 w-6 ${isRtl ? "right-full" : "left-full"}`}
         >
-          <ChevronRight className={`w-4 h-4 text-secondary/45 ${isRtl ? "rotate-180" : ""}`} />
+          <ArrowRight className={`w-[18px] h-[18px] text-secondary/70 ${isRtl ? "rotate-180" : ""}`} strokeWidth={2.25} aria-hidden="true" />
         </div>
       )}
 
       {/* Card */}
-      <div className="relative z-10 h-full flex flex-col rounded-[18px] border border-white/10 bg-white/[0.03] p-5 shadow-[0_10px_30px_-16px_rgba(0,0,0,0.75)] transition-all duration-300 ease-out will-change-transform group-hover:-translate-y-1.5 group-hover:border-secondary/40 group-hover:shadow-[0_18px_44px_-16px_rgba(214,40,40,0.28)]">
+      <div className="relative z-10 h-full flex flex-col rounded-[16px] border border-white/10 bg-white/[0.03] p-4 shadow-[0_10px_30px_-16px_rgba(0,0,0,0.75)] transition-all duration-300 ease-out will-change-transform group-hover:-translate-y-1.5 group-hover:border-secondary/40 group-hover:shadow-[0_18px_44px_-16px_rgba(214,40,40,0.28)]">
         {/* Icon + step number */}
-        <div className={`flex items-center justify-between mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-          <div className="flex items-center justify-center w-11 h-11 rounded-xl border border-secondary/20 bg-secondary/10 text-secondary transition-transform duration-300 will-change-transform group-hover:scale-105">
-            <Icon className="w-5 h-5" strokeWidth={1.75} aria-hidden="true" />
+        <div className={`flex items-center justify-between mb-3 ${isRtl ? "flex-row-reverse" : ""}`}>
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg border border-secondary/20 bg-secondary/10 text-secondary transition-transform duration-300 will-change-transform group-hover:scale-105">
+            <Icon className="w-[18px] h-[18px]" strokeWidth={1.75} aria-hidden="true" />
           </div>
-          <span className="text-3xl font-black leading-none tabular-nums text-secondary/25 transition-colors duration-300 group-hover:text-secondary/60">
+          <span className="text-2xl font-black leading-none tabular-nums text-secondary/25 transition-colors duration-300 group-hover:text-secondary/60">
             {step.num}
           </span>
         </div>
 
         {/* Title */}
-        <h4 className={`text-white font-bold text-[15px] leading-snug mb-2 ${isRtl ? "text-right" : ""}`}>
+        <h4 className={`text-white font-bold text-[14px] leading-snug mb-1.5 ${isRtl ? "text-right" : ""}`}>
           {isRtl ? step.ar : step.en}
         </h4>
 
-        {/* Description */}
-        <p className={`text-white/50 text-[12.5px] leading-relaxed ${isRtl ? "text-right" : ""}`}>
+        {/* Description — capped to 3 lines for scannability */}
+        <p className={`text-white/50 text-[12px] leading-[1.55] line-clamp-3 ${isRtl ? "text-right" : ""}`}>
           {isRtl ? step.dAr : step.dEn}
         </p>
 
-        {/* Optional timeframe */}
+        {/* Duration badge — on every stage */}
         {timeframe && (
-          <div className={`mt-auto pt-4 ${isRtl ? "text-right" : ""}`}>
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/55">
-              <Clock className="w-3 h-3 text-secondary/70" aria-hidden="true" />
+          <div className={`mt-auto pt-3 ${isRtl ? "text-right" : ""}`}>
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-secondary/20 bg-secondary/[0.08] px-2.5 py-1 text-[10px] font-semibold tracking-wide text-secondary/85">
+              <Clock className="w-3 h-3 text-secondary/80 shrink-0" aria-hidden="true" />
               {timeframe}
             </span>
           </div>
@@ -551,8 +559,8 @@ export function ExhibitionSection() {
 
           {/* Cards grid + subtle connectors */}
           <div className={`relative grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-7 gap-4 xl:gap-x-6 items-stretch ${isRtl ? "direction-rtl" : ""}`}>
-            {/* Thin connecting line — xl only, behind cards */}
-            <div aria-hidden="true" className="hidden xl:block absolute top-[42px] left-0 right-0 h-px bg-white/8 z-0" />
+            {/* Subtle connecting rail — xl only, behind cards */}
+            <div aria-hidden="true" className="hidden xl:block absolute top-[36px] left-0 right-0 h-px bg-gradient-to-r from-secondary/15 via-secondary/25 to-secondary/15 z-0" />
 
             {PROCESS_STEPS.map((step, i) => (
               <ProcessCard
@@ -571,14 +579,14 @@ export function ExhibitionSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
-            className={`mt-14 flex flex-wrap items-center justify-center gap-3 ${isRtl ? "direction-rtl" : ""}`}
+            className={`mt-12 flex flex-wrap items-center justify-center gap-2.5 ${isRtl ? "direction-rtl" : ""}`}
           >
             {TRUST.map((item, i) => (
               <span
                 key={i}
-                className={`inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 text-[12px] font-semibold text-white/70 transition-colors hover:border-secondary/35 hover:text-white ${isRtl ? "flex-row-reverse" : ""}`}
+                className={`inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.03] px-3 py-1 text-[11.5px] font-semibold text-white/70 transition-colors hover:border-secondary/35 hover:text-white ${isRtl ? "flex-row-reverse" : ""}`}
               >
-                <CheckCircle2 className="w-4 h-4 text-secondary shrink-0" aria-hidden="true" />
+                <Check className="w-3.5 h-3.5 text-secondary shrink-0" strokeWidth={3} aria-hidden="true" />
                 {isRtl ? item.ar : item.en}
               </span>
             ))}

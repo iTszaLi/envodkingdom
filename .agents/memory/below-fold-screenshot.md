@@ -17,3 +17,6 @@ Two independent things make a footer (or any below-fold section) invisible in an
 - Restart workflow, screenshot at a tall viewport (e.g. `[1280, 2800]`), assess, then **revert both changes** and re-typecheck.
 
 **Why:** these are pure capture-tool limitations, not real bugs — real users with a real viewport scroll and see everything. Never ship the toggles.
+
+## Verifying the RTL/Arabic view of a below-fold section
+`LanguageContext` has NO localStorage persistence — it defaults via `useState<Language>("en")`, and the screenshot tool can't click the header toggle. To capture the Arabic/RTL view, temporarily flip that default to `"ar"` (sets `document.documentElement.dir = "rtl"`) alongside the two toggles above, screenshot, then revert all three. A quick way to bring a deep section to the top for capture is a `{/* TEMP-PREVIEW */}` render of the component right after the `<h1>` in `pages/home.tsx` (remove it on revert).
