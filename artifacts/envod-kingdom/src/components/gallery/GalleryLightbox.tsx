@@ -11,6 +11,7 @@ import {
   galleryTitle,
   galleryDescription,
   galleryLocation,
+  galleryAltText,
 } from "@/lib/gallery";
 
 interface GalleryLightboxProps {
@@ -200,7 +201,7 @@ export function GalleryLightbox({ items, index, onClose, onNavigate }: GalleryLi
               sizes="100vw"
               width={item.width}
               height={item.height}
-              alt={item.altText || title}
+              alt={galleryAltText(item, isRtl)}
               draggable={false}
               onClick={handleImageClick}
               onPointerDown={onPointerDown}

@@ -62,6 +62,7 @@ CREATE TABLE gallery_items (
   description text,
   description_ar text,
   alt_text text,
+  alt_text_ar text,
   category text NOT NULL DEFAULT 'operations',
   location text,
   location_ar text,

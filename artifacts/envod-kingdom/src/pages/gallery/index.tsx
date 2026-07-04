@@ -18,6 +18,7 @@ import {
   galleryTitle,
   galleryDescription,
   galleryLocation,
+  galleryAltText,
 } from "@/lib/gallery";
 import { GalleryLightbox } from "@/components/gallery/GalleryLightbox";
 
@@ -111,7 +112,7 @@ function GalleryCard({ item, onOpen, t, isRtl }: { item: GalleryItem; onOpen: ()
           sizes={GRID_SIZES}
           width={item.width}
           height={item.height}
-          alt={item.altText || title}
+          alt={galleryAltText(item, isRtl)}
           loading="lazy"
           decoding="async"
           onLoad={() => setLoaded(true)}
@@ -213,8 +214,8 @@ export default function Gallery() {
         associatedMedia: items.map((item) => ({
           "@type": "ImageObject",
           contentUrl: `${origin}${largestSrc(item)}`.replace(/([^:]\/)\/+/g, "$1"),
-          name: item.title,
-          description: item.description || item.altText || item.title,
+          name: galleryTitle(item, isRtl),
+          description: galleryDescription(item, isRtl) || galleryAltText(item, isRtl),
           width: item.width,
           height: item.height,
         })),
@@ -222,7 +223,7 @@ export default function Gallery() {
     }
 
     return blocks;
-  }, [items]);
+  }, [items, isRtl]);
 
   useJsonLd(jsonLd);
 
@@ -358,7 +359,7 @@ export default function Gallery() {
                           sizes="(max-width: 768px) 33vw, 16vw"
                           width={item.width}
                           height={item.height}
-                          alt={item.altText || galleryTitle(item, isRtl)}
+                          alt={galleryAltText(item, isRtl)}
                           loading="lazy"
                           decoding="async"
                           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"

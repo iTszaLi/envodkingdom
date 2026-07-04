@@ -100,6 +100,18 @@ export function galleryLocation(
   return localized(item.location, item.locationAr, isRtl);
 }
 
+/**
+ * Localized alt text for a gallery image (used for SEO and screen readers).
+ * Prefers the Arabic alt when in RTL and non-empty, falls back to the English
+ * alt, then to the localized title so the image is never left undescribed.
+ */
+export function galleryAltText(
+  item: Pick<GalleryItem, "altText" | "altTextAr" | "title" | "titleAr">,
+  isRtl: boolean,
+): string {
+  return localized(item.altText, item.altTextAr, isRtl) ?? galleryTitle(item, isRtl);
+}
+
 /** Format a `YYYY-MM` month key into a readable label, e.g. "March 2026". */
 export function formatMonthYear(monthYear: string | null | undefined): string | null {
   if (!monthYear) return null;

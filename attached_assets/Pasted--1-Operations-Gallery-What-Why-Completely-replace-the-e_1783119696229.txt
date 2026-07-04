@@ -1,0 +1,51 @@
+#1 - Operations Gallery
+What & Why
+Completely replace the empty Blog / Knowledge Center with a world-class, premium "Operations Gallery" — a visual showcase of ENVOD KINGDOM's real logistics operations (customs clearance, exhibitions, project cargo, warehousing, freight). Admin uploads photos monthly; the public gallery presents them cinematically with filtering, a fullscreen lightbox, and heavy image SEO so the operations become discoverable in search and Google Images. This positions the brand visually and gives the site fresh, self-serve content month over month.
+
+Done looks like
+The main nav shows Gallery (EN) / المعرض (AR) instead of Blog; the footer link and homepage blog-preview section are replaced accordingly, and old /blog URLs redirect to the gallery.
+Visiting /gallery shows a premium hero, animated stat counters (25+ years, 12,000+ shipments, 250+ clients, 15+ cities, 24/7), category filter pills, and a Pinterest/Apple-style masonry grid of operation photos.
+Each card shows the photo with category badge, location, month/year, and short description; hovering reveals detail; images lazy-load with graceful skeletons and never cause layout shift.
+Clicking a photo opens a fullscreen lightbox: previous/next arrows, keyboard nav (←/→/Esc), swipe on mobile, zoom, caption, and right-click/drag download is disabled.
+A "Latest Operations" section groups the newest photos by month.
+With no photos yet, the page shows an elegant, on-brand empty state (not a broken/blank screen).
+In the admin CMS, a Gallery Manager lets the admin upload one or many photos, set category, location, month/year, title, description, alt text, ordering, and published state, and delete/reorder — uploads persist in cloud storage and appear on the public gallery immediately.
+Image SEO is in place: per-image structured data (JSON-LD ImageObject) plus Organization/Breadcrumb/WebSite/WebPage, Open Graph/Twitter tags, responsive srcset/sizes, WebP output, explicit width/height, lazy loading, and a dynamic image sitemap that lists every published photo.
+The schema is video-ready (a media type field) so short operation clips can be added later without a rebuild.
+Out of scope
+Actually uploading real ENVOD photos or seeding placeholder images — the gallery ships empty with a ready uploader (per user).
+Bilingual gallery captions — item titles/descriptions are English only; only the static page chrome (headings, filters, stats, empty state) stays bilingual.
+Video upload/playback implementation — only the schema and card layout are future-proofed for it now.
+Guaranteeing specific Google rankings or exact Lighthouse scores — best-practice SEO infrastructure is implemented, but ranking outcomes cannot be promised.
+Steps
+Enable cloud image storage — Provision Replit App Storage (object storage) for durable, SEO-friendly image hosting; add the storage service, ACL, and serving route to the API server.
+Gallery data model — Add a gallery-items table (media type, image object paths + responsive variant metadata, width/height, category, location, month/year, title, description, alt text, sort order, published flag, timestamps) and a small set of categories; push the schema.
+API contract + codegen — Define public list/get and admin create/update/delete/reorder endpoints (plus the upload endpoint) in the OpenAPI spec and regenerate the typed hooks and Zod schemas. Contract-first: never hand-write the generated hooks/schemas.
+Image upload + processing endpoint — Accept admin multi-file uploads (session-guarded, mirroring the existing hero-video upload pattern), process each image server-side into a modern web format at several responsive widths, store the variants in cloud storage, and persist metadata. Record intrinsic dimensions to prevent layout shift.
+Public Gallery page — Build /gallery: hero, animated stat counters, category filter pills, responsive masonry grid, gallery cards, skeleton loading, scroll/hover animations, and an on-brand empty state. Reuse the site's existing counter and language patterns.
+Fullscreen lightbox — Build a lightbox with prev/next, keyboard and swipe navigation, zoom, caption, and download disabled.
+Latest Operations section — Group the most recent published photos by month/year below the grid.
+Image SEO layer — Add per-page/-image JSON-LD (ImageObject, Organization, Breadcrumb, WebSite, WebPage), Open Graph/Twitter meta, canonical, responsive srcset/sizes with width/height and lazy loading across cards and lightbox, and a dynamically generated image sitemap referenced from robots.txt.
+Admin Gallery Manager — Add an /admin/gallery page with multi-file upload, a metadata editor, reorder, publish toggle, and delete; wire it into the admin nav and app router.
+Replace Blog throughout & clean up — Rename the nav/footer entries to Gallery, redirect /blog and /blog/:slug to /gallery, replace the homepage blog-preview section with a gallery teaser, and remove the now-dead blog pages/references (the articles DB table may remain unused/hidden).
+Verify — Run a full typecheck, restart the API and web workflows, confirm upload→display→lightbox→SEO tags end-to-end, and run the architect code review before completion.
+Relevant files
+artifacts/envod-kingdom/src/App.tsx
+artifacts/envod-kingdom/src/components/layout/MainLayout.tsx:27-33,314-322
+artifacts/envod-kingdom/src/components/layout/AdminLayout.tsx
+artifacts/envod-kingdom/src/pages/blog/index.tsx
+artifacts/envod-kingdom/src/pages/blog/[slug].tsx
+artifacts/envod-kingdom/src/pages/home.tsx
+artifacts/envod-kingdom/src/pages/admin/hero-videos.tsx
+artifacts/envod-kingdom/src/lib/language-context.tsx
+artifacts/envod-kingdom/src/components/SEOContent.tsx
+artifacts/envod-kingdom/index.html
+artifacts/envod-kingdom/public/robots.txt
+artifacts/envod-kingdom/public/sitemap.xml
+artifacts/api-server/src/routes/index.ts
+artifacts/api-server/src/routes/hero-videos.ts
+artifacts/api-server/src/app.ts
+lib/db/src/schema/index.ts
+lib/db/src/schema/articles.ts
+lib/api-spec/openapi.yaml
+.local/skills/object-storage/SKILL.md

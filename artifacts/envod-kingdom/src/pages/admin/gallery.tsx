@@ -36,6 +36,7 @@ interface Draft {
   locationAr: string;
   monthYear: string;
   altText: string;
+  altTextAr: string;
   description: string;
   descriptionAr: string;
   isPublished: boolean;
@@ -50,6 +51,7 @@ function toDraft(item: GalleryItem): Draft {
     locationAr: item.locationAr ?? "",
     monthYear: item.monthYear ?? "",
     altText: item.altText ?? "",
+    altTextAr: item.altTextAr ?? "",
     description: item.description ?? "",
     descriptionAr: item.descriptionAr ?? "",
     isPublished: item.isPublished,
@@ -143,6 +145,7 @@ export default function AdminGallery() {
           locationAr: draft.locationAr,
           monthYear: draft.monthYear,
           altText: draft.altText,
+          altTextAr: draft.altTextAr,
           description: draft.description,
           descriptionAr: draft.descriptionAr,
           isPublished: draft.isPublished,
@@ -367,6 +370,15 @@ export default function AdminGallery() {
                       value={draft.altText}
                       onChange={(e) => updateDraft(item.id, { altText: e.target.value })}
                       placeholder="Describe the image for search & accessibility"
+                      className="admin-input"
+                    />
+                  </Field>
+                  <Field label="Alt text (Arabic)">
+                    <input
+                      value={draft.altTextAr}
+                      onChange={(e) => updateDraft(item.id, { altTextAr: e.target.value })}
+                      dir="rtl"
+                      placeholder="اتركه فارغاً لاستخدام الإنجليزية"
                       className="admin-input"
                     />
                   </Field>

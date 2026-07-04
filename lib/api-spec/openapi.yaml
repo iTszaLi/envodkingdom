@@ -1673,6 +1673,8 @@ components:
           type: ["string", "null"]
         altText:
           type: ["string", "null"]
+        altTextAr:
+          type: ["string", "null"]
         category:
           type: string
         location:
@@ -1705,6 +1707,8 @@ components:
           type: ["string", "null"]
         altText:
           type: string
+        altTextAr:
+          type: ["string", "null"]
         category:
           type: string
         location:

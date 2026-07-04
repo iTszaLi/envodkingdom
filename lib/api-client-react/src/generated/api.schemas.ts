@@ -377,6 +377,8 @@ export interface GalleryItem {
   descriptionAr?: string | null;
   /** @nullable */
   altText?: string | null;
+  /** @nullable */
+  altTextAr?: string | null;
   category: string;
   /** @nullable */
   location?: string | null;
@@ -400,6 +402,8 @@ export interface GalleryUpdate {
   /** @nullable */
   descriptionAr?: string | null;
   altText?: string;
+  /** @nullable */
+  altTextAr?: string | null;
   category?: string;
   location?: string;
   /** @nullable */

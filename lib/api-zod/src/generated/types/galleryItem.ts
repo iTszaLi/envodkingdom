@@ -24,6 +24,8 @@ export interface GalleryItem {
   descriptionAr?: string | null;
   /** @nullable */
   altText?: string | null;
+  /** @nullable */
+  altTextAr?: string | null;
   category: string;
   /** @nullable */
   location?: string | null;

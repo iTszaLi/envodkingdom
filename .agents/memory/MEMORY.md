@@ -4,8 +4,9 @@
 - [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
 - [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain
 - [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
-- [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill; favicon adaptive light/dark SVG
-- [SEO head & crawlability](seo-head-and-crawl.md) — SEO via shared `useSeo` hook (no react-helmet); robots.txt broad `Disallow: /api/` needs `Allow:` overrides for crawlable media/sitemaps
+- [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG
+- [SEO head & crawlability](seo-head-and-crawl.md) — SEO via shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for crawlable media/sitemaps served under /api/
 - [SSG prerender & SEO invariants](seo-ssg-prerender.md) — content routes prerendered; SPA shell must strip home canonical; CONTENT_ROUTES↔artifact.toml↔sitemap kept in sync (build asserts)
-- [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — absolute dropdowns over a backdrop-blur header vanish on iOS Safari; portal to body as fixed opaque panel
-- [drizzle-orm peer variants](drizzle-peer-variant.md) — an optional driver peer (PGlite) forks drizzle-orm per package; all drizzle+@workspace/db consumers must share the same peer
+- [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — absolute dropdowns overflowing a backdrop-blur header vanish on iOS Safari (fine in Chromium); portal to body as fixed opaque panel with measured top offset
+- [drizzle-orm peer variants](drizzle-peer-variant.md) — an optional driver peer (e.g. PGlite) forks drizzle-orm per package; all drizzle+@workspace/db consumers must share the same peer or typecheck breaks on "shouldInlineParams"
+- [Test DB hand-maintained schema](test-db-hand-maintained-schema.md) — api-server vitest builds Postgres from hardcoded CREATE_SQL in testDb.ts (not drizzle); mirror any column add there, and restart the API workflow (builds once, no watch) after lib/db edits

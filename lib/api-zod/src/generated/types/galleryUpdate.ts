@@ -14,6 +14,8 @@ export interface GalleryUpdate {
   /** @nullable */
   descriptionAr?: string | null;
   altText?: string;
+  /** @nullable */
+  altTextAr?: string | null;
   category?: string;
   location?: string;
   /** @nullable */

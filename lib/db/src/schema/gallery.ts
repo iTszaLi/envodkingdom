@@ -15,6 +15,7 @@ export const galleryItemsTable = pgTable("gallery_items", {
   description: text("description"),
   descriptionAr: text("description_ar"),
   altText: text("alt_text"),
+  altTextAr: text("alt_text_ar"),
   category: text("category").notNull().default("operations"),
   location: text("location"),
   locationAr: text("location_ar"),
