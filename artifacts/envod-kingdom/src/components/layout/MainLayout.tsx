@@ -104,7 +104,7 @@ export function Navbar({ onGetQuote }: { onGetQuote?: () => void }) {
           </Button>
           <button
             onClick={onGetQuote}
-            className="group relative bg-secondary hover:bg-secondary/85 text-white px-6 py-3 rounded-xl font-black text-[13px] uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 hover:shadow-secondary/35 hover:-translate-y-px overflow-hidden"
+            className="group relative whitespace-nowrap shrink-0 bg-secondary hover:bg-secondary/85 text-white px-5 lg:px-6 py-3 rounded-xl font-black text-[12px] lg:text-[13px] uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 hover:shadow-secondary/35 hover:-translate-y-px overflow-hidden"
           >
             <span className="relative z-10">{t("Get a Free Quote", "احصل على تسعيرة")}</span>
             <span className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
