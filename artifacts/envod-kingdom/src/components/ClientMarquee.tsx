@@ -13,7 +13,7 @@ import katerraLogo from "@assets/logo_katerra.webp";
 import coopMedicalLogo from "@assets/logo_coop_medical.webp";
 import olayanLogo from "@assets/logo_olayan.webp";
 import wataniaLogo from "@assets/logo_watania.webp";
-import schenkerLogo from "@assets/logo_schenker.webp";
+import kaprelLogo from "@assets/logo_kaprel.webp";
 import porscheLogo from "@assets/logo_porsche.webp";
 import aafLogo from "@assets/logo_aaf.webp";
 import mobilyLogo from "@assets/logo_mobily.webp";
@@ -36,7 +36,7 @@ const CLIENT_LOGOS: Record<string, string> = {
   "Operation Medical Est.":     coopMedicalLogo,
   "Olayan Group":               olayanLogo,
   "Watania":                    wataniaLogo,
-  "DB Schenker":                schenkerLogo,
+  "Kaprel":                     kaprelLogo,
   "Porsche":                    porscheLogo,
   "AAF International":          aafLogo,
   "Mobily":                     mobilyLogo,
@@ -60,7 +60,7 @@ const FALLBACK_CLIENTS: Client[] = [
   { id: 5,  name: "Operation Medical Est.",    industry: "Healthcare",         logoUrl: null, website: null, sortOrder: 5,  isActive: true },
   { id: 6,  name: "Olayan Group",              industry: "Conglomerate",       logoUrl: null, website: null, sortOrder: 6,  isActive: true },
   { id: 7,  name: "Watania",                   industry: "Food & Beverage",    logoUrl: null, website: null, sortOrder: 7,  isActive: true },
-  { id: 8,  name: "DB Schenker",               industry: "Logistics",          logoUrl: null, website: null, sortOrder: 8,  isActive: true },
+  { id: 8,  name: "Kaprel",                    industry: "Interiors",          logoUrl: null, website: null, sortOrder: 8,  isActive: true },
   { id: 9,  name: "Porsche",                   industry: "Automotive",         logoUrl: null, website: null, sortOrder: 9,  isActive: true },
   { id: 10, name: "AAF International",         industry: "Manufacturing",      logoUrl: null, website: null, sortOrder: 10, isActive: true },
   { id: 11, name: "Mobily",                    industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 11, isActive: true },
