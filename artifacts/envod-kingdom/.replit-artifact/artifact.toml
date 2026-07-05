@@ -194,6 +194,10 @@ from = "/industries/government-logistics"
 to = "/industries/government-logistics/index.html"
 
 [[services.production.rewrites]]
+from = "/track"
+to = "/track/index.html"
+
+[[services.production.rewrites]]
 from = "/*"
 to = "/spa.html"
 

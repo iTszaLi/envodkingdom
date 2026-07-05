@@ -9,7 +9,21 @@ const SERVER_ENTRY = path.join(__dirname, "dist", "server", "entry-server.js");
 const { render, getSeoForPath, CONTENT_ROUTES, SITE_URL, OG_IMAGE, toAbsolute } =
   await import(SERVER_ENTRY);
 
-const template = await readFile(path.join(DIST, "index.html"), "utf-8");
+const rawTemplate = await readFile(path.join(DIST, "index.html"), "utf-8");
+
+// Build-time security meta tags (production HTML only — dev index.html is
+// untouched, so Vite HMR/react-refresh keep working). frame-ancestors and
+// X-Frame-Options cannot be expressed via <meta>; those are sent as real HTTP
+// headers by hosts that support them (see public/_headers for Cloudflare
+// Pages) and by the API server for /api responses.
+const SECURITY_META = [
+  `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://storage.googleapis.com; media-src 'self'; connect-src 'self' https://storage.googleapis.com; frame-src https://maps.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />`,
+  `<meta name="referrer" content="strict-origin-when-cross-origin" />`,
+].join("\n    ");
+if (!rawTemplate.includes("</head>")) {
+  throw new Error("prerender: index.html template has no </head> — cannot inject security meta");
+}
+const template = rawTemplate.replace("</head>", `  ${SECURITY_META}\n  </head>`);
 
 // --- Guard: the hand-maintained artifact.toml rewrite list must stay in sync
 // with CONTENT_ROUTES. Every prerendered content route (except "/", served as

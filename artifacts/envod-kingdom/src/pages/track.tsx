@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useLocation } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import { useTrackShipment, getTrackShipmentQueryKey } from "@workspace/api-client-react";
 import { Input } from "@/components/ui/input";
@@ -8,11 +8,19 @@ import { Search, Package, MapPin, Calendar, Clock, CheckCircle2 } from "lucide-r
 
 export default function Track() {
   const { t, isRtl } = useLanguage();
-  const searchParams = new URLSearchParams(window.location.search);
-  const initialId = searchParams.get("id") || "";
-  
-  const [trackingNumber, setTrackingNumber] = useState(initialId);
-  const [searchedId, setSearchedId] = useState(initialId);
+  const [trackingNumber, setTrackingNumber] = useState("");
+  const [searchedId, setSearchedId] = useState("");
+
+  // Read ?id= after mount: window is unavailable during SSG prerendering, and
+  // reading it during the first client render would cause a hydration mismatch
+  // between the prerendered HTML and the hydrated tree on deep links.
+  React.useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get("id");
+    if (id) {
+      setTrackingNumber(id);
+      setSearchedId(id);
+    }
+  }, []);
 
   const { data, isLoading, error } = useTrackShipment(searchedId, {
     query: {
@@ -160,6 +168,92 @@ export default function Track() {
             </div>
           </div>
         )}
+
+        <div className="max-w-4xl mx-auto mt-20 space-y-12">
+          <section>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              {t("How Shipment Tracking Works", "كيف يعمل تتبع الشحنات")}
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              {t(
+                "Every ENVOD KINGDOM shipment receives a unique tracking number once the booking is confirmed. Enter it above — or use your booking reference or invoice number — to see the latest confirmed milestones for your cargo, from pickup and export processing through customs clearance to final delivery. Statuses are updated as each milestone is confirmed by our operations team.",
+                "تحصل كل شحنة من إنفود كينجدوم على رقم تتبع فريد بمجرد تأكيد الحجز. أدخله أعلاه — أو استخدم رقم المرجع أو الفاتورة — لعرض أحدث المراحل المؤكدة لشحنتك، من الاستلام ومعالجة التصدير مروراً بالتخليص الجمركي وحتى التسليم النهائي. يتم تحديث الحالات مع تأكيد كل مرحلة من قبل فريق العمليات لدينا.",
+              )}
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              {t("Understanding Your Shipment Status", "فهم حالة شحنتك")}
+            </h2>
+            <ul className="space-y-3 text-muted-foreground leading-relaxed">
+              <li>
+                <span className="font-medium text-white">{t("Booked / Picked Up", "تم الحجز / تم الاستلام")}</span>
+                {" — "}
+                {t(
+                  "the cargo has entered our network and is being prepared for transport.",
+                  "دخلت الشحنة شبكتنا ويجري تجهيزها للنقل.",
+                )}
+              </li>
+              <li>
+                <span className="font-medium text-white">{t("In Transit", "قيد النقل")}</span>
+                {" — "}
+                {t(
+                  "the shipment is moving between origin and destination by air, sea, or road.",
+                  "الشحنة في طريقها بين المنشأ والوجهة جواً أو بحراً أو براً.",
+                )}
+              </li>
+              <li>
+                <span className="font-medium text-white">{t("Customs Clearance", "التخليص الجمركي")}</span>
+                {" — "}
+                {t(
+                  "documentation is being processed by the customs authorities; clearance times can vary with the cargo type and destination.",
+                  "تتم معالجة المستندات لدى الجهات الجمركية؛ وقد تختلف مدة التخليص حسب نوع البضاعة والوجهة.",
+                )}
+              </li>
+              <li>
+                <span className="font-medium text-white">{t("Delivered", "تم التسليم")}</span>
+                {" — "}
+                {t(
+                  "the shipment has arrived at its final destination.",
+                  "وصلت الشحنة إلى وجهتها النهائية.",
+                )}
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="text-2xl font-bold text-white mb-4">
+              {t("Need Help With a Shipment?", "هل تحتاج مساعدة بخصوص شحنتك؟")}
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              {t(
+                "If you can't locate your tracking number or have a question about a delivery, our team in Riyadh is ready to assist — reach us through the ",
+                "إذا لم تتمكن من العثور على رقم التتبع أو كان لديك استفسار حول التسليم، فإن فريقنا في الرياض جاهز للمساعدة — تواصل معنا عبر ",
+              )}
+              <Link href="/contact" className="text-secondary hover:underline">
+                {t("contact page", "صفحة اتصل بنا")}
+              </Link>
+              {t(". You can also learn more ", ". يمكنك أيضاً معرفة المزيد ")}
+              <Link href="/about" className="text-secondary hover:underline">
+                {t("about ENVOD KINGDOM", "عن إنفود كينجدوم")}
+              </Link>
+              {t(", or explore our ", "، أو استكشاف ")}
+              <Link href="/services" className="text-secondary hover:underline">
+                {t("logistics services", "خدماتنا اللوجستية")}
+              </Link>
+              {t(" such as ", " مثل ")}
+              <Link href="/services/customs-clearance" className="text-secondary hover:underline">
+                {t("customs clearance", "التخليص الجمركي")}
+              </Link>
+              {t(" and ", " و")}
+              <Link href="/services/gcc-transportation" className="text-secondary hover:underline">
+                {t("GCC road transportation", "النقل البري الخليجي")}
+              </Link>
+              .
+            </p>
+          </section>
+        </div>
       </div>
     </div>
   );

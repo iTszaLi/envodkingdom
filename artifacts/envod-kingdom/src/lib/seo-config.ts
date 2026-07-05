@@ -94,6 +94,7 @@ export const CONTENT_ROUTES: string[] = [
   "/contact",
   "/industries",
   "/vision-2030",
+  "/track",
   ...SERVICE_CATALOG.map((s) => `/services/${ID_TO_SLUG[s.id]}`).filter(
     (p) => !p.endsWith("/undefined"),
   ),

@@ -13,6 +13,14 @@ app.set("trust proxy", 1);
 app.use((_req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  // The API serves JSON, XML sitemaps, and gallery media — never HTML
+  // documents — so a locked-down CSP is safe. img/media 'self' keeps
+  // directly-opened gallery images rendering in the browser.
+  res.setHeader(
+    "Content-Security-Policy",
+    "default-src 'none'; img-src 'self'; media-src 'self'; frame-ancestors 'self'",
+  );
   next();
 });
 
