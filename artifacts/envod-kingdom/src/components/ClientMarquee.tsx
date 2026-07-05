@@ -26,6 +26,7 @@ import bmtcLogo from "@assets/logo_bmtc.webp";
 import alredwanLogo from "@assets/logo_alredwan.webp";
 import sulindaLogo from "@assets/logo_sulinda.webp";
 import cityflowerLogo from "@assets/logo_cityflower.webp";
+import sitcoLogo from "@assets/logo_sitco.webp";
 
 /* ─────────────────────────── Client logos (keyed by client name) ─────────────────────────── */
 const CLIENT_LOGOS: Record<string, string> = {
@@ -49,6 +50,7 @@ const CLIENT_LOGOS: Record<string, string> = {
   "Al Redwan Medical Services": alredwanLogo,
   "Sulinda":                    sulindaLogo,
   "City Flower":                cityflowerLogo,
+  "SITCO Pharma":               sitcoLogo,
 };
 
 /* ─────────────────────────── Data ─────────────────────────── */
@@ -73,6 +75,7 @@ const FALLBACK_CLIENTS: Client[] = [
   { id: 19, name: "Al Redwan Medical Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 19, isActive: true },
   { id: 20, name: "Sulinda",                   industry: "Trading",            logoUrl: null, website: null, sortOrder: 20, isActive: true },
   { id: 21, name: "City Flower",               industry: "Retail",             logoUrl: null, website: null, sortOrder: 21, isActive: true },
+  { id: 22, name: "SITCO Pharma",              industry: "Pharmaceuticals",    logoUrl: null, website: null, sortOrder: 22, isActive: true },
 ];
 
 /* ─────────────────────────── Palette ─────────────────────────── */
