@@ -18,3 +18,4 @@
 - [Asset image optimization](asset-image-optimization.md) — Vite `@assets` imports emit raw bytes (no auto-compress); pre-encode photo uploads to WebP (`magick`, not sharp) before importing
 - [RTL flex-row-reverse](rtl-flex-reverse.md) — isRtl flex-row-reverse under dir=rtl UN-mirrors rows; anchor absolute decorations (timeline lines) to the visual side; verify with AR screenshot
 - [Seamless marquee + RTL](marquee-seamless-rtl.md) — no flex gap on translateX marquee tracks (per-card margin instead) or the loop snaps; pin rows wrapper dir="ltr" under Arabic RTL
+- [Security headers](security-headers.md) — CSP lives in 3 places (prerender meta injection, _headers for CF Pages, API HTTP headers); change all together; directives that look removable but aren't
