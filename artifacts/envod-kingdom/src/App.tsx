@@ -1,6 +1,6 @@
 import { Switch, Route, Router as WouterRouter, Redirect, useLocation } from "wouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
@@ -19,11 +19,11 @@ import Industries from "@/pages/industries";
 import IndustryDetail from "@/pages/industry-detail";
 import Vision2030 from "@/pages/vision-2030";
 
-import AdminLogin from "@/pages/admin/login";
-import AdminDashboard from "@/pages/admin/dashboard";
-import AdminNotifications from "@/pages/admin/notifications";
-import AdminHeroVideos from "@/pages/admin/hero-videos";
-import AdminGallery from "@/pages/admin/gallery";
+const AdminLogin = lazy(() => import("@/pages/admin/login"));
+const AdminDashboard = lazy(() => import("@/pages/admin/dashboard"));
+const AdminNotifications = lazy(() => import("@/pages/admin/notifications"));
+const AdminHeroVideos = lazy(() => import("@/pages/admin/hero-videos"));
+const AdminGallery = lazy(() => import("@/pages/admin/gallery"));
 
 const queryClient = new QueryClient();
 
@@ -43,6 +43,7 @@ function ScrollToTop() {
 
 function Router() {
   return (
+    <Suspense fallback={null}>
     <Switch>
       <Route path="/admin" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
@@ -96,6 +97,7 @@ function Router() {
         <MainLayout><NotFound /></MainLayout>
       </Route>
     </Switch>
+    </Suspense>
   );
 }
 
