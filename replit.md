@@ -52,9 +52,8 @@ Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVO
 
 ## Admin credentials
 
-- URL: `/admin`
-- Username: `admin`
-- Password: `Envod@2024!`
+- URL: `/admin`, username: `admin`
+- Password: not stored in the repo (GitHub-safe). It is whatever the user set / the original seeded value — ask the user if needed, or reset it by updating `admin_users.password_hash` in the DB (SHA256 of password + salt from `artifacts/api-server/src/routes/auth.ts`)
 
 ## Test data
 
