@@ -1,0 +1,332 @@
+I am preparing to publish this website to production. Perform a COMPLETE production readiness audit and fix every issue you find.
+
+I don't want assumptions. Actually inspect every page, component, schema, image, route, metadata, and functionality.
+
+Return a checklist showing PASS or FAIL for every item and automatically fix anything that can be fixed.
+
+1. Website Quality Audit
+
+Check every page for:
+
+Broken layouts
+Responsive issues
+Mobile usability
+Tablet usability
+Desktop consistency
+Overflowing elements
+Alignment issues
+Incorrect spacing
+Font consistency
+Button consistency
+Icon consistency
+Color consistency
+Hover effects
+Scroll animations
+Image loading
+Missing images
+Missing alt text
+Empty sections
+Placeholder content
+Lorem Ipsum
+Console errors
+JavaScript errors
+CSS issues
+2. Navigation
+
+Verify:
+
+Every menu link works
+Every footer link works
+Logo links to Home
+Active navigation state
+Smooth scrolling
+Anchor links
+Breadcrumbs
+404 page
+Redirects
+Back button behaviour
+3. Forms
+
+Test every form.
+
+Confirm:
+
+Validation works
+Required fields work
+Email validation
+Phone validation
+Success message
+Error message
+Loading state
+Spam protection
+Email delivery
+Form submission
+Duplicate submission prevention
+
+If any form is broken, fix it.
+
+4. Contact Information
+
+Verify all contact information is identical everywhere:
+
+Phone numbers
+WhatsApp
+Email
+Office Address
+Working Hours
+Google Maps
+Social Media
+5. SEO Audit
+
+Verify:
+
+Unique title on every page
+Unique meta description
+Canonical URLs
+Open Graph tags
+Twitter Cards
+XML Sitemap
+robots.txt
+Structured Data
+Breadcrumb Schema
+Organization Schema
+Local Business Schema
+Service Schema
+FAQ Schema
+Image alt text
+Proper H1
+Proper H2 hierarchy
+Internal linking
+No duplicate metadata
+6. AI SEO / GEO / AEO
+
+Check that the website is optimized for:
+
+ChatGPT
+Google AI Overview
+Gemini
+Claude
+Perplexity
+Bing Copilot
+
+Verify:
+
+Entity optimization
+Question-answer content
+FAQ quality
+AI readable formatting
+Semantic HTML
+Structured data completeness
+7. Performance
+
+Run Lighthouse.
+
+Target:
+
+Performance 95+
+
+Accessibility 100
+
+Best Practices 100
+
+SEO 100
+
+Fix every issue.
+
+8. Core Web Vitals
+
+Check:
+
+LCP
+CLS
+INP
+FCP
+TTFB
+
+Optimize images.
+
+Optimize fonts.
+
+Optimize scripts.
+
+Optimize CSS.
+
+Lazy load where appropriate.
+
+9. Security
+
+Verify:
+
+HTTPS ready
+Security headers
+CSP
+XSS protection
+No exposed API keys
+Environment variables secure
+Hidden files inaccessible
+10. Images
+
+Check every image.
+
+Verify:
+
+Correct size
+Compressed
+WebP/AVIF where appropriate
+Lazy loading
+Responsive
+No blurry images
+No stretched images
+Correct aspect ratio
+11. Accessibility
+
+Check:
+
+Keyboard navigation
+ARIA labels
+Focus states
+Color contrast
+Screen reader support
+Form labels
+Alt text
+12. Content Review
+
+Check for:
+
+Grammar mistakes
+Spelling mistakes
+Capitalization consistency
+Duplicate paragraphs
+Incorrect company name
+Broken sentences
+Wrong service descriptions
+13. Trust Signals
+
+Verify:
+
+Company Logo
+ENVO branding
+GACA approvals
+IEC certificate
+Proud Member section
+Customer logos
+Testimonials
+Google Reviews
+Years of experience
+Contact details
+Business registration details (where applicable)
+14. Service Pages
+
+Verify every service page has:
+
+Hero
+
+Introduction
+
+Benefits
+
+Process
+
+Industries Served
+
+FAQs
+
+Internal links
+
+CTA
+
+Contact section
+
+Schema
+
+Images
+
+SEO
+
+15. Technical Checks
+
+Verify:
+
+No dead code
+
+No unused imports
+
+No TypeScript errors
+
+No build warnings
+
+No console warnings
+
+No hydration errors
+
+No React warnings
+
+No missing dependencies
+
+No duplicate packages
+
+Successful production build
+
+16. Cross Browser Testing
+
+Test on:
+
+Chrome
+
+Safari
+
+Firefox
+
+Edge
+
+Android
+
+iPhone
+
+17. Final Production Audit
+
+Before publishing, confirm:
+
+✅ No broken links
+
+✅ No console errors
+
+✅ No missing images
+
+✅ No placeholder text
+
+✅ No unfinished sections
+
+✅ No empty pages
+
+✅ No broken buttons
+
+✅ No SEO issues
+
+✅ No accessibility issues
+
+✅ No security issues
+
+✅ No build errors
+
+✅ No deployment issues
+
+Finally, generate a Production Readiness Report showing:
+
+Overall Score (/100)
+Lighthouse Scores
+SEO Score
+Accessibility Score
+Performance Score
+Security Score
+Remaining Issues (if any)
+Exactly what was fixed
+Confirmation that the website is production-ready.
+
+Only tell me "Ready to Publish" if every critical issue has been resolved.
+
+One more thing I'd ask before publishing
+
+After the audit passes, give Replit this separate prompt:
+
+"Perform one final end-to-end production simulation. Pretend you are a real customer visiting the website. Test every page, every button, every navigation link, every contact form, every CTA, every service page, every download, and every interactive element. Report anything that creates friction, confusion, or reduces trust, and automatically fix all issues before publishing."

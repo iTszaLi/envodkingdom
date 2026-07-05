@@ -5,7 +5,7 @@
 - [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain
 - [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
 - [Filter on cross-origin iframes](screenshot-iframe-filter.md) — app_preview doesn't composite CSS filter over cross-origin iframes; looks wrong in shots, fine in real browsers
-- [Favicon & logo mark](favicon-and-logo-mark.md) — clean mark source is attached_assets/image_1780532431289.png; extract via flood-fill (not the ML remover); favicon is adaptive light/dark SVG
+- [Favicon & logo mark](favicon-and-logo-mark.md) — favicon is now a white-disc badge mark (single variant, source logi_1783209860215.png); premultiplied-alpha resize + iOS flatten gotchas
 - [SEO head & crawlability](seo-head-and-crawl.md) — shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for media/sitemaps under /api/
 - [SSG prerender & SEO invariants](seo-ssg-prerender.md) — content routes prerendered; CONTENT_ROUTES↔artifact.toml↔sitemap kept in sync (build asserts); framer-motion opacity:0 hides content from SSG
 - [Catalog-only services vs live API](catalog-vs-api-services.md) — services come from DB-seeded API + static catalog; catalog-only additions must merge/fallback or vanish after API hydrates

@@ -1,24 +1,19 @@
 ---
 name: Favicon & logo mark
-description: Where the clean ENVOD swoosh mark lives, how to extract it cleanly, and why the favicon is an adaptive light/dark SVG.
+description: Favicon is now a white-disc badge mark (single variant, not adaptive); source images and extraction gotchas.
 ---
 
-# Logo mark source
-- The clean, isolated ENVOD swoosh mark (no wordmark text) is `attached_assets/image_1780532431289.png` — 223×171, PURE WHITE opaque background. Use this as the source for any icon/favicon/logo-mark work.
-- The full logo `attached_assets/image_1780437854819.png` (730×114) includes the "ENVOD KINGDOM" wordmark text — not suitable for a square icon.
+# Current favicon (v4): white-disc badge, single variant
+- Source: `attached_assets/logi_1783209860215.png` — the swoosh mark inside a WHITE FILLED CIRCLE on near-black bg (user-provided, July 2026). The white disc gives contrast on dark tabs, and the gray/red mark reads on light tabs, so the old adaptive light/dark `prefers-color-scheme` SVG was dropped — `favicon.svg` is now ONE embedded 128px base64 PNG.
+- Extraction: the disc is a perfect circle — cut out with a supersampled anti-aliased circular mask (center/radius from white-pixel bbox) + color-distance alpha vs the uniform bg, then UNBLEND edge pixels: `fg = (px - bg*(1-α))/α`. Do not flood-fill or ML-remove.
+- Package lives in `artifacts/envod-kingdom/public/` (attached_assets is NOT web-served); `?v=N` cache-busting on `<link>` tags in `index.html` — currently v=4, bump on art change.
 
-# Extracting the mark (do NOT use the ML background remover)
-- The `remove_image_background_tool` crops part of this mark (drops the right-hand loop of the swoosh). Reject it.
-- **Why:** it mis-detects the light-gray loop as background.
-- **How to apply:** remove the white background with a flood-fill from the image border (min-channel ≥ ~240 = background candidate), which preserves interior light-gray highlights and the full mark. Scale with **premultiplied-alpha** LANCZOS (premultiply → resize → unpremultiply) to avoid white/dark halos on transparent edges.
+# Older mark sources (pre-badge)
+- Bare swoosh mark (no disc, no wordmark): `attached_assets/image_1780532431289.png` — 223×171, pure-white bg. Full logo with wordmark: `attached_assets/image_1780437854819.png` (730×114) — too wide for square icons.
+- The ML `remove_image_background_tool` crops part of the bare mark (drops the right loop) — extract via border flood-fill instead if ever needed.
 
-# Favicon is adaptive light/dark (prefers-color-scheme)
-- The favicon package is served from `artifacts/envod-kingdom/public/` (attached_assets is NOT web-served). Primary icon is `favicon.svg` which embeds two base64 PNG variants toggled by `@media (prefers-color-scheme: dark)`; PNG/ICO are fallbacks.
-- **Why:** the swoosh crescent is mid-gray and nearly disappears on dark browser tabs. A single transparent icon cannot be high-contrast on both white and near-black tabs. The dark variant lifts the gray to bright silver (red kept) so it reads on dark; the light variant keeps brand gray for light tabs. Both stay transparent.
-- apple-touch-icon.png is deliberately OPAQUE white background — iOS renders transparency as black.
-- **How to apply:** regenerate the whole package (light+dark variants, ICO, PNGs, SVG, manifest) from the source mark; keep `?v=N` cache-busting on the `<link>` tags in `index.html` and bump N when the art changes.
-
-# Gotchas learned regenerating the package
-- **apple-touch must be flattened to RGB.** `canvas.paste(mark, box, mark)` onto an opaque-white RGBA canvas STILL leaves semi-transparent edge pixels (alpha<255) → faint dark fringe on iOS. Fix: `Image.new('RGBA',(s,s),(255,255,255,255))` → `alpha_composite(mark)` → `.convert('RGB')` and save. Verify `getbands()` has no `A`.
-- **The SVG embeds a raster, and Chrome PREFERS the SVG** over the size-matched PNGs. So the browser downscales the embedded 128px raster to 16px — the hand-sharpened `favicon-16x16.png` is effectively bypassed in Chrome. If 16px blur is still reported, the trade-off is: drop the `<link rel="icon" type="image/svg+xml">` to force Chrome onto the size PNGs (LOSES dark/light adaptivity), or embed a sharper/smaller raster. Do not iterate blindly — surface the trade-off.
-- **The mark is ~1.4:1 wide**, so in a SQUARE icon ~94% width fill is the practical maximum (going higher clips/touches edges). Enlarging from ~87%→94% width is only ~7% linear (though ~15% area); you cannot hit a "10–15% linear" bump without distorting or clipping the wide mark.
+# Durable gotchas (apply to any regeneration)
+- Scale with **premultiplied-alpha** LANCZOS (premultiply → resize → unpremultiply) to avoid halos.
+- **apple-touch-icon must be flattened to opaque RGB white** — `alpha_composite` onto opaque white then `.convert('RGB')`; verify `getbands()` has no `A`. iOS renders transparency as black; plain `paste` leaves semi-transparent edge fringe.
+- Chrome PREFERS the SVG over size-matched PNGs, so it downscales the embedded raster to 16px; hand-sharpened size PNGs are bypassed in Chrome.
+- `site.webmanifest` references `android-chrome-*.png` — regenerate those in place so no manifest edit is needed.
