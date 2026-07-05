@@ -173,3 +173,69 @@ id = "cclN7fJjPiGW3kKAll_B2"
 uri = "file://attached_assets/stock_images/envod_freight_4.jpg"
 type = "image"
 title = "freight forwarding cargo airplane truck fleet highway international shipping"
+
+[[outputs]]
+id = "xRKmWfyo3EFx9dbu9FYjR"
+uri = "file://attached_assets/stock_images/industry_automotive.jpg"
+type = "image"
+title = "row of new cars being loaded onto car transporter truck"
+
+[[outputs]]
+id = "Z-WgJXe3x-8NfehqmjVrx"
+uri = "file://attached_assets/stock_images/industry_construction.jpg"
+type = "image"
+title = "construction site with tower cranes at dusk"
+
+[[outputs]]
+id = "gcD-qRKBxHA-_PUw6yeJp"
+uri = "file://attached_assets/stock_images/industry_retail.jpg"
+type = "image"
+title = "retail distribution warehouse with packed shelves"
+
+[[outputs]]
+id = "2zuAYqzu0xa15evfSByKl"
+uri = "file://attached_assets/stock_images/industry_fashion.jpg"
+type = "image"
+title = "clothing garments hanging on racks in fashion warehouse"
+
+[[outputs]]
+id = "xkH_nytZdR1feqfjijIbZ"
+uri = "file://attached_assets/stock_images/industry_electronics.jpg"
+type = "image"
+title = "electronics circuit board close up manufacturing"
+
+[[outputs]]
+id = "2WROoPu97dpgZL2vgBsc-"
+uri = "file://attached_assets/stock_images/industry_aerospace.jpg"
+type = "image"
+title = "commercial aircraft in maintenance hangar"
+
+[[outputs]]
+id = "WbCPMmb5sUUBLDh0GZ48n"
+uri = "file://attached_assets/stock_images/industry_hospitality.jpg"
+type = "image"
+title = "luxury hotel lobby interior elegant"
+
+[[outputs]]
+id = "ZFVQpQNNJ9_Xfgt-DBnP9"
+uri = "file://attached_assets/stock_images/industry_furniture.jpg"
+type = "image"
+title = "modern furniture showroom with sofas"
+
+[[outputs]]
+id = "OoIfKsR95k6_dDlLKCly_"
+uri = "file://attached_assets/stock_images/industry_chemical.jpg"
+type = "image"
+title = "industrial chemical plant storage tanks pipes"
+
+[[outputs]]
+id = "YSpAnmVWI0Tuk9iGyUyO8"
+uri = "file://attached_assets/stock_images/industry_telecom.jpg"
+type = "image"
+title = "telecommunications tower with antennas against sky"
+
+[[outputs]]
+id = "evcHJpeMMAB5avllfxdnX"
+uri = "file://attached_assets/stock_images/industry_government.jpg"
+type = "image"
+title = "modern government ministry building architecture"

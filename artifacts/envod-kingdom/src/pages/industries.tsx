@@ -7,9 +7,37 @@ import {
   Hotel, Armchair, FlaskConical, RadioTower, Landmark,
 } from "lucide-react";
 
+import indAutomotive from "@assets/ind_automotive.webp";
+import indConstruction from "@assets/ind_construction.webp";
+import indRetail from "@assets/ind_retail.webp";
+import indFashion from "@assets/ind_fashion.webp";
+import indElectronics from "@assets/ind_electronics.webp";
+import indAerospace from "@assets/ind_aerospace.webp";
+import indHospitality from "@assets/ind_hospitality.webp";
+import indFurniture from "@assets/ind_furniture.webp";
+import indChemical from "@assets/ind_chemical.webp";
+import indTelecom from "@assets/ind_telecom.webp";
+import indGovernment from "@assets/ind_government.webp";
+import vision2030Logo from "@assets/logo_vision2030.webp";
+
 const ICONS: Record<string, React.ElementType> = {
   Car, HardHat, ShoppingBag, Shirt, Cpu, Rocket,
   Hotel, Armchair, FlaskConical, RadioTower, Landmark,
+};
+
+/** slug → card background photo */
+const INDUSTRY_BG: Record<string, string> = {
+  "automotive-logistics":         indAutomotive,
+  "construction-logistics":       indConstruction,
+  "retail-logistics":             indRetail,
+  "fashion-logistics":            indFashion,
+  "electronics-logistics":        indElectronics,
+  "aerospace-logistics":          indAerospace,
+  "hospitality-logistics":        indHospitality,
+  "furniture-logistics":          indFurniture,
+  "chemical-logistics":           indChemical,
+  "telecommunications-logistics": indTelecom,
+  "government-logistics":         indGovernment,
 };
 
 export default function Industries() {
@@ -58,18 +86,35 @@ export default function Industries() {
                 className={`group relative rounded-2xl border border-white/8 bg-white/[0.03] p-7 transition-all duration-300 hover:bg-white/[0.06] hover:-translate-y-1 ${isRtl ? "text-right" : ""}`}
                 style={{ boxShadow: "0 0 0 0 transparent" }}
               >
-                <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(90deg, transparent, ${ind.accentHex}80, transparent)` }} />
-                <div className={`flex items-center gap-4 mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-white/10" style={{ background: `${ind.accentHex}18` }}>
-                    <Icon className="w-6 h-6" style={{ color: ind.accentHex }} />
+                {/* Background photo (behind the text, dimmed so copy stays legible) */}
+                {INDUSTRY_BG[ind.slug] && (
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none" aria-hidden="true">
+                    <img
+                      src={INDUSTRY_BG[ind.slug]}
+                      alt=""
+                      loading="lazy"
+                      className="w-full h-full object-cover opacity-[0.18] transition-all duration-500 group-hover:opacity-30 group-hover:scale-105"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: "linear-gradient(180deg, rgba(5,14,28,0.42) 0%, rgba(5,14,28,0.68) 55%, rgba(5,14,28,0.9) 100%)" }}
+                    />
                   </div>
-                  <h3 className="text-white font-black text-lg leading-snug">{isRtl ? ind.nameAr : ind.nameEn}</h3>
+                )}
+                <div className="absolute inset-x-0 top-0 h-0.5 rounded-t-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `linear-gradient(90deg, transparent, ${ind.accentHex}80, transparent)` }} />
+                <div className="relative z-10">
+                  <div className={`flex items-center gap-4 mb-4 ${isRtl ? "flex-row-reverse" : ""}`}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0 border border-white/10 backdrop-blur-sm" style={{ background: `${ind.accentHex}18` }}>
+                      <Icon className="w-6 h-6" style={{ color: ind.accentHex }} />
+                    </div>
+                    <h3 className="text-white font-black text-lg leading-snug">{isRtl ? ind.nameAr : ind.nameEn}</h3>
+                  </div>
+                  <p className="text-white/60 text-sm leading-relaxed mb-5">{isRtl ? ind.shortAr : ind.shortEn}</p>
+                  <span className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white/40 group-hover:text-secondary transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
+                    {t("Explore", "استكشف")}
+                    <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180" : ""}`} />
+                  </span>
                 </div>
-                <p className="text-white/50 text-sm leading-relaxed mb-5">{isRtl ? ind.shortAr : ind.shortEn}</p>
-                <span className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-white/40 group-hover:text-secondary transition-colors ${isRtl ? "flex-row-reverse" : ""}`}>
-                  {t("Explore", "استكشف")}
-                  <ArrowRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 ${isRtl ? "rotate-180" : ""}`} />
-                </span>
               </Link>
             );
           })}
@@ -101,10 +146,20 @@ export default function Industries() {
                   )}
                 </p>
               </div>
-              <span className={`inline-flex items-center gap-2.5 bg-secondary group-hover:bg-secondary/85 text-white px-7 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 shrink-0 self-start md:self-center ${isRtl ? "flex-row-reverse" : ""}`}>
-                {t("Vision 2030 Logistics", "لوجستيات رؤية 2030")}
-                <ArrowRight className={`w-4 h-4 ${isRtl ? "rotate-180" : ""}`} />
-              </span>
+              <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-5 shrink-0 self-start md:self-center ${isRtl ? "sm:flex-row-reverse" : ""}`}>
+                <div className="flex-none bg-white rounded-2xl px-5 py-3.5 shadow-lg shadow-black/20 border border-white/20">
+                  <img
+                    src={vision2030Logo}
+                    alt={t("Saudi Vision 2030 — Kingdom of Saudi Arabia", "رؤية السعودية 2030 — المملكة العربية السعودية")}
+                    loading="lazy"
+                    className="h-16 md:h-20 w-auto object-contain"
+                  />
+                </div>
+                <span className={`inline-flex items-center gap-2.5 bg-secondary group-hover:bg-secondary/85 text-white px-7 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider transition-all shadow-lg shadow-secondary/20 ${isRtl ? "flex-row-reverse" : ""}`}>
+                  {t("Vision 2030 Logistics", "لوجستيات رؤية 2030")}
+                  <ArrowRight className={`w-4 h-4 ${isRtl ? "rotate-180" : ""}`} />
+                </span>
+              </div>
             </div>
           </Link>
         </div>
