@@ -35,7 +35,7 @@ export function buildWhatsAppMessage(payload: NotificationPayload): string {
     (payload.location ? `📍 Location: ${payload.location}\n` : "") +
     (payload.description ? `ℹ️ ${payload.description}\n` : "") +
     `\nTrack your shipment:\n${trackingUrl}\n\n` +
-    `For assistance call: +966 58 367 1739\n` +
+    `For assistance call: +966 50 226 0256\n` +
     `WhatsApp: +966 50 226 0256`
   );
 }
