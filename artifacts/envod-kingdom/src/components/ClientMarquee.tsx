@@ -70,7 +70,6 @@ const FALLBACK_CLIENTS: Client[] = [
   { id: 15, name: "Medical Solutions Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 15, isActive: true },
   { id: 16, name: "The Boulevard Riyadh",      industry: "Entertainment",      logoUrl: null, website: null, sortOrder: 16, isActive: true },
   { id: 17, name: "BMTC",                      industry: "Industrial",         logoUrl: null, website: null, sortOrder: 17, isActive: true },
-  { id: 18, name: "Saudi Gulf",                industry: "Aviation",           logoUrl: null, website: null, sortOrder: 18, isActive: true },
   { id: 19, name: "Al Redwan Medical Services", industry: "Healthcare",        logoUrl: null, website: null, sortOrder: 19, isActive: true },
   { id: 20, name: "Sulinda",                   industry: "Trading",            logoUrl: null, website: null, sortOrder: 20, isActive: true },
   { id: 21, name: "City Flower",               industry: "Retail",             logoUrl: null, website: null, sortOrder: 21, isActive: true },
