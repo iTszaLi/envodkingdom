@@ -8,7 +8,7 @@ import type { LucideIcon } from "lucide-react";
 
 import stcLogo from "@assets/logo_stc.webp";
 import aramcoLogo from "@assets/logo_aramco.webp";
-import dsvLogo from "@assets/logo_dsv.webp";
+import asiaCupLogo from "@assets/logo_asiacup.webp";
 import katerraLogo from "@assets/logo_katerra.webp";
 import coopMedicalLogo from "@assets/logo_coop_medical.webp";
 import olayanLogo from "@assets/logo_olayan.webp";
@@ -31,7 +31,7 @@ import cityflowerLogo from "@assets/logo_cityflower.webp";
 const CLIENT_LOGOS: Record<string, string> = {
   "STC":                        stcLogo,
   "Saudi Aramco":               aramcoLogo,
-  "DSV":                        dsvLogo,
+  "Saudi Asian Cup Jeddah 2025": asiaCupLogo,
   "Katerra":                    katerraLogo,
   "Operation Medical Est.":     coopMedicalLogo,
   "Olayan Group":               olayanLogo,
@@ -55,7 +55,7 @@ const CLIENT_LOGOS: Record<string, string> = {
 const FALLBACK_CLIENTS: Client[] = [
   { id: 1,  name: "STC",                       industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 1,  isActive: true },
   { id: 2,  name: "Saudi Aramco",              industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 2,  isActive: true },
-  { id: 3,  name: "DSV",                       industry: "Logistics",          logoUrl: null, website: null, sortOrder: 3,  isActive: true },
+  { id: 3,  name: "Saudi Asian Cup Jeddah 2025", industry: "Sports",           logoUrl: null, website: null, sortOrder: 3,  isActive: true },
   { id: 4,  name: "Katerra",                   industry: "Construction",       logoUrl: null, website: null, sortOrder: 4,  isActive: true },
   { id: 5,  name: "Operation Medical Est.",    industry: "Healthcare",         logoUrl: null, website: null, sortOrder: 5,  isActive: true },
   { id: 6,  name: "Olayan Group",              industry: "Conglomerate",       logoUrl: null, website: null, sortOrder: 6,  isActive: true },
