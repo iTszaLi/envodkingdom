@@ -1,6 +1,8 @@
 import { useParams, Link } from "wouter";
 import { useLanguage } from "@/lib/language-context";
 import { INDUSTRY_BY_SLUG, INDUSTRY_META } from "@/lib/industry-data";
+import { INDUSTRY_BG } from "@/lib/industry-images";
+import vision2030Logo from "@assets/logo_vision2030.webp";
 import { SLUG_TO_ID, SERVICE_CATALOG, buildMailto } from "@/lib/service-data";
 import FAQCollapse from "@/components/FAQCollapse";
 import {
@@ -44,6 +46,20 @@ export default function IndustryDetail() {
     <div className="min-h-screen bg-background" dir={isRtl ? "rtl" : "ltr"}>
       {/* ── Hero ── */}
       <div className="relative pt-24 pb-20 overflow-hidden" style={{ background: ind.gradient }}>
+        {/* Industry photo backdrop (dimmed under a navy gradient so copy stays legible) */}
+        {INDUSTRY_BG[ind.slug] && (
+          <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+            <img
+              src={INDUSTRY_BG[ind.slug]}
+              alt=""
+              className="w-full h-full object-cover opacity-30"
+            />
+            <div
+              className="absolute inset-0"
+              style={{ background: "linear-gradient(180deg, rgba(5,14,28,0.55) 0%, rgba(5,14,28,0.72) 55%, rgba(5,14,28,0.92) 100%)" }}
+            />
+          </div>
+        )}
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.5) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] pointer-events-none" style={{ background: `radial-gradient(ellipse, ${ind.accentHex}18 0%, transparent 70%)` }} />
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -68,6 +84,15 @@ export default function IndustryDetail() {
               <h1 className="text-3xl md:text-5xl xl:text-6xl font-black text-white leading-tight tracking-tight max-w-3xl">
                 {name}
               </h1>
+            </div>
+
+            {/* Saudi Vision 2030 badge (in-flow, so it never overlaps the nav) */}
+            <div className="hidden sm:block ml-auto shrink-0 bg-white rounded-xl px-4 py-3 shadow-lg shadow-black/30">
+              <img
+                src={vision2030Logo}
+                alt={t("Saudi Vision 2030", "رؤية السعودية 2030")}
+                className="h-12 lg:h-16 w-auto object-contain"
+              />
             </div>
           </div>
 
