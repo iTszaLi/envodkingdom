@@ -238,7 +238,11 @@ function MarqueeTrack({ clients, reverse = false, paused }: { clients: Client[];
       <div
         className="flex shrink-0 will-change-transform"
         style={{
-          animation: `cm-scroll ${duration}s linear infinite ${reverse ? "reverse" : ""}`,
+          animationName: "cm-scroll",
+          animationDuration: `${duration}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+          animationDirection: reverse ? "reverse" : "normal",
           animationPlayState: paused ? "paused" : "running",
           backfaceVisibility: "hidden",
           transform: "translateZ(0)",

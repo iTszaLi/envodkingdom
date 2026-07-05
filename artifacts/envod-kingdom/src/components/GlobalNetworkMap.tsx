@@ -133,7 +133,7 @@ const OFFICES: Office[] = [
     countryName: "Saudi Arabia", code: "SA", lat: 24.71, lng: 46.68, isHub: true,
     address: "Prince Mansour Bin Abdulaziz St., Al Malaz District, Riyadh 12831",
     addressAr: "شارع الأمير منصور بن عبدالعزيز، حي الملز، الرياض 12831",
-    hours: "Sun – Thu · 8:00 AM – 6:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م",
+    hours: "Sun – Thu · 8:00 AM – 6:00 PM · Sat · 9:00 AM – 2:00 PM", hoursAr: "الأحد – الخميس · 8:00 ص – 6:00 م · السبت · 9:00 ص – 2:00 م",
     phone: OFFICE_PHONE, email: OFFICE_EMAIL,
     mapsQuery: "Envod Kingdom Shipping Services LLC, Al Malaz, Riyadh",
     gateways: [["King Khalid International Airport", "مطار الملك خالد الدولي"]],

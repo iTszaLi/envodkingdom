@@ -198,6 +198,9 @@ export default function Contact() {
                 {t("Sunday – Thursday · 8:00 AM – 6:00 PM", "الأحد – الخميس · 8:00 صباحاً – 6:00 مساءً")}
               </p>
               <p className="text-white/60 text-[14px]">
+                {t("Saturday · 9:00 AM – 2:00 PM", "السبت · 9:00 صباحاً – 2:00 مساءً")}
+              </p>
+              <p className="text-white/60 text-[14px]">
                 {t("24/7 shipment tracking & support", "تتبع ودعم الشحنات على مدار الساعة")}
               </p>
             </div>
