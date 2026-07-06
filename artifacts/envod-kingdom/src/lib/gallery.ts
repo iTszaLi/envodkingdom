@@ -1,4 +1,27 @@
-import type { GalleryItem } from "@workspace/api-client-react";
+export interface GalleryItem {
+  id: number;
+  mediaType: string;
+  objectKey: string;
+  widths: number[];
+  width: number;
+  height: number;
+  blurDataUrl?: string | null;
+  title: string;
+  titleAr?: string | null;
+  description?: string | null;
+  descriptionAr?: string | null;
+  altText?: string | null;
+  altTextAr?: string | null;
+  category: string;
+  location?: string | null;
+  locationAr?: string | null;
+  monthYear?: string | null;
+  videoUrl?: string | null;
+  sortOrder: number;
+  isPublished: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 

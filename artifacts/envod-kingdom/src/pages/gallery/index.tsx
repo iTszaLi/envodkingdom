@@ -1,12 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Camera, Images, ArrowRight, MapPin, Calendar } from "lucide-react";
-import { useListGallery } from "@workspace/api-client-react";
-import type { GalleryItem } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import { useJsonLd } from "@/lib/seo";
 import { SITE_URL } from "@/lib/seo-config";
 import {
+  type GalleryItem,
   buildSrcSet,
   defaultSrc,
   largestSrc,
@@ -152,29 +151,14 @@ function GalleryCard({ item, onOpen, t, isRtl }: { item: GalleryItem; onOpen: ()
   );
 }
 
-function SkeletonGrid() {
-  const heights = [220, 300, 260, 340, 240, 320, 280, 300];
-  return (
-    <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4">
-      {heights.map((h, i) => (
-        <div
-          key={i}
-          className="mb-4 break-inside-avoid rounded-xl bg-white/[0.04] animate-pulse"
-          style={{ height: h }}
-        />
-      ))}
-    </div>
-  );
-}
-
 /* ─────────────────────── Page ─────────────────────── */
 export default function Gallery() {
   const { t, isRtl } = useLanguage();
-  const { data, isLoading } = useListGallery({ published: true });
   const [activeCategory, setActiveCategory] = useState("all");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
-  const items = useMemo(() => data ?? [], [data]);
+  // Static build: no CMS-backed gallery items; the curated empty state renders.
+  const items = useMemo<GalleryItem[]>(() => [], []);
 
   const presentCategories = useMemo(() => {
     const present = new Set(items.map((i) => i.category));
@@ -296,9 +280,7 @@ export default function Gallery() {
           </div>
         )}
 
-        {isLoading ? (
-          <SkeletonGrid />
-        ) : items.length === 0 ? (
+        {items.length === 0 ? (
           <EmptyState t={t} />
         ) : filtered.length === 0 ? (
           <div className="text-center py-20 text-white/40">

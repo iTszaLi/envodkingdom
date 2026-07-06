@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, MapPin, Calendar, Tag } from "lucide-react";
-import type { GalleryItem } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import {
+  type GalleryItem,
   buildSrcSet,
   largestSrc,
   categoryLabel,

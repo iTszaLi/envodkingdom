@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ArrowRight, ArrowLeft, CheckCircle2, Loader2 } from "lucide-react";
-import { useSubmitInquiry } from "@workspace/api-client-react";
+import { X, ArrowRight, ArrowLeft, CheckCircle2 } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { buildQuoteMailto, CONTACT_EMAIL, CONTACT_WHATSAPP } from "@/lib/quote-mailto";
 
 const SERVICES = [
   { id: "customs",     en: "Customs Clearance",        ar: "التخليص الجمركي",       icon: "🛃" },
@@ -47,7 +47,6 @@ export function QuoteModal({ isOpen, onClose }: Props) {
   const [dir,  setDir]    = useState(1);
   const [data, setData]   = useState<FormData>(EMPTY);
   const [done, setDone]   = useState(false);
-  const submitInquiry = useSubmitInquiry();
 
   const goTo = (next: number) => {
     setDir(next > step ? 1 : -1);
@@ -61,25 +60,18 @@ export function QuoteModal({ isOpen, onClose }: Props) {
   const handleClose = () => { onClose(); setTimeout(reset, 400); };
 
   const handleSubmit = () => {
-    const msg = [
-      data.cargoDescription && `Cargo: ${data.cargoDescription}`,
-      data.origin && `Origin: ${data.origin}`,
-      data.destination && `Destination: ${data.destination}`,
-      data.message,
-    ].filter(Boolean).join("\n");
-
-    submitInquiry.mutate({
-      data: {
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        company: data.company,
-        serviceType: data.serviceType,
-        message: msg,
-      },
-    }, {
-      onSuccess: () => setDone(true),
-    });
+    window.location.href = buildQuoteMailto([
+      { label: "Customer Name", value: data.name },
+      { label: "Company", value: data.company },
+      { label: "Email", value: data.email },
+      { label: "Phone", value: data.phone },
+      { label: "Service Required", value: data.serviceType },
+      { label: "Origin", value: data.origin },
+      { label: "Destination", value: data.destination },
+      { label: "Cargo Information", value: data.cargoDescription },
+      { label: "Additional Notes", value: data.message },
+    ]);
+    setDone(true);
   };
 
   const set = (k: keyof FormData, v: string) => setData(prev => ({ ...prev, [k]: v }));
@@ -120,7 +112,7 @@ export function QuoteModal({ isOpen, onClose }: Props) {
                   </p>
                   <h3 className="text-white font-black text-lg">
                     {done
-                      ? t("Request Received!", "تم استلام طلبك!")
+                      ? t("Email Draft Ready!", "مسودة البريد جاهزة!")
                       : step === 1
                         ? t("Select a Service", "اختر الخدمة")
                         : step === 2
@@ -155,9 +147,13 @@ export function QuoteModal({ isOpen, onClose }: Props) {
                       <div className="w-16 h-16 rounded-full bg-green-500/15 border border-green-500/30 flex items-center justify-center">
                         <CheckCircle2 className="w-8 h-8 text-green-400" />
                       </div>
-                      <p className="text-white font-bold text-lg">{t("We'll be in touch within 2 hours!", "سنتواصل معك خلال ساعتين!")}</p>
+                      <p className="text-white font-bold text-lg">{t("Your email draft is ready — just press send!", "مسودة بريدك جاهزة — فقط اضغط إرسال!")}</p>
                       <p className="text-white/40 text-sm max-w-xs">
-                        {t("Our logistics experts in Riyadh are reviewing your request.", "خبراؤنا اللوجستيون في الرياض يراجعون طلبك.")}
+                        {t("A draft with your request details has been opened in your mail app. If it didn't open, email ", "تم فتح مسودة تحتوي على تفاصيل طلبك في تطبيق البريد لديك. إذا لم تُفتح، راسلنا على ")}
+                        <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline" dir="ltr">{CONTACT_EMAIL}</a>
+                        {t(" or WhatsApp ", " أو واتساب ")}
+                        <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline" dir="ltr">{CONTACT_WHATSAPP}</a>
+                        .
                       </p>
                       <button onClick={handleClose} className="mt-2 bg-secondary hover:bg-secondary/85 text-white px-8 py-2.5 rounded-xl font-bold text-sm transition-all">
                         {t("Close", "إغلاق")}
@@ -250,10 +246,10 @@ export function QuoteModal({ isOpen, onClose }: Props) {
                   ) : (
                     <button
                       onClick={handleSubmit}
-                      disabled={!data.name || !data.email || !data.phone || submitInquiry.isPending}
+                      disabled={!data.name || !data.email || !data.phone}
                       className={`flex items-center gap-2 bg-secondary hover:bg-secondary/85 disabled:opacity-40 disabled:cursor-not-allowed text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all ${isRtl ? "flex-row-reverse" : ""}`}
                     >
-                      {submitInquiry.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
+                      <CheckCircle2 className="w-4 h-4" />
                       {t("Submit Request", "إرسال الطلب")}
                     </button>
                   )}

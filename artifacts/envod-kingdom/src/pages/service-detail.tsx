@@ -2,7 +2,6 @@ import { useParams, Link } from "wouter";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
-import { useListServices } from "@workspace/api-client-react";
 import {
   ArrowRight, ChevronRight, CheckCircle2, Mail,
   Ship, Plane, Truck, Package, ShieldCheck, FileCheck,
@@ -59,17 +58,9 @@ function FAQItem({ q, a, qAr, aAr, isRtl }: { q: string; a: string; qAr: string;
 export default function ServiceDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { t, isRtl } = useLanguage();
-  const { data: servicesData } = useListServices();
-  const services = servicesData ?? SERVICE_CATALOG;
-
   const serviceId = SLUG_TO_ID[slug ?? ""] ?? null;
   const meta = serviceId ? SERVICE_META[serviceId] : null;
-  // Prefer the live API record, but fall back to the static catalog so
-  // catalog-only services (e.g. ATA Carnet) still render after the API
-  // (which may not yet include them) has hydrated.
-  const service =
-    services?.find((s) => s.id === serviceId) ??
-    SERVICE_CATALOG.find((s) => s.id === serviceId);
+  const service = SERVICE_CATALOG.find((s) => s.id === serviceId);
 
   if (!service || !meta) {
     return (

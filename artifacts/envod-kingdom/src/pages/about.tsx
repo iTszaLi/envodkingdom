@@ -1,12 +1,10 @@
 import React from "react";
 import { useLanguage } from "@/lib/language-context";
 import { motion } from "framer-motion";
-import { useListTeam } from "@workspace/api-client-react";
 import { Award, Globe, Shield, Clock } from "lucide-react";
 
 export default function About() {
-  const { t, isRtl } = useLanguage();
-  const { data: team } = useListTeam();
+  const { t } = useLanguage();
 
   return (
     <div className="pt-24 pb-20 min-h-screen bg-background">
@@ -73,39 +71,6 @@ export default function About() {
           </div>
         </div>
 
-        {team && team.length > 0 && (
-          <div className="mb-20">
-            <h2 className="text-3xl font-bold text-white mb-12 text-center">
-              {t("Leadership Team", "فريق القيادة")}
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {team.map((member) => (
-                <div key={member.id} className="bg-card border border-white/5 rounded-xl overflow-hidden group">
-                  <div className="h-64 bg-primary/20 relative overflow-hidden">
-                    {member.photoUrl ? (
-                      <img src={member.photoUrl} alt={member.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-4xl text-white/20 font-bold bg-primary">
-                        {member.name.charAt(0)}
-                      </div>
-                    )}
-                  </div>
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-white mb-1">
-                      {isRtl && member.nameAr ? member.nameAr : member.name}
-                    </h3>
-                    <p className="text-secondary font-medium mb-3">
-                      {isRtl && member.roleAr ? member.roleAr : member.role}
-                    </p>
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {isRtl && member.bioAr ? member.bioAr : member.bio}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

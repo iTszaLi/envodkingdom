@@ -2,8 +2,7 @@ import { useState } from "react";
 import { Link } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLanguage } from "@/lib/language-context";
-import { useListServices } from "@workspace/api-client-react";
-import type { Service } from "@workspace/api-client-react";
+import type { Service } from "@/lib/service-data";
 import {
   Ship, Plane, Truck, Package, ShieldCheck, Clock, FileCheck,
   Warehouse, GitBranch, MapPin, ShoppingCart, Star,
@@ -393,17 +392,9 @@ type Tab = "all" | "core" | "specialized";
 
 export default function Services() {
   const { t, isRtl } = useLanguage();
-  const { data: servicesData } = useListServices();
   const [activeTab, setActiveTab] = useState<Tab>("all");
 
-  // Merge in catalog-only services (e.g. ATA Carnet) that the live API may not
-  // yet return, so every service in the catalog still gets a card.
-  const services = servicesData
-    ? [
-        ...servicesData,
-        ...SERVICE_CATALOG.filter((c) => !servicesData.some((s) => s.id === c.id)),
-      ]
-    : SERVICE_CATALOG;
+  const services = SERVICE_CATALOG;
   const spotlight = services.filter((s) => EXT[s.id]?.spotlight);
   const nonSpotlight = services.filter((s) => !EXT[s.id]?.spotlight);
   const totalCount = services.length;

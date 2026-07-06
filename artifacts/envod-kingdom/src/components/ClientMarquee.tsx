@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { useListClients } from "@workspace/api-client-react";
-import type { Client } from "@workspace/api-client-react";
 import { useLanguage } from "@/lib/language-context";
 import { motion, useInView } from "framer-motion";
 import { CheckCircle2, Package, Building2, Award, Clock, Globe2, Flame, Radio, UtensilsCrossed, HeartPulse, Factory, Cog, HardHat, Briefcase, Truck, Sparkles, Trophy, Car, Plane, Landmark, Store } from "lucide-react";
@@ -54,6 +52,16 @@ const CLIENT_LOGOS: Record<string, string> = {
 };
 
 /* ─────────────────────────── Data ─────────────────────────── */
+interface Client {
+  id: number;
+  name: string;
+  industry: string | null;
+  logoUrl?: string | null;
+  website?: string | null;
+  sortOrder: number;
+  isActive: boolean;
+}
+
 const FALLBACK_CLIENTS: Client[] = [
   { id: 1,  name: "STC",                       industry: "Telecommunications", logoUrl: null, website: null, sortOrder: 1,  isActive: true },
   { id: 2,  name: "Saudi Aramco",              industry: "Oil & Gas",          logoUrl: null, website: null, sortOrder: 2,  isActive: true },
@@ -280,13 +288,10 @@ const TRUST = [
 /* ─────────────────────────── Main section ─────────────────────────── */
 export function ClientMarquee() {
   const { t, isRtl } = useLanguage();
-  const { data: clients } = useListClients();
   const [paused, setPaused] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  const items: Client[] = (clients && clients.length > 0 ? clients : FALLBACK_CLIENTS).filter(
-    (c: Client) => c.isActive !== false,
-  );
+  const items: Client[] = FALLBACK_CLIENTS.filter((c: Client) => c.isActive !== false);
 
   const half = Math.ceil(items.length / 2);
   const row1 = items.slice(0, half);

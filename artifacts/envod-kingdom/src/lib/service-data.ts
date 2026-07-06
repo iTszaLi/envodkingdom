@@ -1,6 +1,17 @@
-import type { Service } from "@workspace/api-client-react";
 import { EXHIBITION_PILLAR } from "./pillar-data/exhibition";
 import { ATA_CARNET_PILLAR } from "./pillar-data/ata-carnet";
+
+export interface Service {
+  id: number;
+  name: string;
+  nameAr: string;
+  description: string;
+  descriptionAr: string;
+  icon: string;
+  category: string;
+  sortOrder: number;
+  isActive?: boolean;
+}
 
 export interface SubService {
   name: string;

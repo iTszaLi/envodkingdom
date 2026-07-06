@@ -7,8 +7,7 @@ import {
   Heart, UtensilsCrossed, PawPrint, Anchor, AlertTriangle,
   Maximize2, Car, CheckCircle2, ArrowRight,
 } from "lucide-react";
-import type { Service } from "@workspace/api-client-react";
-import { SERVICE_CATALOG, SERVICE_META } from "@/lib/service-data";
+import { type Service, SERVICE_CATALOG, SERVICE_META } from "@/lib/service-data";
 import { SERVICE_IMAGES } from "@/lib/service-images";
 
 // ─── Icon resolver (catalog `icon` string → lucide component) ────────────────

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
-import { useSubmitInquiry } from "@workspace/api-client-react";
+import { buildQuoteMailto, CONTACT_EMAIL, CONTACT_WHATSAPP } from "@/lib/quote-mailto";
 import {
   Select,
   SelectContent,
@@ -13,7 +13,6 @@ import {
   Phone,
   Printer,
   Mail,
-  Loader2,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
@@ -43,7 +42,6 @@ const EMPTY = { name: "", company: "", email: "", phone: "", service: "", messag
 
 export default function Contact() {
   const { t, isRtl } = useLanguage();
-  const submitInquiry = useSubmitInquiry();
 
   const [values, setValues] = useState<Record<FieldKey, string>>({ ...EMPTY });
   const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
@@ -82,19 +80,15 @@ export default function Contact() {
       return;
     }
     if (!validate()) return;
-    submitInquiry.mutate(
-      {
-        data: {
-          name: values.name.trim(),
-          email: values.email.trim(),
-          phone: values.phone.trim(),
-          company: values.company.trim(),
-          serviceType: values.service,
-          message: values.message.trim(),
-        },
-      },
-      { onSuccess: () => setShowSuccess(true) },
-    );
+    window.location.href = buildQuoteMailto([
+      { label: "Customer Name", value: values.name },
+      { label: "Company", value: values.company },
+      { label: "Email", value: values.email },
+      { label: "Phone", value: values.phone },
+      { label: "Service Required", value: values.service },
+      { label: "Message", value: values.message },
+    ]);
+    setShowSuccess(true);
   };
 
   const resetForm = () => {
@@ -102,7 +96,6 @@ export default function Contact() {
     setErrors({});
     setHoneypot("");
     setShowSuccess(false);
-    submitInquiry.reset();
   };
 
   const fieldClass = (hasError: boolean) =>
@@ -215,13 +208,24 @@ export default function Contact() {
                     <CheckCircle2 className="w-8 h-8 text-green-400" />
                   </div>
                   <h2 className="text-2xl font-bold text-white mb-3">
-                    {t("Message Sent Successfully", "تم إرسال الرسالة بنجاح")}
+                    {t("Your Email Draft Is Ready", "مسودة بريدك الإلكتروني جاهزة")}
                   </h2>
-                  <p className="text-white/60 max-w-md leading-relaxed mb-8">
+                  <p className="text-white/60 max-w-md leading-relaxed mb-4">
                     {t(
-                      "Thank you for contacting ENVOD Kingdom. Your enquiry has been received successfully. Our team will get back to you as soon as possible.",
-                      "شكراً لتواصلك مع انفود كينغدوم. تم استلام طلبك بنجاح. سيتواصل معك فريقنا في أقرب وقت ممكن.",
+                      "An email draft with your enquiry details has been opened in your mail app — just press send and our team will get back to you as soon as possible.",
+                      "تم فتح مسودة بريد إلكتروني تحتوي على تفاصيل استفسارك في تطبيق البريد لديك — فقط اضغط إرسال وسيتواصل معك فريقنا في أقرب وقت ممكن.",
                     )}
+                  </p>
+                  <p className="text-white/45 text-[14px] max-w-md leading-relaxed mb-8">
+                    {t("If it didn't open, email us directly at ", "إذا لم تُفتح المسودة، راسلنا مباشرة على ")}
+                    <a href={`mailto:${CONTACT_EMAIL}`} className="text-secondary hover:underline" dir="ltr">
+                      {CONTACT_EMAIL}
+                    </a>
+                    {t(" or reach us on WhatsApp at ", " أو تواصل معنا عبر واتساب على ")}
+                    <a href="https://wa.me/966502260256" target="_blank" rel="noopener noreferrer" className="text-secondary hover:underline" dir="ltr">
+                      {CONTACT_WHATSAPP}
+                    </a>
+                    .
                   </p>
                   <button
                     onClick={resetForm}
@@ -238,18 +242,6 @@ export default function Contact() {
                   <p className="text-white/50 text-[14px] mb-7">
                     {t("Fields marked with * are required.", "الحقول المميزة بعلامة * مطلوبة.")}
                   </p>
-
-                  {submitInquiry.isError && (
-                    <div className="mb-6 flex items-start gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/30">
-                      <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
-                      <p className="text-red-300 text-[14px]">
-                        {t(
-                          "Sorry, we couldn't send your message. Please try again — your details have been kept.",
-                          "عذراً، تعذّر إرسال رسالتك. يرجى المحاولة مرة أخرى — تم الاحتفاظ ببياناتك.",
-                        )}
-                      </p>
-                    </div>
-                  )}
 
                   <form onSubmit={handleSubmit} noValidate className="space-y-5">
                     {/* Honeypot — hidden from users, catches bots */}
@@ -422,24 +414,14 @@ export default function Contact() {
 
                     <button
                       type="submit"
-                      disabled={submitInquiry.isPending}
-                      className="group w-full h-14 rounded-xl bg-secondary hover:bg-secondary/90 text-white font-bold text-[15px] tracking-wide uppercase flex items-center justify-center gap-2.5 shadow-lg shadow-secondary/25 hover:shadow-secondary/40 hover:-translate-y-0.5 transition-all duration-200 disabled:opacity-70 disabled:pointer-events-none disabled:translate-y-0"
+                      className="group w-full h-14 rounded-xl bg-secondary hover:bg-secondary/90 text-white font-bold text-[15px] tracking-wide uppercase flex items-center justify-center gap-2.5 shadow-lg shadow-secondary/25 hover:shadow-secondary/40 hover:-translate-y-0.5 transition-all duration-200"
                     >
-                      {submitInquiry.isPending ? (
-                        <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          {t("Sending…", "جاري الإرسال…")}
-                        </>
-                      ) : (
-                        <>
-                          {t("Send Message", "إرسال الرسالة")}
-                          <ArrowRight
-                            className={`w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 ${
-                              isRtl ? "rotate-180 group-hover:-translate-x-1" : ""
-                            }`}
-                          />
-                        </>
-                      )}
+                      {t("Send Message", "إرسال الرسالة")}
+                      <ArrowRight
+                        className={`w-4 h-4 transition-transform duration-200 group-hover:translate-x-1 ${
+                          isRtl ? "rotate-180 group-hover:-translate-x-1" : ""
+                        }`}
+                      />
                     </button>
 
                     <p className="text-center text-white/35 text-[12.5px] pt-1">

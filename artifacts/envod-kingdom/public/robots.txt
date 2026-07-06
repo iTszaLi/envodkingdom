@@ -1,10 +1,4 @@
 User-agent: *
 Allow: /
 
-Disallow: /admin
-Disallow: /api/
-Allow: /api/gallery/media/
-Allow: /api/sitemap-images.xml
-
 Sitemap: https://www.envodkingdom.net/sitemap.xml
-Sitemap: https://www.envodkingdom.net/api/sitemap-images.xml
