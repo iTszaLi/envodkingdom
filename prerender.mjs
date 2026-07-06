@@ -1,10 +1,11 @@
-import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { readFile, writeFile, mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const DIST = path.join(__dirname, "dist", "public");
-const SERVER_ENTRY = path.join(__dirname, "dist", "server", "entry-server.js");
+const DIST = path.join(__dirname, "dist");
+const SERVER_DIR = path.join(__dirname, "dist-server");
+const SERVER_ENTRY = path.join(SERVER_DIR, "entry-server.js");
 
 const { render, getSeoForPath, CONTENT_ROUTES, SITE_URL, OG_IMAGE, toAbsolute } =
   await import(SERVER_ENTRY);
@@ -14,8 +15,7 @@ const rawTemplate = await readFile(path.join(DIST, "index.html"), "utf-8");
 // Build-time security meta tags (production HTML only — dev index.html is
 // untouched, so Vite HMR/react-refresh keep working). frame-ancestors and
 // X-Frame-Options cannot be expressed via <meta>; those are sent as real HTTP
-// headers by hosts that support them (see public/_headers for Cloudflare
-// Pages) and by the API server for /api responses.
+// headers by Cloudflare Pages via public/_headers.
 const SECURITY_META = [
   `<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: https://storage.googleapis.com; media-src 'self'; connect-src 'self' https://storage.googleapis.com; frame-src https://maps.google.com https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests" />`,
   `<meta name="referrer" content="strict-origin-when-cross-origin" />`,
@@ -25,37 +25,9 @@ if (!rawTemplate.includes("</head>")) {
 }
 const template = rawTemplate.replace("</head>", `  ${SECURITY_META}\n  </head>`);
 
-// --- Guard: the hand-maintained artifact.toml rewrite list must stay in sync
-// with CONTENT_ROUTES. Every prerendered content route (except "/", served as
-// the root index.html) needs an explicit /foo -> /foo/index.html rewrite before
-// the SPA catch-all; otherwise that route falls through to spa.html and ships
-// the neutral, non-canonical shell head instead of its prerendered SEO. This
-// throws on drift in either direction so a missed edit fails the build loudly. ---
-{
-  const tomlPath = path.join(__dirname, ".replit-artifact", "artifact.toml");
-  const toml = await readFile(tomlPath, "utf-8");
-  const rewriteFroms = new Set(
-    [...toml.matchAll(/from\s*=\s*"([^"]+)"/g)].map((m) => m[1]),
-  );
-  const expected = CONTENT_ROUTES.filter((r) => r !== "/");
-  const missing = expected.filter((r) => !rewriteFroms.has(r));
-  if (missing.length > 0) {
-    throw new Error(
-      `prerender: artifact.toml is missing rewrites for prerendered routes: ${missing.join(", ")}. ` +
-        `Add [[services.production.rewrites]] "${missing[0]}" -> "${missing[0]}/index.html" (and any others) before the "/*" catch-all.`,
-    );
-  }
-  const orphans = [...rewriteFroms].filter((f) => f !== "/*" && !expected.includes(f));
-  if (orphans.length > 0) {
-    throw new Error(
-      `prerender: artifact.toml has rewrites with no matching CONTENT_ROUTES entry: ${orphans.join(", ")}. ` +
-        `Remove them or add the route to CONTENT_ROUTES.`,
-    );
-  }
-  if (!rewriteFroms.has("/*")) {
-    throw new Error('prerender: artifact.toml is missing the "/*" -> "/spa.html" SPA catch-all rewrite.');
-  }
-}
+// NOTE: Cloudflare Pages resolves clean URLs (/foo -> /foo/index.html)
+// natively, and public/_redirects provides the "/* /spa.html 200" SPA
+// fallback for client-only routes — no rewrite table needs to be maintained.
 
 function esc(s) {
   return String(s)
@@ -157,8 +129,8 @@ for (const route of CONTENT_ROUTES) {
   count += 1;
 }
 
-// Clean SPA shell for the catch-all rewrite (client-routed pages like /track,
-// /admin, and any unknown URL). It has no server-rendered appHtml and no
+// Clean SPA shell for the catch-all fallback (client-routed pages like /track
+// and any unknown URL). It has no server-rendered appHtml and no
 // data-ssr-path, so main.tsx uses createRoot (pure client render) and crawlers
 // never see home content/canonical bleeding onto non-content routes. The
 // default <title>/description/canonical from index.html stay; client-side
@@ -187,8 +159,8 @@ for (const route of CONTENT_ROUTES) {
 }
 
 // --- sitemap.xml (generated from CONTENT_ROUTES so it can never drift from the
-// set of prerendered pages). Client-only routes like /track and /admin are not
-// in CONTENT_ROUTES and are intentionally excluded. No hreflang alternates:
+// set of prerendered pages). Client-only routes like /track are not in
+// CONTENT_ROUTES and are intentionally excluded. No hreflang alternates:
 // Arabic is a client-side context toggle (not a distinct crawlable URL), so a
 // ?lang=ar "alternate" would serve identical HTML to crawlers. ---
 {
@@ -209,6 +181,10 @@ for (const route of CONTENT_ROUTES) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
   await writeFile(path.join(DIST, "sitemap.xml"), xml, "utf-8");
 }
+
+// The SSR bundle is only needed during prerendering — remove it so the build
+// leaves a single deployable dist/ folder.
+await rm(SERVER_DIR, { recursive: true, force: true });
 
 console.log(
   `✅  Prerendered ${count} routes + spa.html shell + sitemap.xml (${CONTENT_ROUTES.length} urls) to ${DIST}`,
