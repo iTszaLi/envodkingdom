@@ -12,11 +12,9 @@ description: How this app manages document head/SEO and a robots.txt gotcha for 
 
 **How to apply:** For any new page needing SEO, reuse `useSeo` rather than adding another head library. Ideally adopt it on all top-level pages so titles are always correct.
 
-# robots.txt vs dynamically-served media/sitemaps
+# robots.txt disallow precedence (general lesson)
 
-- Image files and the image sitemap are served by the API server under `/api/...` (e.g. `/api/gallery/media/:key/:w.webp`, `/api/sitemap-images.xml`).
-- robots.txt has a blanket `Disallow: /api/`. That would block search engines from crawling the images and the image sitemap.
+- The site is fully static (July 2026): robots.txt is now just `Allow: /` + `Sitemap:` — no disallowed paths remain.
+- Durable lesson kept from the API era: Google uses longest-match precedence, so a broad `Disallow:` (e.g. `Disallow: /api/`) blocks everything under it unless a more specific `Allow:` overrides it.
 
-**Why:** Google uses longest-match precedence, so a broad `Disallow: /api/` blocks anything under it unless a more specific `Allow:` overrides it.
-
-**How to apply:** When serving crawlable assets or sitemaps under an otherwise-disallowed path, add specific `Allow:` lines (e.g. `Allow: /api/gallery/media/`, `Allow: /api/sitemap-images.xml`) and list the sitemap in a `Sitemap:` directive. Keep the blanket disallow for the rest of `/api/`.
+**How to apply:** If a disallowed path prefix is ever reintroduced, add specific `Allow:` lines for any crawlable assets or sitemaps living under it, and list the sitemap in a `Sitemap:` directive.

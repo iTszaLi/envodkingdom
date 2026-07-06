@@ -5,19 +5,10 @@
   "type": "module",
   "scripts": {
     "hello": "tsx ./src/hello.ts",
-    "seed-services": "tsx ./src/seed-services.ts",
-    "seed-new-services": "tsx ./src/seed-new-services.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
-  "dependencies": {
-    "@workspace/db": "workspace:*",
-    "drizzle-orm": "catalog:",
-    "pg": "^8.20.0"
-  },
   "devDependencies": {
-    "@electric-sql/pglite": "^0.5.4",
     "@types/node": "catalog:",
-    "@types/pg": "^8.20.0",
     "tsx": "catalog:"
   }
 }

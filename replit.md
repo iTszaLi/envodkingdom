@@ -1,84 +1,64 @@
 # ENVOD KINGDOM SHIPPING SERVICES LLC
 
-Enterprise-grade bilingual (English/Arabic, LTR/RTL) logistics platform for ENVOD KINGDOM SHIPPING SERVICES LLC, featuring a cinematic marketing site, shipment tracking portal, knowledge center, and admin CMS.
+Fully static, bilingual (English/Arabic, LTR/RTL) marketing site for ENVOD KINGDOM SHIPPING SERVICES LLC, featuring a cinematic homepage, services catalog, industries pages, gallery, and contact — built for static hosting (Cloudflare Pages compatible). No backend: no API server, no database, no admin CMS.
 
 ## Run & Operate
 
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm --filter @workspace/envod-kingdom run dev` — run the frontend (Vite)
 - `pnpm run typecheck` — full typecheck across all packages
-- `pnpm --filter @workspace/api-server run test` — run the API server test suite (vitest, in-memory Postgres via PGlite)
 - `pnpm run build` — typecheck + build all packages
-- `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
-- `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- `pnpm --filter @workspace/api-server run seed-gallery` — seed the Operations Gallery from committed photos in `attached_assets/stock_images/` (idempotent, resumable; needs object-storage + DB env)
-- Required env: `DATABASE_URL`, `SESSION_SECRET`
+- Production build (SSG): `PORT=3000 BASE_PATH="/" pnpm --filter @workspace/envod-kingdom run build` → `dist/public` (client + prerendered pages) — static output, deployable to any static host
+- No required env vars at runtime (fully static)
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- Frontend: React + Vite, Tailwind CSS, framer-motion, wouter, TanStack Query
-- API: Express 5 + express-session
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
-- API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
+- Frontend: React + Vite (SSG prerender via `prerender.mjs`), Tailwind CSS, framer-motion, wouter
+- No server-side code; all content is compiled into the static bundle
 
 ## Where things live
 
-- `artifacts/envod-kingdom/` — React + Vite frontend
-- `artifacts/api-server/` — Express API server
-- `lib/db/src/schema/` — Drizzle ORM schema (11 tables)
-- `lib/api-spec/openapi.yaml` — OpenAPI spec (source of truth for API)
-- `lib/api-client-react/src/generated/` — Generated React Query hooks
-- `lib/api-zod/src/generated/` — Generated Zod validation schemas
+- `artifacts/envod-kingdom/` — React + Vite frontend (the only artifact besides mockup-sandbox)
+- `artifacts/envod-kingdom/src/lib/service-data.ts` — static services catalog (source of truth for all 30+ service pages)
+- `artifacts/envod-kingdom/src/lib/quote-mailto.ts` — shared `mailto:` builder for quote/contact forms (`info@envodkingdom.net`, subject "Quote Request")
+- `artifacts/envod-kingdom/src/lib/seo-config.ts` — per-route SEO + `CONTENT_ROUTES` (must stay in sync with artifact.toml rewrites + sitemap; build asserts this)
+- `artifacts/envod-kingdom/public/` — favicons, robots.txt, `_redirects` (SPA catch-all for static hosts), `_headers`, media
 
 ## Architecture decisions
 
-- Contract-first API: OpenAPI spec drives codegen for hooks and Zod schemas; never hand-write these
-- Session auth via express-session with SHA256 password hashing (salt: `envod_salt_2024`)
+- Fully static conversion (July 2026): Express API, PostgreSQL, object storage, and the admin CMS were all removed. Content that previously came from the DB now lives in static catalogs (`service-data.ts`) or is intentionally empty (gallery shows its curated empty state).
+- Contact form + QuoteModal submit via `mailto:` links (formatted body, URL-length capped) — no inquiry API
+- Track page keeps its search UI but shows a bilingual "online tracking available soon — contact operations" notice with tel/mailto buttons on submit
 - Bilingual support via React context (`LanguageContext`) that toggles `dir="rtl"` on `document.documentElement`
-- All server logs use `req.log` / `logger` (pino) — never `console.log`
-- `numeric` DB columns for `weight` must be coerced with `String()` before insert (Drizzle types `numeric` as string)
+- SSG: content routes are prerendered by `prerender.mjs`; non-content routes fall back to `spa.html`
 
 ## Product
 
-- Cinematic homepage with hero, animated stats, 14 services grid, testimonials, client logo wall, blog preview
-- Shipment tracking portal (track by tracking number, reference, or invoice)
-- Knowledge center / blog with category filtering
-- Contact page with quote inquiry form
-- Admin CMS: dashboard, shipments, services, testimonials, FAQs, articles, clients, inquiries, settings
-- Bilingual: full EN/AR toggle with RTL layout mirroring
-
-## Admin credentials
-
-- URL: `/admin`, username: `admin`
-- Password: not stored in the repo (GitHub-safe). It is whatever the user set / the original seeded value — ask the user if needed, or reset it by updating `admin_users.password_hash` in the DB (SHA256 of password + salt from `artifacts/api-server/src/routes/auth.ts`)
-
-## Test data
-
-- Tracking number: `ENVOD-2024-001` (delivered, 9-step timeline)
-- Tracking number: `ENVOD-2024-002` (in transit)
-- Tracking number: `ENVOD-2024-003` (customs clearance)
+- Cinematic homepage with hero videos, animated stats, services grid, testimonials, client logo wall
+- Services catalog (static) with detail pages; industries pages; Vision 2030 page
+- Track page (visual search + "available soon" notice)
+- Gallery (static empty state)
+- Contact page + multi-step QuoteModal, both via mailto to info@envodkingdom.net
 
 ## Brand
 
 - Primary: `#0A2342` (deep navy)
 - Secondary: `#D62828` (Saudi red)
 - Logo: `attached_assets/image_1780437854819.png` (import via `@assets/` alias)
+- Email: info@envodkingdom.net
 - Phone / WhatsApp: +966 50 226 0256
 - Fax: +966 11 238 0517
 - P.O. Box: 2383
 - Address: Prince Mansour Bin Abdulaziz Street, Al Malaz District, Riyadh 12831
+- Live at: www.envodkingdom.net
 
 ## Gotchas
 
 - Google Font imports in `index.css` must be the VERY FIRST lines before `@import "tailwindcss"`
-- When using query hooks with `enabled`, always pass `queryKey` too: `{ query: { enabled: !!id, queryKey: getXQueryKey(id) } }`
-- `pnpm run typecheck:libs` must be run before `pnpm --filter @workspace/api-server run typecheck` if DB schema changed
 - Never run `pnpm dev` at workspace root — use workflow restarts instead
-- Hero background videos (`artifacts/envod-kingdom/public/media/{crane,air,warehouse}.{mp4,webm,jpg}`) had a baked-in grey four-point sparkle in the lower-right; it was removed by re-encoding with ffmpeg `delogo=x=1101:y=535:w=120:h=140`. The ORIGINAL source WebPs in `attached_assets/` still contain the watermark, and the admin CMS re-encode pipeline does NOT apply delogo — so re-uploading original footage via `/admin` reintroduces the star. Clean the source before any re-upload.
-- API tests use PGlite (in-memory Postgres) so they need no real DB. Because drizzle-orm creates a per-package peer variant when an optional driver peer (e.g. `@electric-sql/pglite`) is present, **every** package that both depends on `drizzle-orm` and shares types with `@workspace/db` must have `@electric-sql/pglite` installed (currently `lib/db`, `api-server`, `scripts`) or workspace typecheck breaks with "separate declarations of a private property 'shouldInlineParams'"
+- `CONTENT_ROUTES` in `seo-config.ts` ↔ artifact.toml `[[services.production.rewrites]]` ↔ sitemap must stay in sync (build asserts)
+- Hero background videos (`public/media/{crane,air,warehouse}.{mp4,webm,jpg}`) had a baked-in grey sparkle removed via ffmpeg delogo; the ORIGINAL WebPs in `attached_assets/` still contain the watermark — clean before reusing source footage
+- `src/lib/gallery.ts` still contains `/api/gallery/media/` URL helpers; they are dead at runtime (gallery item list is always empty) and kept only to avoid touching shared presentation code
 
 ## User preferences
 

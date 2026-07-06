@@ -9,4 +9,4 @@ description: Gap math and RTL pinning rules for infinite translateX marquees (Cl
 
 **How to apply:** Any infinite logo/ticker marquee in this repo (see ClientMarquee.tsx). Verify with an AR screenshot by temporarily defaulting `LanguageProvider` state to "ar" (no URL param exists) + hoisting the section in home.tsx; revert both after.
 
-**Also:** dev DB `clients` table is empty, so the homepage marquee renders `FALLBACK_CLIENTS` hardcoded in ClientMarquee.tsx; roster edits go there unless the admin CMS has seeded clients.
+**Also:** the homepage marquee renders `FALLBACK_CLIENTS` hardcoded in ClientMarquee.tsx (site is fully static, no DB); roster edits go there.

@@ -1,6 +1,5 @@
 - [Hero video pipeline](scroll-frames.md) — scroll sections are `<video>` (public/media/*), not JPEG frames; runtime writes to public/ don't persist in prod
 - [ScrollAnimSection hero](scroll-anim-hero.md) — sparkle/star baked into video footage (not DOM); z-layering + object-fit-cover gotchas for overlays
-- [API client import path](api-client-imports.md) — use `@workspace/api-client-react` not `@api-client-react/generated/api`; same for types
 - [Lenis options](lenis-options.md) — @studio-freight/lenis only accepts `lerp` and `wheelMultiplier`; no `smoothTouch`/`syncTouch`
 - [d3-geo region map](d3-geo-region-map.md) — fitExtent to a MultiPoint (not Polygon) to avoid winding fitting the whole globe; world-atlas 110m omits Bahrain
 - [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
@@ -8,11 +7,9 @@
 - [Favicon & logo mark](favicon-and-logo-mark.md) — favicon is now a white-disc badge mark (single variant, source logi_1783209860215.png); premultiplied-alpha resize + iOS flatten gotchas
 - [SEO head & crawlability](seo-head-and-crawl.md) — shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for media/sitemaps under /api/
 - [SSG prerender & SEO invariants](seo-ssg-prerender.md) — content routes prerendered; CONTENT_ROUTES↔artifact.toml↔sitemap kept in sync (build asserts); framer-motion opacity:0 hides content from SSG
-- [Catalog-only services vs live API](catalog-vs-api-services.md) — services come from DB-seeded API + static catalog; catalog-only additions must merge/fallback or vanish after API hydrates
 - [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — dropdowns overflowing a backdrop-blur header vanish on iOS Safari; portal to body as fixed opaque panel
 - [Trust walls & third-party branding](trust-wall-third-party-branding.md) — no scraped third-party event logos; no Event JSON-LD for events you don't own (name-only ItemList)
 - [Branded service imagery](branded-service-imagery.md) — AI scene with prompted blank white panel + multiply-composite the real logo PNG; direct logo prompts produce garbled text
-- [Test DB hand-maintained schema](test-db-hand-maintained-schema.md) — api-server vitest builds Postgres from hardcoded CREATE_SQL (not drizzle); mirror column adds; restart API after lib/db edits
 - [Claims-accuracy / SEO copy policy](claims-accuracy-policy.md) — banned superlatives/guarantees, mandated hedged customs/transit sentences, factual exceptions to keep; edit EN+AR together
 - [Site schema locations & primary phone](schema-and-phone.md) — JSON-LD lives in 2 places (static in index.html + per-page in seo-config.ts); primary phone must match both and the visible site
 - [Asset image optimization](asset-image-optimization.md) — Vite `@assets` imports emit raw bytes (no auto-compress); pre-encode photo uploads to WebP (`magick`, not sharp) before importing

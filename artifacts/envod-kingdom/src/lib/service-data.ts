@@ -1042,10 +1042,8 @@ export const ID_TO_SLUG: Record<number, string> = Object.fromEntries(
 );
 
 /**
- * Local snapshot of the service catalog (mirrors the DB `services` table).
- * Used as the SSR/prerender source and as the first-render fallback before the
- * API resolves, so content pages render full text for crawlers. The live API
- * (`useListServices`) overrides this after hydration when available.
+ * Static service catalog — the single source of truth for all service content.
+ * Used as the SSR/prerender source and at runtime; there is no backend API.
  */
 export const SERVICE_CATALOG: Service[] = [
   { id: 1, name: "Ocean Freight", nameAr: "الشحن البحري", description: "Ocean freight is the sea transport of goods by container or breakbulk — cost-effective FCL and LCL shipping connecting Saudi Arabia's main ports to markets worldwide.", descriptionAr: "الشحن البحري هو نقل البضائع بحراً بالحاويات أو بريك بالك — شحن FCL وLCL اقتصادي يربط موانئ المملكة الرئيسية بالأسواق حول العالم.", icon: "Ship", category: "core", sortOrder: 1, isActive: true },
