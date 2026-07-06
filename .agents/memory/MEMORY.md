@@ -5,7 +5,7 @@
 - [Below-fold screenshots](below-fold-screenshot.md) — min-h-screen + whileInView hide footers in app_preview; temp-toggle to verify, then revert
 - [Filter on cross-origin iframes](screenshot-iframe-filter.md) — app_preview doesn't composite CSS filter over cross-origin iframes; looks wrong in shots, fine in real browsers
 - [Favicon & logo mark](favicon-and-logo-mark.md) — favicon is now a white-disc badge mark (single variant, source logi_1783209860215.png); premultiplied-alpha resize + iOS flatten gotchas
-- [SEO head & crawlability](seo-head-and-crawl.md) — shared `useSeo` hook (no react-helmet); robots.txt `Disallow: /api/` needs `Allow:` overrides for media/sitemaps under /api/
+- [SEO head & crawlability](seo-head-and-crawl.md) — shared `useSeo` hook (no react-helmet); robots.txt longest-match precedence lesson for any future Disallow prefixes
 - [SSG prerender & SEO invariants](seo-ssg-prerender.md) — content routes prerendered; CONTENT_ROUTES↔artifact.toml↔sitemap kept in sync (build asserts); framer-motion opacity:0 hides content from SSG
 - [iOS backdrop-filter clipping](ios-backdrop-filter-portal.md) — dropdowns overflowing a backdrop-blur header vanish on iOS Safari; portal to body as fixed opaque panel
 - [Trust walls & third-party branding](trust-wall-third-party-branding.md) — no scraped third-party event logos; no Event JSON-LD for events you don't own (name-only ItemList)
@@ -15,4 +15,5 @@
 - [Asset image optimization](asset-image-optimization.md) — Vite `@assets` imports emit raw bytes (no auto-compress); pre-encode photo uploads to WebP (`magick`, not sharp) before importing
 - [RTL flex-row-reverse](rtl-flex-reverse.md) — isRtl flex-row-reverse under dir=rtl UN-mirrors rows; anchor absolute decorations (timeline lines) to the visual side; verify with AR screenshot
 - [Seamless marquee + RTL](marquee-seamless-rtl.md) — no flex gap on translateX marquee tracks (per-card margin instead) or the loop snaps; pin rows wrapper dir="ltr" under Arabic RTL
-- [Security headers](security-headers.md) — CSP lives in 3 places (prerender meta injection, _headers for CF Pages, API HTTP headers); change all together; directives that look removable but aren't
+- [Security headers](security-headers.md) — CSP lives in 2 places (prerender meta injection + _headers for CF Pages); change both together; directives that look removable but aren't
+- [Static conversion](static-conversion.md) — site is fully static since July 2026 (no API/DB/admin); quote+contact via shared mailto builder; verify AR via temp LanguageProvider default
